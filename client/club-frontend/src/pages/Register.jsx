@@ -33,7 +33,7 @@ export default function Register() {
     };
 
   return (
-    <div className='main-content'>
+    <div className='main-content user-forms'>
         <form onSubmit={registerUser}>
             <label>Nombre</label>
             <input type="text" placeholder='Ingrese nombre'  value={data.name} onChange={(e) => setData({...data, name: e.target.value})}/>

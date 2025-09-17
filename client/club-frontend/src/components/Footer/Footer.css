@@ -5,11 +5,11 @@
   gap: 30px;
   row-gap: 0px;
   padding: 30px;
-  background-color: #333;
+  background-color: #1A2026;
   color: white;
   align-items: start;
   font-size: 15px;
-  position: absolute;
+  /*position: absolute;*/
   bottom: 0px;
   width: 100%;
   left: 0px;
