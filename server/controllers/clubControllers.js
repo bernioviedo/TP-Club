@@ -86,10 +86,17 @@ const loginUser = async (req, res) => {
         }
         };
 
-
+        // hago logout
+        const getLogout = (req, res) => {
+            res.clearCookie('token').json({ 
+                success: true, 
+                message: 'Logout exitoso' 
+            });
+        };
 module.exports = { 
     test,
     registerUser,
     loginUser,
     getProfile,
+    getLogout,
  };
