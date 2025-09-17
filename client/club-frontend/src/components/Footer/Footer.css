@@ -9,6 +9,10 @@
   color: white;
   align-items: start;
   font-size: 15px;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  left: 0px;
 }
 
 .footer > h4 {
@@ -25,8 +29,7 @@
   display: flex;
   justify-content: center;
   gap: 15px;
-  width: 5px;
-  height: 5px;
+  width: 100%;
 }
 
 .social-link {
