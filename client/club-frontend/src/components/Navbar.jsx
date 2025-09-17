@@ -1,7 +1,8 @@
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 export default function Navbar() {
 
+  const navigate = useNavigate();
   // manejo logout
   const handleLogout = async () => {
     try {
@@ -19,12 +20,18 @@ export default function Navbar() {
     }
   };
 
+  //navegación
+  const handleHome = () => navigate('/');
+  const handleRegister = () => navigate('/register');
+  const handleLogin = () => navigate('/login');
+  const handleProfile = () => navigate('/profile');
+
   return (
     <nav>
-        <Link to='/'>Home</Link>
-        <Link to='/register'>Register</Link>
-        <Link to='/login'>Login</Link>
-        <Link to='/profile'>Profile</Link>
+      <button onClick={handleHome}>Home</button>
+      <button onClick={handleRegister}>Register</button>
+      <button onClick={handleLogin}>Login</button>
+      <button onClick={handleProfile}>Profile</button>
       <button onClick={handleLogout}>Logout</button>
     </nav>
   )
