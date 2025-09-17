@@ -3,6 +3,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { ContextUser } from '../../context/contextUser'
+import '../App.css'
 
 export default function Login() {
 const navigate = useNavigate()
@@ -35,7 +36,7 @@ const loginUser = async (e) =>{
 }
 
   return (
-<div>
+<div className='main-content'>
     <form onSubmit={loginUser}>
             <label>Email</label>
             <input type="email" placeholder='Ingrese email' value={data.email} onChange={(e) => setData({...data, email: e.target.value})}/>
