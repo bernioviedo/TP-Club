@@ -1,5 +1,18 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Lexend", sans-serif;
+}
+
+
+/*
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Lexend", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -66,3 +79,4 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+*/

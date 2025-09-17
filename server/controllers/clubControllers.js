@@ -61,7 +61,12 @@ const loginUser = async (req, res) => {
         if (match){
             jwt.sign({ email:user.email, id:user._id, name: user.name }, process.env.JWT_SECRET, {}, (err, token) => {
                 if (err) throw err;
-                res.cookie('token', token).json(user);
+                const userData = {
+                    _id: user._id,
+                    name: user.name,
+                    email: user.email
+                };
+                res.cookie('token', token).json(userData);
             });
         }
         if (!match) {
@@ -86,10 +91,17 @@ const loginUser = async (req, res) => {
         }
         };
 
-
+        // hago logout
+        const getLogout = (req, res) => {
+            res.clearCookie('token').json({ 
+                success: true, 
+                message: 'Logout exitoso' 
+            });
+        };
 module.exports = { 
     test,
     registerUser,
     loginUser,
     getProfile,
+    getLogout,
  };
