@@ -1,9 +1,12 @@
 import {Link, useNavigate} from 'react-router-dom'
 import './Navbar.css'
+import { useContext } from 'react'
+import { ContextUser } from '../../../context/contextUser';
 
 export default function Navbar() {
 
   const navigate = useNavigate();
+  const { user, setUser } = useContext(ContextUser);
   // manejo logout
   const handleLogout = async () => {
     try {
@@ -14,6 +17,7 @@ export default function Navbar() {
       const data = await response.json();
       
       if (data.success) {
+        setUser(null);
         window.location.href = '/';
       }
     } catch (error) {
@@ -32,10 +36,20 @@ export default function Navbar() {
     <a href="/" className='logo'>Club Atlético La Gacela</a>
     <nav className='navbar'>
       <button onClick={handleHome}>Home</button>
+    {     !user &&(
+      <>
       <button onClick={handleRegister}>Register</button>
       <button onClick={handleLogin}>Login</button>
+      </>
+      )
+      }      
+    {    user &&(   
+      <>  
       <button onClick={handleProfile}>Profile</button>
       <button onClick={handleLogout}>Logout</button>
+      </>
+      )
+      } 
     </nav>
   </header>
   )
