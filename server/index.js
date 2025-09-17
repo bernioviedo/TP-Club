@@ -3,6 +3,8 @@ import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import clubRoutes from './routes/clubRoutes.js'
 const app = express();
+import dotenv from "dotenv";
+dotenv.config();
 
 //database connection
 mongoose.connect(process.env.MONGO_URL)
