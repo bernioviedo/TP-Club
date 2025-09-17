@@ -1,4 +1,5 @@
 import {Link, useNavigate} from 'react-router-dom'
+import './Navbar.css'
 
 export default function Navbar() {
 
@@ -27,12 +28,15 @@ export default function Navbar() {
   const handleProfile = () => navigate('/profile');
 
   return (
-    <nav>
+  <header className='header'>
+    <a href="/" className='logo'>Club Atlético La Gacela</a>
+    <nav className='navbar'>
       <button onClick={handleHome}>Home</button>
       <button onClick={handleRegister}>Register</button>
       <button onClick={handleLogin}>Login</button>
       <button onClick={handleProfile}>Profile</button>
       <button onClick={handleLogout}>Logout</button>
     </nav>
+  </header>
   )
 }

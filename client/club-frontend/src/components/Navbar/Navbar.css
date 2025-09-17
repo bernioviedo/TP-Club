@@ -1,0 +1,68 @@
+.header{
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 0px 10%;
+    background-color: #872816;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    z-index: 100;
+    overflow: visible;
+}
+
+.logo{
+    color: #C4710B;
+    font-size: 28px;
+    font-weight: bold;
+    text-decoration: none;
+    margin: 0;
+    line-height: 70px;
+    display: flex;
+    align-items: center;
+    height: 70px;
+}
+
+.navbar button{
+    position: relative;
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    margin-left: 40px;
+    line-height: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    position: relative;
+    z-index: 101;
+    overflow: visible;
+}
+
+
+.navbar button::before{
+    content: '';
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background-color: rgb(255, 255, 255);
+    transition: .3s;
+    z-index: 102;
+}
+
+.navbar button:hover::before{
+    width: 100%;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    height: 70px;
+    overflow: visible;
+}

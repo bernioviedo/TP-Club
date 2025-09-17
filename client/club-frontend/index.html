@@ -1,96 +1,12 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FutbolClub</title>
-  <link rel="stylesheet" href="style.css">
-  
-</head>
-<body>
-
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="logo"><a href="index.html">LaGacela FC⚽</a> </div>
-    <ul class="nav-menu">
-      <li><a href="#futbol">Futbol</a></li>
-      <li><a href="#socio">Socio</a></li>
-      <li><a href="#noticia">Noticias</a></li>
-      <li><a href="#media">Media</a></li>
-      <li><a href="#singup" class="cta-button">Sing UP</a></li>
-      <li><a href="#login" class="cta-button">Login</a></li>
-    </ul>
-    <div class="menu-icon" id="menu-icon">☰</div>
-  </nav>
-
- <section class="hero">
-    <h1>Bienvenido a La Gacela FC.</h1>
-    <p>Es un club grande por su gente.</p>
-    <a href="#socio" class="cta-button">Hazte Socio</a>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer"> 
-  <h4>Nuestras redes</h4>
-    <div class="social-icons">
-      <a href="#" class="social-link">
-        <img src="..\src\assets\ig.webp" alt="Instagram">
-      </a>
-      <a href="#" class="social-link">
-        <img src="..\src\assets\fb.webp" alt="Facebook">
-      </a>
-      <a href="#" class="social-link">
-        <img src="..\src\assets\mail.png" alt="Email">
-      </a>
-    </div>
-    <div class="footer-menu">
-      <div class=" footer-menu-title">
-        <h4>MENU</h4>
-          <div class="footer-menu-sections">
-            <a href="#futbol">Futbol</a>
-            <a href="#socio">Socio</a>
-            <a href="#noticia">Noticias</a>
-            <a href="#media">Media</a>
-          </div>
-      </div>
-    </div>
-    <div class="footer-direccion">
-      <h4>Nuestra direccion</h4>
-      <div class="direccion">
-        <p>📍 OROÑO 2000, Rosario, Santafe</p>
-      </div>
-    </div>
-  </footer>
-<script>
-    // Script para abrir/cerrar el menú en móvil
-    const menuIcon = document.getElementById('menu-icon');
-    const navMenu = document.querySelector('.nav-menu');
-
-    menuIcon.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
-    });
-
-    // Cerrar menú al hacer click en un enlace (móvil)
-    const navLinks = document.querySelectorAll('.nav-menu a');
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-      });
-    });
-
-    // Smooth scroll para los enlaces
-    navLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = link.getAttribute('href').substring(1);
-        const targetElement = document.getElementById(targetId);
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
-  </script>
-
-
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Club Atlético La Gacela</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
