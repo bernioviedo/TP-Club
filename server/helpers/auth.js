@@ -1,12 +1,12 @@
-const bcrypt = require('bcrypt');
+import { genSalt, hash as _hash, compare } from 'bcrypt';
 
 const hashPassword = (password) => { 
     return new Promise((resolve, reject) => {
-        bcrypt.genSalt(10, (err, salt) => {
+        genSalt(10, (err, salt) => {
             if (err) {
                 return reject(err);
             }
-            bcrypt.hash(password, salt, (err, hash) => {
+            _hash(password, salt, (err, hash) => {
                 if (err) {
                     return reject(err);
                 }
@@ -17,10 +17,10 @@ const hashPassword = (password) => {
 };
 
 const comparePassword = (password, hashed) => {
-    return bcrypt.compare(password, hashed);
+    return compare(password, hashed);
 };
 
-module.exports = { 
+export  { 
     hashPassword,
     comparePassword,
-};
+}
