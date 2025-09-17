@@ -1,6 +1,7 @@
-const User = require('../models/users');
-const { hashPassword, comparePassword } = require('../helpers/auth');
-const jwt = require('jsonwebtoken');
+import User from '../models/users.js';
+import { hashPassword, comparePassword } from '../helpers/auth.js';
+import pkg from 'jsonwebtoken'
+const { sign, verify } = pkg
 
 const test = (req, res) => {
     res.json({ message: 'Test is working' });
@@ -59,7 +60,7 @@ const loginUser = async (req, res) => {
         //compruebo si la contraseña es correcta
         const match = await comparePassword(password, user.password);
         if (match){
-            jwt.sign({ email:user.email, id:user._id, name: user.name }, process.env.JWT_SECRET, {}, (err, token) => {
+            sign({ email:user.email, id:user._id, name: user.name }, process.env.JWT_SECRET, {}, (err, token) => {
                 if (err) throw err;
                 const userData = {
                     _id: user._id,
@@ -81,7 +82,7 @@ const loginUser = async (req, res) => {
      const getProfile = (req, res) => {
         const {token} = req.cookies;
         if(token){
-            jwt.verify(token, process.env.JWT_SECRET, {}, (err, user) => {
+            verify(token, process.env.JWT_SECRET, {}, (err, user) => {
                 if (err) throw err;
                 res.json(user);
             });
@@ -98,10 +99,10 @@ const loginUser = async (req, res) => {
                 message: 'Logout exitoso' 
             });
         };
-module.exports = { 
+export { 
     test,
     registerUser,
     loginUser,
     getProfile,
     getLogout,
- };
+}

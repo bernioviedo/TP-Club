@@ -1,19 +1,19 @@
-const express = require('express');
-const router = express.Router();
-const cors = require('cors');
-const { test, registerUser, loginUser, getProfile, getLogout } = require('../controllers/clubControllers');
+import express, {Router} from 'express'
+import cors from 'cors'
+import { test, registerUser, loginUser, getProfile, getLogout } from '../controllers/clubControllers.js'
 
 // middleware
-router.use(
+const r = Router()
+r.use(
     cors({
         credentials: true,
         origin: 'http://localhost:5173',
     }));
 
-router.get('/', test);
-router.post('/register', registerUser);
-router.post('/login', loginUser);
-router.get('/profile', getProfile);
-router.get('/logout', getLogout);
+r.get('/', test);
+r.post('/register', registerUser);
+r.post('/login', loginUser);
+r.get('/profile', getProfile);
+r.get('/logout', getLogout);
 
-module.exports = router;
+export default r
