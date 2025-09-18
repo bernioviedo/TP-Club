@@ -38,14 +38,17 @@ const loginUser = async (e) =>{
   return (
 <div className='main-content user-forms'>
     <form onSubmit={loginUser}>
-            <label>Email</label>
-            <input type="email" placeholder='Ingrese email' value={data.email} onChange={(e) => setData({...data, email: e.target.value})}/>
-
-            <label>Contraseña</label>
-            <input type="password" placeholder='Ingrese contraseña' value={data.password} onChange={(e) => setData({...data, password: e.target.value})}/>
-
-            <button type='submit'>Iniciar sesión</button>
+      <div class="mb-3">
+            <label className='form-label' for="email">Email</label>
+            <input className='form-control' type="email" id='email' placeholder='Ingrese email' value={data.email} onChange={(e) => setData({...data, email: e.target.value})}/>
+      </div>
+      <div class="mb-3">
+            <label className='form-label' for="password">Contraseña</label>
+            <input className='form-control' type="password" id='password' placeholder='Ingrese contraseña' value={data.password} onChange={(e) => setData({...data, password: e.target.value})}/>
+      </div>
+            <button type='submit' class="btn btn-primary">Iniciar sesión</button>
     </form>
 </div>
+
   )
 }
