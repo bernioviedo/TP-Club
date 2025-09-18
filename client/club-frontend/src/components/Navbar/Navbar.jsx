@@ -35,7 +35,10 @@ export default function Navbar() {
   <header className='header'>
     <a href="/" className='logo'>Club Atlético La Gacela</a>
     <nav className='navbar'>
-      <button onClick={handleHome}>Home</button>
+      <button onClick={handleHome}>Futbol</button>
+      <button onClick={handleHome}>Socio</button>
+      <button onClick={handleHome}>Noticia</button>
+      <button onClick={handleHome}>Media</button>
     {     !user &&(
       <>
       <button onClick={handleRegister}>Register</button>

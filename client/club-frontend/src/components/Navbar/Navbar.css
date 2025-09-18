@@ -4,17 +4,18 @@
     left: 0;
     width: 100%;
     padding: 0px 10%;
-    background-color: #872816;
+    background-color: #c9af59;
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 70px;
     z-index: 100;
     overflow: visible;
+    border-bottom: none;
 }
 
 .logo{
-    color: #C4710B;
+    color: #1d1f14;
     font-size: 28px;
     font-weight: bold;
     text-decoration: none;
