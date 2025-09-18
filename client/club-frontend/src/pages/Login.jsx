@@ -4,6 +4,7 @@ import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { ContextUser } from '../../context/contextUser'
 import '../App.css'
+import '../pages/Login.css'
 
 export default function Login() {
 const navigate = useNavigate()
@@ -46,7 +47,7 @@ const loginUser = async (e) =>{
             <label className='form-label' for="password">Contraseña</label>
             <input className='form-control' type="password" id='password' placeholder='Ingrese contraseña' value={data.password} onChange={(e) => setData({...data, password: e.target.value})}/>
       </div>
-            <button type='submit' class="btn btn-primary">Iniciar sesión</button>
+            <button type='submit' class="btn logbtn">Iniciar sesión</button>
     </form>
 </div>
 
