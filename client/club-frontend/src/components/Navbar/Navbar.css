@@ -11,12 +11,37 @@
     height: 70px;
     z-index: 100;
     overflow: visible;
+    align-items: baseline;    
     border-bottom: none;
+}
+
+.spikes {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20" preserveAspectRatio="none"><polygon fill="%23c9af59" points="0,0 10,20 20,0"/><polygon fill="%23c9af59" points="20,0 30,20 40,0"/><polygon fill="%23c9af59" points="40,0 50,20 60,0"/><polygon fill="transparent" points="50,0 60,20 70,0"/><polygon fill="%23c9af59" points="60,0 70,20 80,0"/><polygon fill="transparent" points="70,0 80,20 90,0"/><polygon fill="%23c9af59" points="80,0 90,20 100,0"/></svg>') repeat-x;
+    background-size: 500px 20px;
+    z-index: 99;
+}
+
+.spikes-shadow {
+    position: fixed;
+    top: 74px;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20" preserveAspectRatio="none"><polygon fill="rgba(0,0,0,0.3)" points="0,0 10,20 20,0"/><polygon fill="rgba(0,0,0,0.3)" points="20,0 30,20 40,0"/><polygon fill="rgba(0,0,0,0.3)" points="40,0 50,20 60,0"/><polygon fill="transparent" points="50,0 60,20 70,0"/><polygon fill="rgba(0,0,0,0.3)" points="60,0 70,20 80,0"/><polygon fill="transparent" points="70,0 80,20 90,0"/><polygon fill="rgba(0,0,0,0.3)" points="80,0 90,20 100,0"/></svg>') repeat-x;
+    background-size: 500px 20px;
+    z-index: 98;
+    filter: blur(4px);
+    pointer-events: none;
 }
 
 .logo{
     color: #1d1f14;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bold;
     text-decoration: none;
     margin: 0;
@@ -24,6 +49,7 @@
     display: flex;
     align-items: center;
     height: 70px;
+    padding: 0;
 }
 
 .navbar button{

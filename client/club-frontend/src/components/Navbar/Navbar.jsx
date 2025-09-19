@@ -1,7 +1,8 @@
 import {Link, useNavigate} from 'react-router-dom'
 import './Navbar.css'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { ContextUser } from '../../../context/contextUser';
+import {motion as Motion, useScroll, useMotionValueEvent} from 'framer-motion';
 
 export default function Navbar() {
 
@@ -31,13 +32,39 @@ export default function Navbar() {
   const handleLogin = () => navigate('/login');
   const handleProfile = () => navigate('/profile');
 
+  const { scrollY } = useScroll();
+
+  const [hidden, setHidden] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious();
+    if (latest > previous && latest > 75) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+     })
+
   return (
+    <>
+    <Motion.nav className='navbar' 
+      variants={{
+        visible: { y: 0, opacity: 1 },
+        hidden: { y: -50, opacity: 0 }, 
+      }}
+      initial="visible"
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.7, ease: "easeInOut" }}
+      >
+    <div className=' spikes-shadow'></div>
+    <div className=' spikes '></div>
   <header className='header'>
+
     <a href="/" className='logo'>Club Atlético La Gacela</a>
-    <nav className='navbar'>
+
       <button onClick={handleHome}>Futbol</button>
-      <button onClick={handleHome}>Socio</button>
-      <button onClick={handleHome}>Noticia</button>
+      <button onClick={handleHome}>Socios</button>
+      <button onClick={handleHome}>Noticias</button>
       <button onClick={handleHome}>Media</button>
     {     !user &&(
       <>
@@ -53,7 +80,8 @@ export default function Navbar() {
       </>
       )
       } 
-    </nav>
   </header>
+  </Motion.nav>
+  </>
   )
 }
