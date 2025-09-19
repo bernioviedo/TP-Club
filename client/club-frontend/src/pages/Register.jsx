@@ -2,6 +2,8 @@ import { useState } from 'react'
 import axios from 'axios'
 import {toast} from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import '../App.css'
+import '../pages/Register.css';
 
 export default function Register() {
     const navigate = useNavigate();
@@ -34,17 +36,22 @@ export default function Register() {
 
   return (
     <div className='main-content user-forms'>
-        <form onSubmit={registerUser}>
-            <label>Nombre</label>
-            <input type="text" placeholder='Ingrese nombre'  value={data.name} onChange={(e) => setData({...data, name: e.target.value})}/>
+        <form onSubmit={registerUser} className='background-register'>
+            <h2>Registrarse</h2>
+            <div className='mb-3'>
+            <label className='form-label' for="name" >Nombre</label>
+            <input  className='form-control' id="name" type="text" placeholder='Ingrese nombre'  value={data.name} onChange={(e) => setData({...data, name: e.target.value})}/>
+            </div>
+            <div className='mb-3'>
+            <label className='form-label' for="email" >Email</label>
+            <input className='form-control' type="email" id='email' placeholder='Ingrese email' value={data.email} onChange={(e) => setData({...data, email: e.target.value})}/>
+            </div>
+            <div className='mb-3'>
+            <label className='form-label' for="password">Contraseña</label>
+            <input className='form-control' type="password" id='password' placeholder='Ingrese contraseña' value={data.password} onChange={(e) => setData({...data, password: e.target.value})}/>
+            </div>
+            <button type='submit' class="btn logbtn">Siguiente</button>
 
-            <label>Email</label>
-            <input type="email" placeholder='Ingrese email' value={data.email} onChange={(e) => setData({...data, email: e.target.value})}/>
-
-            <label>Contraseña</label>
-            <input type="password" placeholder='Ingrese contraseña' value={data.password} onChange={(e) => setData({...data, password: e.target.value})}/>
-
-            <button type='submit'>Registrarse</button>
         </form>
     </div>
   )

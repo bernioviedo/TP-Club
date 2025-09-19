@@ -58,7 +58,7 @@ export default function Navbar() {
       >
     <div className=' spikes-shadow'></div>
     <div className=' spikes '></div>
-  <header className='header'>
+    <header className='header'>
 
        <div className='left-section'>
       <div className='escudo'>
