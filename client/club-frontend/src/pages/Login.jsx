@@ -38,7 +38,8 @@ const loginUser = async (e) =>{
 
   return (
 <div className='main-content user-forms'>
-    <form onSubmit={loginUser}>
+    <form onSubmit={loginUser} className='background-login'>
+    <h2>Inicie sesión</h2>
       <div class="mb-3">
             <label className='form-label' for="email">Email</label>
             <input className='form-control' type="email" id='email' placeholder='Ingrese email' value={data.email} onChange={(e) => setData({...data, email: e.target.value})}/>
@@ -47,7 +48,7 @@ const loginUser = async (e) =>{
             <label className='form-label' for="password">Contraseña</label>
             <input className='form-control' type="password" id='password' placeholder='Ingrese contraseña' value={data.password} onChange={(e) => setData({...data, password: e.target.value})}/>
       </div>
-            <button type='submit' class="btn logbtn">Iniciar sesión</button>
+            <button type='submit' class="btn logbtn">Siguiente</button>
     </form>
 </div>
 
