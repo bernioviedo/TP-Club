@@ -37,11 +37,38 @@
     z-index: 98;
     filter: blur(4px);
     pointer-events: none;
+ }
+ 
+/* Nuevo: contenedor para escudo y logo */
+.left-section {
+    display: flex;
+    align-items: center;
+    height: 70px;
+}
+
+.escudo {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-right: 0px; /* Espacio entre escudo y logo */
+     margin-top: 50px;
+}
+
+.escudo img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.escudo img:hover {
+    transform: scale(1.2);
 }
 
 .logo{
     color: #1d1f14;
-    font-size: 24px;
+    font-size: 25px;
     font-weight: bold;
     text-decoration: none;
     margin: 0;
@@ -69,7 +96,6 @@
     z-index: 101;
     overflow: visible;
 }
-
 
 .navbar button::before{
     content: '';
