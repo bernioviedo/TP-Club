@@ -33,7 +33,15 @@ export default function Navbar() {
 
   return (
   <header className='header'>
-    <a href="/" className='logo'>Club Atlético La Gacela</a>
+       <div className='left-section'>
+      <div className='escudo'>
+        <a href="#" className="Escudo">
+          <img src="../src/assets/LaGacelaFC.png" alt="La Gacela FC" />
+        </a>
+      </div>
+      <a href="/" className='logo'>Club Atlético La Gacela</a>
+    </div>
+   
     <nav className='navbar'>
       <button onClick={handleHome}>Futbol</button>
       <button onClick={handleHome}>Socio</button>
