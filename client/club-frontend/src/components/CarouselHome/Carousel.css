@@ -1,0 +1,35 @@
+.carousel{
+    height: 40rem;
+}
+
+
+.carousel-inner{
+    
+    height: 40rem;
+}
+.carousel-item{
+    
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 40rem;
+}
+.ci1{
+    background-image: url("../src/assets/LaGacelaFC.png");
+}
+
+.ci2{
+    background-image: url("../../assets/fulbitoysol.jpg");
+}
+
+.ci3{
+    background-image: url('../../assets/masfulbito.jpg');
+}
+.carousel-text{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    position:static;
+    flex-wrap: wrap;
+    width: 100%;
+}
