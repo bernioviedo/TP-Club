@@ -31,6 +31,7 @@ export default function Navbar() {
   const handleRegister = () => navigate('/register');
   const handleLogin = () => navigate('/login');
   const handleProfile = () => navigate('/profile');
+  const handleMedia = () => navigate('/media');
 
   const { scrollY } = useScroll();
 
@@ -71,7 +72,7 @@ export default function Navbar() {
       <button onClick={handleHome}>Futbol</button>
       <button onClick={handleHome}>Socios</button>
       <button onClick={handleHome}>Noticias</button>
-      <button onClick={handleHome}>Media</button>
+      <button onClick={handleMedia}>Media</button>
     {     !user &&(
       <>
       <button onClick={handleRegister}>Register</button>
