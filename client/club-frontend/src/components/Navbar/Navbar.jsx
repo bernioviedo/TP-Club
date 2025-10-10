@@ -1,12 +1,13 @@
-import {Link, useNavigate} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './Navbar.css'
 import { useContext, useState } from 'react'
 import { ContextUser } from '../../../context/contextUser';
 import {motion as Motion, useScroll, useMotionValueEvent} from 'framer-motion';
+import { TfiMenu } from 'react-icons'
 
 export default function Navbar() {
 
-  const navigate = useNavigate();
+  
   const { user, setUser } = useContext(ContextUser);
   // manejo logout
   const handleLogout = async () => {
@@ -26,12 +27,6 @@ export default function Navbar() {
     }
   };
 
-  //navegación
-  const handleHome = () => navigate('/');
-  const handleRegister = () => navigate('/register');
-  const handleLogin = () => navigate('/login');
-  const handleProfile = () => navigate('/profile');
-
   const { scrollY } = useScroll();
 
   const [hidden, setHidden] = useState(false);
@@ -47,7 +42,7 @@ export default function Navbar() {
 
   return (
     <>
-    <Motion.nav className='navbar' 
+    <Motion.header className='site-header' 
       variants={{
         visible: { y: 0, opacity: 1 },
         hidden: { y: -50, opacity: 0 }, 
@@ -58,36 +53,39 @@ export default function Navbar() {
       >
     <div className=' spikes-shadow'></div>
     <div className=' spikes '></div>
-    <header className='header'>
+    <nav className='navbar'>
 
-       <div className='left-section'>
-      <div className='escudo'>
-        <a href="#" className="Escudo">
-          <img src="../src/assets/LaGacelaFC.png" alt="La Gacela FC" />
-        </a>
-      </div>
-      <a href="/" className='logo'>Club Atlético La Gacela</a>
+    <div className='navbar__logo-section'>
+      <Link to="/" className='navbar__logo-lin'>
+        <img 
+          src="../src/assets/LaGacelaFC.png" 
+          alt="La Gacela FC"
+          className='navbar__escudo' />
+      </Link>
+      <Link to="/" className='navbar__site-title'>Club Atlético La Gacela</Link>
     </div>
-      <button onClick={handleHome}>Futbol</button>
-      <button onClick={handleHome}>Socios</button>
-      <button onClick={handleHome}>Noticias</button>
-      <button onClick={handleHome}>Media</button>
-    {     !user &&(
+    <ul className='navbar__menu'>
+      <li><Link to="/">Fútbol</Link></li>
+      <li><Link to="/">Socios</Link></li>
+      <li><Link to="/">Noticias</Link></li>
+      <li><Link to="/">Media</Link></li>
+    </ul>
+    <ul className='navbar__auth-menu'>
+      {     !user ? (
       <>
-      <button onClick={handleRegister}>Register</button>
-      <button onClick={handleLogin}>Login</button>
+      <li><Link to="/register">Register</Link></li>
+      <li><Link to="/login">Login</Link></li>
       </>
-      )
-      }      
-    {    user &&(   
-      <>  
-      <button onClick={handleProfile}>Profile</button>
-      <button onClick={handleLogout}>Logout</button>
+      ): ( 
+      <>
+      <li><Link to="/profile">Profile</Link></li>
+      <li><button onClick={handleLogout}>Logout</button></li>
       </>
-      )
-      } 
-  </header>
-  </Motion.nav>
+    )} 
+    </ul>
+      
+  </nav>
+  </Motion.header>
   </>
   )
 }
