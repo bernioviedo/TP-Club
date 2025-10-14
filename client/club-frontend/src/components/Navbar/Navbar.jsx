@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom'
 import './Navbar.css'
 import { useContext, useState } from 'react'
-import { ContextUser } from '../../../context/contextUser';
-import {motion as Motion, useScroll, useMotionValueEvent} from 'framer-motion';
-import { TfiMenu } from 'react-icons'
+import { ContextUser } from '../../../context/contextUser'
+import {motion as Motion, useScroll, useMotionValueEvent} from 'framer-motion'
+import options from '../../utilities/navOptions.js'
+import { TfiMenu } from 'react-icons/tfi'
+import  Mobile  from '../../utilities/breakPoints.js'
+import MediaQuery from 'react-responsive'
 
 export default function Navbar() {
-
-  
   const { user, setUser } = useContext(ContextUser);
   // manejo logout
   const handleLogout = async () => {
@@ -53,7 +54,7 @@ export default function Navbar() {
       >
     <div className=' spikes-shadow'></div>
     <div className=' spikes '></div>
-    <nav className='navbar'>
+    
 
     <div className='navbar__logo-section'>
       <Link to="/" className='navbar__logo-lin'>
@@ -62,13 +63,19 @@ export default function Navbar() {
           alt="La Gacela FC"
           className='navbar__escudo' />
       </Link>
-      <Link to="/" className='navbar__site-title'>Club Atlético La Gacela</Link>
+      <Link to="/" className='navbar__site-title' id='navbar__site-title'>Club Atlético La Gacela</Link>
     </div>
+    <MediaQuery maxWidth={768}>
+      <button className='menu-btn'><TfiMenu></TfiMenu></button>
+    </MediaQuery>
+    <nav className='navbar'>
     <ul className='navbar__menu'>
-      <li><Link to="/">Fútbol</Link></li>
-      <li><Link to="/">Socios</Link></li>
-      <li><Link to="/">Noticias</Link></li>
-      <li><Link to="/">Media</Link></li>
+      {options.map(opt  => {
+        const { title, linkTo } = opt
+        return(
+          <li><Link to={linkTo}>{title}</Link></li>
+        )
+      })}
     </ul>
     <ul className='navbar__auth-menu'>
       {     !user ? (

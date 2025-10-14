@@ -2,7 +2,7 @@
     --color-primary: #c9af59; /* Color de fondo principal */
     --color-secondary: #1d1f14; /* Color del texto del logo */
     --color-white: #ffffff;
-    --navbar-height: 70px;
+    --navbar-height: 100px;
     --padding-site: 10%;
 }
 
@@ -11,24 +11,37 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 70px;
+    min-width: 0;
+    flex-shrink: 1;
+    overflow: auto;
+    height: 100px;
     z-index: 100;
     overflow: visible;
     align-items: baseline;    
     border-bottom: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #c9af59;
 }
 
 .navbar{
     position: relative;
     width: 100%;
-    padding: 0px 10%;
+    /* padding: 0px 10%; */
     height: var(--navbar-height);
     background-color: #c9af59;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     box-sizing: border-box;
     z-index: 101;
+}
+@media screen and (max-width:768px) {
+    .navbar{
+        display: none;
+    }
 }
 
 .navbar__logo-section{
@@ -37,30 +50,65 @@
     height: var(--navbar-height);
     position: relative;
     z-index: 102;
+    background-color: #c9af59;
+    padding-left: 50px;
+}
+
+@media screen and (max-width:520px) {
+    .navbar__logo-section{
+        padding-right: 1rem;
+    }
 }
 
 .navbar__escudo{
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     object-fit: cover;
     transition: transform 0.3s ease;
     margin-right: 20px;
   /* Ajuste de posición (si el diseño lo requiere, sino eliminar) */
-    margin-top: 50px;
+    /* margin-top: 50px; */
 }
 
-.navbar__escudo  :hover{
+/* @media screen and (max-width:520px) {
+    .navbar__escudo{
+        transition: none;
+        width: 60px;
+        height: 60px;
+        margin-top: 10px;
+    }
+} */
+
+.navbar__escudo  img:hover{
     transform: scale(1.2);
+    
 }
 
 .navbar__site-title {
     color: var(--color-secondary);
-    font-size: 25px;
+    font-size: 10vh;
     font-weight: bold;
     text-decoration: none;
+    
   /* El line-height y height de 70px ya no son necesarios gracias a Flexbox en .navbar */
+    
 }
+
+@media screen and (max-width: 1024px){
+    .navbar__site-title {
+        font-size: 9vh;
+    }
+}
+
+@media screen and (max-width: 520px){
+    .navbar__site-title {
+        font-size: 8vh;
+    }
+}
+
+
+
 
 .navbar__menu,
 .navbar__auth-menu {
@@ -74,6 +122,13 @@
 .navbar__menu li,
 .navbar__auth-menu li {
     margin-left: 40px;
+}
+
+@media screen and (max-width:1024px) {
+    .navbar__menu li,
+    .navbar__auth-menu li {
+        margin-left: 20px;
+}
 }
 
 .navbar__menu a,
@@ -90,6 +145,14 @@
     line-height: var(--navbar-height); /* Hereda la altura de la barra */
     display: flex;
     align-items: center;
+}
+
+@media screen and (max-width:1024px) {
+    .navbar__menu a,
+    .navbar__auth-menu .button,
+    .navbar__auth-menu a {
+        font-size: 6vh;
+    }
 }
 
 .navbar__menu a::before,
@@ -132,6 +195,12 @@
     z-index: 98;
     filter: blur(4px);
     pointer-events: none;
+}
+
+.menu-btn{
+    background: none;
+    border: none;
+    background-color: #c9af59;
 }
 
 /* Nuevo: contenedor para escudo y logo

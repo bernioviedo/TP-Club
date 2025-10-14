@@ -1,6 +1,7 @@
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar/Navbar'
+import NavbarMobile from './components/NavbarMobile/NavbarMobile.jsx'
 import Home from './components/Home/Home'
 import Register from './pages/Register'
 import Login from './pages/Login'
@@ -13,8 +14,10 @@ import Footer from './components/Footer/Footer'
 
 
 
+
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
+
 
 function App() {
   return (
