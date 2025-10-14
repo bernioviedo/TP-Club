@@ -8,6 +8,8 @@ export default function Navbar() {
 
   const navigate = useNavigate();
   const { user, setUser } = useContext(ContextUser);
+
+  console.log('Navbar user:', user);
   // manejo logout
   const handleLogout = async () => {
     try {
@@ -32,6 +34,7 @@ export default function Navbar() {
   const handleLogin = () => navigate('/login');
   const handleProfile = () => navigate('/profile');
   const handleMedia = () => navigate('/media');
+  const handleModify = () => navigate('/admin');
 
   const { scrollY } = useScroll();
 
@@ -79,14 +82,15 @@ export default function Navbar() {
       <button onClick={handleLogin}>Login</button>
       </>
       )
-      }      
+    }      
     {    user &&(   
       <>  
       <button onClick={handleProfile}>Profile</button>
+      {user.userType === 'admin' && <button onClick={handleModify}>Modificar</button>}
       <button onClick={handleLogout}>Logout</button>
       </>
       )
-      } 
+    }
   </header>
   </Motion.nav>
   </>
