@@ -38,7 +38,8 @@ const registerUser =  async (req, res) => {
         const user = await User.create({
             name,
             email,
-            password: hashedPassword, 
+            password: hashedPassword,
+            userType: 'user', 
         });
 
         return res.json(user);
@@ -65,7 +66,8 @@ const loginUser = async (req, res) => {
                 const userData = {
                     _id: user._id,
                     name: user.name,
-                    email: user.email
+                    email: user.email,
+                    userType: user.userType,
                 };
                 res.cookie('token', token).json(userData);
             });
@@ -79,18 +81,25 @@ const loginUser = async (req, res) => {
      };
 
      //mantengo la sesión iniciada
-     const getProfile = (req, res) => {
-        const {token} = req.cookies;
-        if(token){
-            verify(token, process.env.JWT_SECRET, {}, (err, user) => {
-                if (err) throw err;
-                res.json(user);
-            });
-        }
-        else{
-            res.json(null);
-        }
-        };
+const getProfile = async (req, res) => {
+  try {
+    const { token } = req.cookies;
+    if (!token) return res.json(null);
+
+    verify(token, process.env.JWT_SECRET, {}, async (err, decoded) => {
+      if (err) return res.status(401).json(null);
+
+      // buscar usuario en la BD usando el id del token y excluir la contraseña
+      const user = await User.findById(decoded.id).select('-password');
+      if (!user) return res.json(null);
+
+      res.json(user);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
 
         // hago logout
         const getLogout = (req, res) => {
