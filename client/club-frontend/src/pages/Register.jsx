@@ -1,12 +1,14 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import axios from 'axios'
 import {toast} from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import '../App.css'
 import '../pages/Register.css';
+import { ContextUser } from '../../context/contextUser';
 
 export default function Register() {
     const navigate = useNavigate();
+    const { setUser } = useContext(ContextUser);
     const[data, setData] = useState({
         name: '',
         email:'',
@@ -17,21 +19,34 @@ export default function Register() {
         e.preventDefault();
         const {name, email, password} = data
         try {
-            const {data} = await axios.post('/register', {name, email, password})
-            if(data.error){
-                toast.error(data.error)
-            } else{
-                setData({
-                    name: '',
-                    email:'',
-                    password:'',  
-                })
-                toast.success('Registro exitoso, por favor inicie sesión')
-                navigate('/login')
+            const { data: registerRes } = await axios.post('/register', {name, email, password});
+            if(registerRes.error){
+                toast.error(registerRes.error)
+                return;
             }
-    } catch (error) {
+
+            // intento de login automático después del registro
+            try {
+              const { data: loginRes } = await axios.post('/login', { email, password });
+              if (loginRes.error) {
+                toast.success('Registro exitoso, por favor inicie sesión');
+                navigate('/login');
+                return;
+              }
+              const userObj = loginRes.user ?? loginRes;
+              setUser(userObj); 
+              setData({ name: '', email:'', password:'' });
+              toast.success('Registro e inicio de sesión exitosos');
+              navigate('/');
+            } catch (loginError) {
+              console.log('Auto-login failed', loginError);
+              toast.success('Registro exitoso, por favor inicie sesión');
+              navigate('/login');
+            }
+        } catch (error) {
             console.log(error)
-    };
+            toast.error('Error en el registro')
+        };
     };
 
   return (
@@ -39,18 +54,18 @@ export default function Register() {
         <form onSubmit={registerUser} className='background-register'>
             <h2>Registrarse</h2>
             <div className='mb-3'>
-            <label className='form-label' for="name" >Nombre</label>
+            <label className='form-label' htmlFor="name" >Nombre</label>
             <input  className='form-control' id="name" type="text" placeholder='Ingrese nombre'  value={data.name} onChange={(e) => setData({...data, name: e.target.value})}/>
             </div>
             <div className='mb-3'>
-            <label className='form-label' for="email" >Email</label>
+            <label className='form-label' htmlFor="email" >Email</label>
             <input className='form-control' type="email" id='email' placeholder='Ingrese email' value={data.email} onChange={(e) => setData({...data, email: e.target.value})}/>
             </div>
             <div className='mb-3'>
-            <label className='form-label' for="password">Contraseña</label>
+            <label className='form-label' htmlFor="password">Contraseña</label>
             <input className='form-control' type="password" id='password' placeholder='Ingrese contraseña' value={data.password} onChange={(e) => setData({...data, password: e.target.value})}/>
             </div>
-            <button type='submit' class="btn logbtn">Siguiente</button>
+            <button type='submit' className="btn logbtn">Siguiente</button>
 
         </form>
     </div>

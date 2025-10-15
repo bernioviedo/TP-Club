@@ -10,6 +10,7 @@ import { Toaster } from 'react-hot-toast';
 import { UserContextProvider } from '../context/ContextUserProvider'
 import Profile from './pages/Profile';
 import Footer from './components/Footer/Footer'
+import Media from './pages/Media' 
 
 
 
@@ -29,6 +30,7 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
         <Route path='/profile' element={<Profile />} />
+        <Route path='/media' element={<Media />} />
       </Routes>
       <Footer />
     </UserContextProvider>

@@ -10,6 +10,8 @@ import MediaQuery from 'react-responsive'
 
 export default function Navbar() {
   const { user, setUser } = useContext(ContextUser);
+
+  console.log('Navbar user:', user);
   // manejo logout
   const handleLogout = async () => {
     try {
