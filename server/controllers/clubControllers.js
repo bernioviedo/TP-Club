@@ -101,17 +101,59 @@ const getProfile = async (req, res) => {
   }
 };
 
-        // hago logout
-        const getLogout = (req, res) => {
-            res.clearCookie('token').json({ 
-                success: true, 
-                message: 'Logout exitoso' 
-            });
-        };
+// hago logout
+const getLogout = (req, res) => {
+    res.clearCookie('token').json({ 
+        success: true, 
+        message: 'Logout exitoso' 
+    });
+};
+
+//hago fetch de users
+const fetchUsers = async (req, res) => {
+    try {
+        const users = await User.find().select('-password');
+        res.json(users);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+//hago delete de user
+const deleteUser = async (req, res) => {
+    try {
+        await User.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Usuario eliminado' });
+        } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+//hago edit de user
+const editUser = async (req, res) => {
+    try {
+        const { name, userType } = req.body; 
+        const updatedUser = await User.findByIdAndUpdate(
+            req.params.id,
+            { name, userType },
+            { new: true }
+        ).select('-password'); 
+        res.json(updatedUser);
+    }
+        catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
 export { 
     test,
     registerUser,
     loginUser,
     getProfile,
     getLogout,
+    fetchUsers,
+    deleteUser,
+    editUser,
 }
