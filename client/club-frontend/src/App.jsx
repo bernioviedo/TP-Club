@@ -10,6 +10,8 @@ import { UserContextProvider } from '../context/ContextUserProvider'
 import Profile from './pages/Profile';
 import Footer from './components/Footer/Footer'
 import Media from './pages/Media' 
+import SuperAdmin from './pages/SuperAdmin'
+import AdminRoute from './components/AdminRoute/AdminRoute';
 
 
 
@@ -28,6 +30,11 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/media' element={<Media />} />
+        <Route path='/superadmin' element={
+          <AdminRoute>
+            <SuperAdmin />
+          </AdminRoute>
+        } />
       </Routes>
       <Footer />
     </UserContextProvider>

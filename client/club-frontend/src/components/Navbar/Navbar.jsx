@@ -34,7 +34,7 @@ export default function Navbar() {
   const handleLogin = () => navigate('/login');
   const handleProfile = () => navigate('/profile');
   const handleMedia = () => navigate('/media');
-  const handleModify = () => navigate('/admin');
+  const handleSuperAdmin = () => navigate('/superadmin');
 
   const { scrollY } = useScroll();
 
@@ -72,10 +72,15 @@ export default function Navbar() {
       </div>
       <a href="/" className='logo'>Club Atlético La Gacela</a>
     </div>
+    { (!user || user.userType === 'user' || user.userType === 'admin') &&(
+      <>
       <button onClick={handleHome}>Futbol</button>
       <button onClick={handleHome}>Socios</button>
       <button onClick={handleHome}>Noticias</button>
       <button onClick={handleMedia}>Media</button>
+      </>
+      )
+      }
     {     !user &&(
       <>
       <button onClick={handleRegister}>Register</button>
@@ -85,8 +90,8 @@ export default function Navbar() {
     }      
     {    user &&(   
       <>  
-      <button onClick={handleProfile}>Profile</button>
-      {user.userType === 'admin' && <button onClick={handleModify}>Modificar</button>}
+      {(user.userType === 'user' || user.userType === 'admin') &&<button onClick={handleProfile}>Profile</button>}
+      {user.userType === 'superadmin' && <button onClick={handleSuperAdmin}>Gestión de Administración</button>}
       <button onClick={handleLogout}>Logout</button>
       </>
       )
