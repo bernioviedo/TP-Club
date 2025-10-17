@@ -12,7 +12,8 @@ import Footer from './components/Footer/Footer'
 import Media from './pages/Media' 
 import SuperAdmin from './pages/SuperAdmin'
 import AdminRoute from './components/AdminRoute/AdminRoute';
-
+import News from './pages/News';
+import UsersRoute from './components/UsersRoute/UsersRoute'
 
 
 
@@ -26,8 +27,16 @@ function App() {
       <Navbar position='top' />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={
+          <UsersRoute>
+          <Register />
+          </UsersRoute>
+        } />
+        <Route path='/login' element={
+          <UsersRoute>
+          <Login />
+          </UsersRoute>
+          } />
         <Route path='/profile' element={<Profile />} />
         <Route path='/media' element={<Media />} />
         <Route path='/superadmin' element={
@@ -35,7 +44,8 @@ function App() {
             <SuperAdmin />
           </AdminRoute>
         } />
-      </Routes>
+        <Route path='/news' element={<News />} />
+    </Routes>
       <Footer />
     </UserContextProvider>
   )

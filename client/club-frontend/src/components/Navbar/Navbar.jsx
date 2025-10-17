@@ -35,6 +35,7 @@ export default function Navbar() {
   const handleProfile = () => navigate('/profile');
   const handleMedia = () => navigate('/media');
   const handleSuperAdmin = () => navigate('/superadmin');
+  const handleNews = () => navigate('/news');
 
   const { scrollY } = useScroll();
 
@@ -76,7 +77,7 @@ export default function Navbar() {
       <>
       <button onClick={handleHome}>Futbol</button>
       <button onClick={handleHome}>Socios</button>
-      <button onClick={handleHome}>Noticias</button>
+      <button onClick={handleNews}>Noticias</button>
       <button onClick={handleMedia}>Media</button>
       </>
       )

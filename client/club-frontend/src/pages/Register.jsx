@@ -25,7 +25,7 @@ export default function Register() {
                 return;
             }
 
-            // intento de login automático después del registro
+            // login automático después del registro
             try {
               const { data: loginRes } = await axios.post('/login', { email, password });
               if (loginRes.error) {

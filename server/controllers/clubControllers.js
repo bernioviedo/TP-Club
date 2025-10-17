@@ -1,6 +1,8 @@
 import User from '../models/users.js';
 import { hashPassword, comparePassword } from '../helpers/auth.js';
-import pkg from 'jsonwebtoken'
+import pkg from 'jsonwebtoken';
+import News from '../models/news.js';
+
 const { sign, verify } = pkg
 
 const test = (req, res) => {
@@ -147,6 +149,33 @@ const editUser = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
+
+//NOTICIAS
+//creo noticia
+const createNews = async (req, res) => {
+    try {
+        const { title, content, image, author } = req.body;
+
+        // valido datos
+        if (!title || !content || !image || !author) {
+            return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+        }
+
+        // creo noticia en la bd
+        const news = await News.create({ 
+            title,
+            content,
+            image,
+            author
+        });
+        res.status(201).json(news);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+
 export { 
     test,
     registerUser,
@@ -156,4 +185,5 @@ export {
     fetchUsers,
     deleteUser,
     editUser,
+    createNews,
 }
