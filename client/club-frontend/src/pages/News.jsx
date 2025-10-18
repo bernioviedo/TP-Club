@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { ContextUser } from '../../context/contextUser';
 import axios from 'axios';
 import {toast} from 'react-hot-toast';
@@ -9,6 +9,9 @@ import '../App.css';
 export default function News() {
 
     const { user } = useContext(ContextUser);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [news, setNews] = useState([]);
 
     const[data, setData] = useState({
         title: '',
@@ -34,6 +37,28 @@ export default function News() {
         };
     };
 
+  //fetch news
+  useEffect(() => {
+    const fetchNews = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const { data } = await axios.get('http://localhost:8000/news', { withCredentials: true });
+        console.log('news response:', data);
+        const newsArray = Array.isArray(data) ? data : (data?.news ?? []);
+        setNews(newsArray);
+      } catch (err) {
+        console.error(err);
+        setError(err.message || 'Error');
+        toast.error('Error al cargar las noticias');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchNews();
+  }, []);
+
+
   return (
     <div>
     { user?.userType === 'admin' ? (
@@ -57,6 +82,23 @@ export default function News() {
 
       )
       }
+      <div className='news-list'>
+                {loading ? (
+          <p>Cargando noticias...</p>
+        ) : error ? ( 
+          <p>Error cargando noticias: {error}</p>
+        ) : ( 
+          <ul>
+            {news.map((news) => (
+              <li key={news._id}>
+                <h3>{news.title}</h3>
+                {news.image && <img src={news.image} alt={news.title} />}
+                <p>{news.content}</p>
+              </li>
+            ))}
+          </ul>
+        ) }
+      </div>
     </div>
   )
 }

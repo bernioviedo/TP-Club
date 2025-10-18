@@ -198,6 +198,17 @@ const createNews = async (req, res) => {
     }
 };
 
+//hago fetch de noticias
+const fetchNews = async (req, res) => {
+    try {
+        const news = await News.find();
+        res.json(news);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
 
 export { 
     test,
@@ -209,4 +220,5 @@ export {
     deleteUser,
     editUser,
     createNews,
-}
+    fetchNews,
+};
