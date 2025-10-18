@@ -154,21 +154,44 @@ const editUser = async (req, res) => {
 //creo noticia
 const createNews = async (req, res) => {
     try {
-        const { title, content, image, author } = req.body;
+        const { title, content, image } = req.body;
 
         // valido datos
-        if (!title || !content || !image || !author) {
+        if (!title || !content || !image ) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
+    // obtener token desde cookies y verificar
+    const token = req.cookies?.token;
+    if (!token) return res.status(401).json({ error: 'No autorizado' });
+
+    // verifico token
+    verify(token, process.env.JWT_SECRET, {}, async (err, decoded) => {
+        if (err) return res.status(401).json({ error: 'Token inválido' });
+
+    // obtengo user para comprobar rol
+    const authorUser = await User.findById(decoded.id).select('userType');
+    if (!authorUser) return res.status(401).json({ error: 'Usuario no encontrado' });
+
+    // chequeo que sea admin
+    if (authorUser.userType !== 'admin') {
+        return res.status(403).json({ error: 'Acceso denegado: solo administradores' });
+    }
+    try {
         // creo noticia en la bd
         const news = await News.create({ 
             title,
             content,
             image,
-            author
+            author:decoded.id,
+            createdAt: new Date(),    
         });
-        res.status(201).json(news);
+        return res.status(201).json(news);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error al crear la noticia' });
+    }
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Server error' });
