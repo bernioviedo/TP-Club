@@ -13,7 +13,8 @@ import Media from './pages/Media'
 import SuperAdmin from './pages/SuperAdmin'
 import AdminRoute from './components/AdminRoute/AdminRoute';
 import News from './pages/News';
-import UsersRoute from './components/UsersRoute/UsersRoute'
+import UsersRoute from './components/UsersRoute/UsersRoute';
+import NewsView from './pages/NewsView';
 
 
 
@@ -45,6 +46,7 @@ function App() {
           </AdminRoute>
         } />
         <Route path='/news' element={<News />} />
+        <Route path='/news/:id' element={<NewsView />} />
     </Routes>
       <Footer />
     </UserContextProvider>

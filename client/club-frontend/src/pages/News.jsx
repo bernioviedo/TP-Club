@@ -31,6 +31,7 @@ export default function News() {
             }
             toast.success('Noticia creada con éxito');
             setData({ title: '', content:'', image:'' });
+            fetchNews();
         } catch (error) {
             console.log(error)
             toast.error('Error al crear la noticia')
@@ -38,23 +39,24 @@ export default function News() {
     };
 
   //fetch news
-  useEffect(() => {
+
     const fetchNews = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const { data } = await axios.get('http://localhost:8000/news', { withCredentials: true });
-        console.log('news response:', data);
-        const newsArray = Array.isArray(data) ? data : (data?.news ?? []);
-        setNews(newsArray);
-      } catch (err) {
-        console.error(err);
-        setError(err.message || 'Error');
-        toast.error('Error al cargar las noticias');
-      } finally {
-        setLoading(false);
-      }
-    };
+    setLoading(true);
+    setError(null);
+    try {
+      const { data } = await axios.get('/news', { withCredentials: true });
+      const newsArray = Array.isArray(data) ? data : (data?.news ?? []);
+      setNews(newsArray);
+    } catch (err) {
+      console.error(err);
+      setError(err.message || 'Error');
+      toast.error('Error al cargar las noticias');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchNews();
   }, []);
 
@@ -89,11 +91,15 @@ export default function News() {
           <p>Error cargando noticias: {error}</p>
         ) : ( 
           <ul>
-            {news.map((news) => (
-              <li key={news._id}>
-                <h3>{news.title}</h3>
-                {news.image && <img src={news.image} alt={news.title} />}
-                <p>{news.content}</p>
+            {news.map((item) => (
+              <li key={item._id}>
+                <div className="card" style={{ width: '18rem' }}>
+                  {item.image && <img src={item.image} alt={item.title} className='card-img-top' />}
+                  <div className="card-body">
+                    <h5 className='card-title'>{item.title}</h5>
+                    <a href={`/news/${item._id}`} className="btn btn-primary">Leer Noticia</a>
+                  </div>
+                </div>
               </li>
             ))}
           </ul>

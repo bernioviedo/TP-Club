@@ -209,6 +209,17 @@ const fetchNews = async (req, res) => {
     }
 };
 
+//hago fetch de noticia por id
+const fetchOneNew = async (req, res) => {
+    try {
+        const news = await News.findById(req.params.id);
+        res.json(news);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
 
 export { 
     test,
@@ -221,4 +232,5 @@ export {
     editUser,
     createNews,
     fetchNews,
+    fetchOneNew,
 };
