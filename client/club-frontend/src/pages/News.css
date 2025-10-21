@@ -17,3 +17,39 @@
   cursor: pointer;
   border-radius: 8px;
 }
+
+.newsbtn:hover {
+  background-color: #d5c46c; 
+  color: #fff;
+}
+
+.news-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.news-page {
+  padding: 30px;
+  font-family: Arial, sans-serif;
+}
+
+.news-list {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.news-list ul {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.news-list li {
+  margin: 0 0 20px 0;
+}

@@ -81,16 +81,16 @@ export default function News() {
 
 
   return (
-    <div>
+    <div className='news-page'>
     { user?.userType === 'admin' ? (
         <>
         <div className='user-forms'>
       <form onSubmit={submitNews}>
         <h2>Noticias</h2>
-        <div className='news-form'>
-        <input type="text" name='title' placeholder="Título" value={textData.title} onChange={handleTextChange} />
-        <textarea placeholder="Contenido" name='content' value={textData.content} onChange={handleTextChange} />
-        <input type="file" onChange={handleFileChange} />
+        <div className='news-form form-group'>
+        <input className='form-control' type="text" name='title' placeholder="Título" value={textData.title} onChange={handleTextChange} />
+        <textarea className='form-control' placeholder="Contenido" name='content' value={textData.content} onChange={handleTextChange} rows={8} />
+        <input type="file" className='form-control-file' onChange={handleFileChange} />
         <button type="submit" className='newsbtn'>Crear noticia</button>
         </div>
       </form>
@@ -116,7 +116,7 @@ export default function News() {
                   {item.image && <img src={item.image} alt={item.title} className='card-img-top' />}
                   <div className="card-body">
                     <h5 className='card-title'>{item.title}</h5>
-                    <a href={`/news/${item._id}`} className="btn btn-primary">Leer Noticia</a>
+                    <a href={`/news/${item._id}`} className="newsbtn btn btn-primary">Leer Noticia</a>
                   </div>
                 </div>
               </li>
