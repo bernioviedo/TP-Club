@@ -1,12 +1,25 @@
+import { useState}  from "react";
 import { TfiMenu, TfiClose  } from "react-icons/tfi";
-import options from '../../utilities/navOptions.js'
+import './NavbarMobile.css'
+import Navbar from "../Navbar/Navbar.jsx";
+
 
 export default function NavbarMobile() {
+
+    const [display, setDisplay] = useState(false)
+    
+    const handleClick = () => setDisplay(!display)
+
+    
     return(
+        
         <>
-            <button className="sideButtonMenu">
+            <button className={display ? 'burguer-f' : "burguer"} onClick={handleClick}>
                 <TfiMenu></TfiMenu>
             </button>
+            <Navbar navStyle={display ? "nb-mob" : 'nb-mob-f'} ulStyle={'navbar__menu-mob'}>
+                <button onClick={handleClick} className="close-btn"><TfiClose></TfiClose></button>
+            </Navbar>
         </>
     )
 }

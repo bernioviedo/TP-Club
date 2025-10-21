@@ -16,7 +16,7 @@ const routes = [
     
     {
         title: 'Media',
-        linkTo: '/'
+        linkTo: '/media'
     }
 ]
 
