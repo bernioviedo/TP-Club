@@ -2,8 +2,31 @@ import User from '../models/users.js';
 import { hashPassword, comparePassword } from '../helpers/auth.js';
 import pkg from 'jsonwebtoken';
 import News from '../models/news.js';
+import { v2 as cloudinary } from 'cloudinary';
+import multer from 'multer';
 
 const { sign, verify } = pkg
+
+// DEBUG: comprobar que las env de Cloudinary están cargadas
+if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+  console.error('Cloudinary env missing:',
+    {
+      CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+      CLOUDINARY_API_KEY: !!process.env.CLOUDINARY_API_KEY,
+      CLOUDINARY_API_SECRET: !!process.env.CLOUDINARY_API_SECRET
+    }
+  );
+}
+
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET 
+});
+
+//configuracion de multer (para manejo de archivos)
+const storage = multer.memoryStorage();
+export const upload = multer({ storage: storage });
 
 const test = (req, res) => {
     res.json({ message: 'Test is working' });
@@ -154,10 +177,12 @@ const editUser = async (req, res) => {
 //creo noticia
 const createNews = async (req, res) => {
     try {
-        const { title, content, image } = req.body;
+        const { title, content } = req.body;
+
+        const file = req.file;
 
         // valido datos
-        if (!title || !content || !image ) {
+        if (!title || !content || !file ) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
@@ -178,18 +203,35 @@ const createNews = async (req, res) => {
         return res.status(403).json({ error: 'Acceso denegado: solo administradores' });
     }
     try {
+        // para subir a cloudinary
+        const uploadToCloudinary = () => new Promise((resolve, reject) => {
+                    const stream = cloudinary.uploader.upload_stream(
+                        { folder: "noticias_club" }, 
+                        (error, result) => {
+                            if (result) {
+                                resolve(result);
+                            } else {
+                                reject(error);
+                            }
+                        }
+                    );
+                stream.end(file.buffer);
+                });
+
+                const uploadResult = await uploadToCloudinary();
         // creo noticia en la bd
         const news = await News.create({ 
             title,
             content,
-            image,
+            image: uploadResult.secure_url,
+            imagePublicId: uploadResult.public_id,
             author:decoded.id,
             createdAt: new Date(),    
         });
         return res.status(201).json(news);
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ error: 'Error al crear la noticia' });
+        console.log("Error subiendo a Cloudinary o creando noticia:", error);
+        return res.status(500).json({ error: 'Error al subir la imagen o crear la noticia' });
     }
         });
     } catch (error) {
@@ -230,7 +272,7 @@ export {
     fetchUsers,
     deleteUser,
     editUser,
-    createNews,
     fetchNews,
     fetchOneNew,
+    createNews,
 };

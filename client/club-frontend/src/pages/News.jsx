@@ -13,24 +13,43 @@ export default function News() {
     const [error, setError] = useState(null);
     const [news, setNews] = useState([]);
 
-    const[data, setData] = useState({
+    const[textData, setTextData] = useState({
         title: '',
         content:'',
-        image:'',
+    });
 
-    })
+    const [file, setFile] = useState(null);
+
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]); //guarda el objeto archivo
+    };
+
+    const handleTextChange = (e) => {
+        setTextData({...textData, [e.target.name]: e.target.value});
+    };
 
         const submitNews = async (e) =>{
         e.preventDefault();
-        const {title, content, image} = data
+
+        const formData = new FormData();
+        formData.append('title', textData.title);
+        formData.append('content', textData.content);
+        formData.append('image', file);
+
         try {
-            const { data: registerNews } = await axios.post('/news', {title, content, image}, { withCredentials: true });
+            const { data: registerNews } = await axios.post('/news', formData, { 
+                withCredentials: true 
+            });
+
             if(registerNews.error){
                 toast.error(registerNews.error)
                 return;
             }
             toast.success('Noticia creada con éxito');
-            setData({ title: '', content:'', image:'' });
+
+            setTextData({ title: '', content:'' });
+            setFile(null);
+            e.target.reset();
             fetchNews();
         } catch (error) {
             console.log(error)
@@ -69,9 +88,9 @@ export default function News() {
       <form onSubmit={submitNews}>
         <h2>Noticias</h2>
         <div className='news-form'>
-        <input type="text" placeholder="Título" value={data.title} onChange={(e) => setData({...data, title: e.target.value})} />
-        <textarea placeholder="Contenido" value={data.content} onChange={(e) => setData({...data, content: e.target.value})} />
-        <input type="text" placeholder="URL de la imagen" value={data.image} onChange={(e) => setData({...data, image: e.target.value})} />
+        <input type="text" name='title' placeholder="Título" value={textData.title} onChange={handleTextChange} />
+        <textarea placeholder="Contenido" name='content' value={textData.content} onChange={handleTextChange} />
+        <input type="file" onChange={handleFileChange} />
         <button type="submit" className='newsbtn'>Crear noticia</button>
         </div>
       </form>
