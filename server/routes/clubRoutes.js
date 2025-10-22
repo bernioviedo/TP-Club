@@ -26,11 +26,12 @@ r.get('/news', fetchNews);
 r.get('/news/:id', fetchOneNew);
 r.delete('/news/:id', deleteNew);
 r.get('/test', test);
-r.post('/', upload.single('imagen'), createMedia);
-r.get('/', getAllMedia);
-r.get('/:id', getOneMedia);
-r.put('/:id', upload.single('imagen'), updateMedia);
-r.delete('/:id', deleteMedia);
+// MEDIA
+r.post('/media', upload.single('imagen'), createMedia);
+r.get('/media', getAllMedia);
+r.get('/media/:id', getOneMedia);
+r.put('/media/:id', upload.single('imagen'), updateMedia);
+r.delete('/media/:id', deleteMedia);
 
 
 export default r
