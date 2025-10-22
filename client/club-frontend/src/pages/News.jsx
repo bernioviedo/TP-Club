@@ -79,6 +79,18 @@ export default function News() {
     fetchNews();
   }, []);
 
+    //delete noticia funcionalidad
+const handleDelete = async (id) => {
+    if (!window.confirm("Estas seguro de eliminar esta noticia?")) return;
+    try {
+      await axios.delete(`/news/${id}`, { withCredentials: true });
+      setNews((prevNews) => prevNews.filter((item) => item._id !== id));
+    } catch (err) {
+      alert(
+        `Error eliminando la noticia: ${err.response?.data?.error || err.message}`
+      );
+    }
+  };
 
   return (
     <div className='news-page'>
@@ -117,6 +129,7 @@ export default function News() {
                   <div className="card-body">
                     <h5 className='card-title'>{item.title}</h5>
                     <a href={`/news/${item._id}`} className="newsbtn btn btn-primary">Leer Noticia</a>
+                    {(user?.userType === 'admin') &&<button onClick={() => handleDelete(item._id)}>Eliminar</button>}
                   </div>
                 </div>
               </li>
