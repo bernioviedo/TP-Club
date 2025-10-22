@@ -40,7 +40,7 @@ export default function NewsView() {
   return (
     <div className='news-list'>
       <div className='news-item-view'>
-        <h2>{newsItem.title}</h2>
+        <h1>{newsItem.title}</h1>
         {newsItem.image && <img className='news-image-view' src={newsItem.image} alt={newsItem.title} />}
         <p className='news-content-view'>{newsItem.content}</p>
       </div>

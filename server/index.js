@@ -3,6 +3,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import clubRoutes from './routes/clubRoutes.js'
+
 const app = express();
 
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
+//rutas
 app.use('/', clubRoutes);
 
 const port = 8000;
