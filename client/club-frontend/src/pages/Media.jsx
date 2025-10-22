@@ -20,7 +20,7 @@ const Media = () => {
 
   // Cargar imágenes desde el backend
   useEffect(() => {
-    axios.get('http://localhost:8000/api/media')
+    axios.get('http://localhost:8000/media')
       .then(res => {
         setCarouselImages(res.data);
         setGalleryImages(res.data);
@@ -51,7 +51,7 @@ const Media = () => {
     formData.append('autor', 'Administrador');
 
     try {
-      const res = await axios.post('http://localhost:8000/api/media', formData, {
+      const res = await axios.post('http://localhost:8000/media', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
@@ -83,7 +83,7 @@ const Media = () => {
   // Guardar edición
   const saveEdit = async (id) => {
     try {
-      const res = await axios.put(`http://localhost:8000/api/media/${id}`, { 
+      const res = await axios.put(`http://localhost:8000/media/${id}`, { 
         titulo: editCaption,
         descripcion: editCaption 
       });
@@ -102,7 +102,7 @@ const Media = () => {
     if (!window.confirm('¿Estás seguro de eliminar esta imagen? Se eliminará de Cloudinary y la base de datos.')) return;
 
     try {
-      await axios.delete(`http://localhost:8000/api/media/${id}`);
+      await axios.delete(`http://localhost:8000/media/${id}`);
       setCarouselImages(prev => prev.filter(img => img._id !== id));
       setGalleryImages(prev => prev.filter(img => img._id !== id));
       
