@@ -2,6 +2,8 @@ import express, {Router} from 'express'
 import cors from 'cors'
 import { test, registerUser, loginUser, getProfile, getLogout, fetchUsers, deleteUser, editUser, } from '../controllers/clubControllers.js'
 import { upload, createNews, fetchNews, fetchOneNew, deleteNew } from '../controllers/newsControllers.js'
+import {createMedia, getAllMedia, getOneMedia, updateMedia, deleteMedia} from '../controllers/mediaControllers.js';
+
 
 // middleware
 const r = Router()
@@ -23,5 +25,12 @@ r.post('/news', upload.single('image'), createNews);
 r.get('/news', fetchNews);
 r.get('/news/:id', fetchOneNew);
 r.delete('/news/:id', deleteNew);
+r.get('/test', test);
+r.post('/', upload.single('imagen'), createMedia);
+r.get('/', getAllMedia);
+r.get('/:id', getOneMedia);
+r.put('/:id', upload.single('imagen'), updateMedia);
+r.delete('/:id', deleteMedia);
+
 
 export default r
