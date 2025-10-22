@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const newsSchema = new Schema({
     title: { type: String, required: true },
     content: { type: String, required: true },
+    summary: { type: String },
     image: { type: String, required: true },
     imagePublicId: { type: String },
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
