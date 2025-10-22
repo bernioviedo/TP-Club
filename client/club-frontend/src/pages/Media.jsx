@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { ChevronLeft, ChevronRight, Plus, Trash2, Edit2, Save, X } from 'lucide-react';
+import { ContextUser } from '../../context/contextUser'; // 👈 Importar el contexto
 import './Media.css';
 
+// Nota: Hemos eliminado el hook useAdminStatus y usamos useContext(ContextUser)
+
 const Media = () => {
+  // 👈 Obtener el objeto de usuario del contexto
+  const { user } = useContext(ContextUser);
+  
+  // Determinar si el usuario es administrador
+  const isAdmin = user?.userType === 'admin';
+  
   const [carouselImages, setCarouselImages] = useState([]);
   const [galleryImages, setGalleryImages] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -20,6 +29,7 @@ const Media = () => {
 
   // Cargar imágenes desde el backend
   useEffect(() => {
+    // La ruta de fetch es pública
     axios.get('http://localhost:8000/media')
       .then(res => {
         setCarouselImages(res.data);
@@ -27,16 +37,12 @@ const Media = () => {
       })
       .catch(err => {
         console.error('Error al cargar imágenes:', err);
-        if (err.response) {
-          console.error('Error del servidor:', err.response.data);
-        } else if (err.request) {
-          console.error('Sin respuesta del servidor');
-        }
       });
   }, []);
 
   // Subir nueva imagen a Cloudinary
   const handleAddImage = async (isCarousel = false) => {
+    if (!isAdmin) return; // 👈 Comprobación de seguridad
     if (!newImage || !newCaption) {
       alert('Por favor completa todos los campos');
       return;
@@ -48,11 +54,12 @@ const Media = () => {
     formData.append('imagen', newImage);
     formData.append('titulo', newCaption);
     formData.append('descripcion', newCaption);
-    formData.append('autor', 'Administrador');
-
+    formData.append('autor', user._id); // Usamos el ID del usuario del contexto
+    
     try {
       const res = await axios.post('http://localhost:8000/media', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 'Content-Type': 'multipart/form-data' },
+        withCredentials: true // 👈 Envía la cookie de autenticación
       });
 
       if (isCarousel) {
@@ -65,10 +72,10 @@ const Media = () => {
 
       setNewImage(null);
       setNewCaption('');
-      alert('Imagen subida exitosamente a Cloudinary');
+      alert('Imagen subida exitosamente');
     } catch (err) {
       console.error('Error al subir imagen:', err);
-      alert('Error al subir la imagen');
+      alert(err.response?.data?.error || 'Error al subir la imagen. Verifica tu sesión de administrador.');
     } finally {
       setIsUploading(false);
     }
@@ -76,33 +83,42 @@ const Media = () => {
 
   // Iniciar edición
   const startEdit = (id, currentCaption) => {
+    if (!isAdmin) return; // 👈 Comprobación de seguridad
     setEditingId(id);
     setEditCaption(currentCaption || '');
   };
 
   // Guardar edición
   const saveEdit = async (id) => {
+    if (!isAdmin) return; // 👈 Comprobación de seguridad
     try {
       const res = await axios.put(`http://localhost:8000/media/${id}`, { 
         titulo: editCaption,
         descripcion: editCaption 
+      }, {
+        withCredentials: true // 👈 Envía la cookie de autenticación
       });
+      
       setCarouselImages(prev => prev.map(img => (img._id === id ? res.data : img)));
       setGalleryImages(prev => prev.map(img => (img._id === id ? res.data : img)));
       setEditingId(null);
       setEditCaption('');
     } catch (err) {
       console.error('Error al editar:', err);
-      alert('Error al guardar los cambios');
+      alert(err.response?.data?.error || 'Error al guardar los cambios. Verifica tu sesión de administrador.');
     }
   };
 
   // Eliminar de Cloudinary y MongoDB
   const handleDelete = async (id) => {
+    if (!isAdmin) return; // 👈 Comprobación de seguridad
     if (!window.confirm('¿Estás seguro de eliminar esta imagen? Se eliminará de Cloudinary y la base de datos.')) return;
 
     try {
-      await axios.delete(`http://localhost:8000/media/${id}`);
+      await axios.delete(`http://localhost:8000/media/${id}`, {
+        withCredentials: true // 👈 Envía la cookie de autenticación
+      });
+      
       setCarouselImages(prev => prev.filter(img => img._id !== id));
       setGalleryImages(prev => prev.filter(img => img._id !== id));
       
@@ -111,14 +127,14 @@ const Media = () => {
         setCurrentSlide(0);
       }
       
-      alert('Imagen eliminada correctamente de Cloudinary');
+      alert('Imagen eliminada correctamente');
     } catch (err) {
       console.error('Error al eliminar:', err);
-      alert('Error al eliminar la imagen');
+      alert(err.response?.data?.error || 'Error al eliminar la imagen. Verifica tu sesión de administrador.');
     }
   };
 
-  // Navegación del carrusel
+  // Navegación del carrusel (sin cambios)
   const nextSlide = () => {
     if (isAnimating || carouselImages.length === 0) return;
     setIsAnimating(true);
@@ -146,10 +162,14 @@ const Media = () => {
   const getImageClassName = () =>
     slideDirection === 'right' ? 'carousel-slide-enter-right' : 'carousel-slide-enter-left';
 
+  // Si user es null o undefined (no ha cargado el contexto), no renderizamos
+  if (user === undefined) { 
+    return <div className="loading-state">Cargando sesión...</div>;
+  }
+  
   return (
     <div className="media-page">
       <div className="media-container">
-        
         
         <div className="media-title">
           <h1>Media La Gacela FC</h1>
@@ -160,12 +180,14 @@ const Media = () => {
         <div className="carousel">
           <div className="section-header">
             <h2>Destacados</h2>
-            <button onClick={() => setIsAddingCarousel(!isAddingCarousel)} className="btn-add">
-              <Plus size={20} /> Agregar a carrusel
-            </button>
+            {isAdmin && ( // 👈 Solo si es admin
+              <button onClick={() => setIsAddingCarousel(!isAddingCarousel)} className="btn-add">
+                <Plus size={20} /> Agregar a carrusel
+              </button>
+            )}
           </div>
 
-          {isAddingCarousel && (
+          {isAdmin && isAddingCarousel && ( // 👈 Solo si es admin
             <div className="add-image">
               <input 
                 type="file" 
@@ -225,7 +247,7 @@ const Media = () => {
                 </button>
 
                 <div className="carousel-caption">
-                  {editingId === carouselImages[currentSlide]._id ? (
+                  {isAdmin && editingId === carouselImages[currentSlide]._id ? ( // 👈 Edición solo admin
                     <div className="caption-edit">
                       <input
                         type="text"
@@ -245,25 +267,27 @@ const Media = () => {
                   ) : (
                     <>
                       <p className="caption-text">{carouselImages[currentSlide].descripcion}</p>
-                      <div className="caption-buttons">
-                        <button
-                          onClick={() =>
-                            startEdit(
-                              carouselImages[currentSlide]._id,
-                              carouselImages[currentSlide].descripcion
-                            )
-                          }
-                          className="btn-edit"
-                        >
-                          <Edit2 size={18} />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(carouselImages[currentSlide]._id)}
-                          className="btn-delete"
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                      </div>
+                      {isAdmin && ( // 👈 Botones de edición y eliminación solo admin
+                        <div className="caption-buttons">
+                          <button
+                            onClick={() =>
+                              startEdit(
+                                carouselImages[currentSlide]._id,
+                                carouselImages[currentSlide].descripcion
+                              )
+                            }
+                            className="btn-edit"
+                          >
+                            <Edit2 size={18} />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(carouselImages[currentSlide]._id)}
+                            className="btn-delete"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </div>
+                      )}
                     </>
                   )}
                 </div>
@@ -291,12 +315,14 @@ const Media = () => {
         <div className="gallery-section">
           <div className="section-header">
             <h2>Galería</h2>
-            <button onClick={() => setIsAddingGallery(!isAddingGallery)} className="btn-add">
-              <Plus size={20} /> Agregar imagen
-            </button>
+            {isAdmin && ( // 👈 Solo si es admin
+              <button onClick={() => setIsAddingGallery(!isAddingGallery)} className="btn-add">
+                <Plus size={20} /> Agregar imagen
+              </button>
+            )}
           </div>
 
-          {isAddingGallery && (
+          {isAdmin && isAddingGallery && ( // 👈 Solo si es admin
             <div className="add-image">
               <input 
                 type="file" 
@@ -339,24 +365,26 @@ const Media = () => {
                     alt={image.descripcion}
                     className="gallery-image"
                   />
-                  <div className="gallery-overlay">
-                    <button
-                      onClick={() => startEdit(image._id, image.descripcion)}
-                      className="btn-icon"
-                    >
-                      <Edit2 size={20} />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(image._id)}
-                      className="btn-icon delete"
-                    >
-                      <Trash2 size={20} />
-                    </button>
-                  </div>
+                  {isAdmin && ( // 👈 Botones de edición y eliminación solo admin
+                    <div className="gallery-overlay">
+                      <button
+                        onClick={() => startEdit(image._id, image.descripcion)}
+                        className="btn-icon"
+                      >
+                        <Edit2 size={20} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(image._id)}
+                        className="btn-icon delete"
+                      >
+                        <Trash2 size={20} />
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 <div className="gallery-caption">
-                  {editingId === image._id ? (
+                  {isAdmin && editingId === image._id ? ( // 👈 Edición en la galería solo admin
                     <div className="gallery-caption-edit">
                       <input
                         type="text"

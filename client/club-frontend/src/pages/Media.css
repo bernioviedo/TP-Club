@@ -1,495 +1,502 @@
-  /* =============================================
-   ANIMACIONES DEL CARRUSEL
-   ============================================= */
+/* =============================================
+   ANIMACIONES DEL CARRUSEL
+   ============================================= */
 
 @keyframes slideInFromRight {
-  from {
-    opacity: 0;
-    transform: translateX(100%) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
+ from {
+  opacity: 0;
+ transform: translateX(100%) scale(0.95);
+ }
+ to {
+ opacity: 1;
+  transform: translateX(0) scale(1);
+ }
 }
 
 @keyframes slideOutToLeft {
-  from {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(-100%) scale(0.95);
-  }
+ from {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+ }
+ to {
+  opacity: 0;
+  transform: translateX(-100%) scale(0.95);
+ }
 }
 
 @keyframes slideInFromLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-100%) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
+ from {
+  opacity: 0;
+  transform: translateX(-100%) scale(0.95);
+ }
+ to {
+  opacity: 1;
+ transform: translateX(0) scale(1);
+ }
 }
 
 @keyframes slideOutToRight {
-  from {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(100%) scale(0.95);
-  }
+ from {
+ opacity: 1;
+ transform: translateX(0) scale(1);
+ }
+ to {
+ opacity: 0;
+ transform: translateX(100%) scale(0.95);
+ }
 }
 
 .carousel-slide-enter-right {
-  animation: slideInFromRight 500ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+ animation: slideInFromRight 500ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .carousel-slide-enter-left {
-  animation: slideInFromLeft 500ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+ animation: slideInFromLeft 500ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .carousel-slide-exit-right {
-  animation: slideOutToRight 500ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+ animation: slideOutToRight 500ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .carousel-slide-exit-left {
-  animation: slideOutToLeft 500ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+ animation: slideOutToLeft 500ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* =============================================
-   ESTILOS EXISTENTES
-   ============================================= */
+   ESTILOS GENERALES Y MEDIA
+   ============================================= */
 
 .media-page {
-  margin-top: 100px;
-    background: linear-gradient(to bottom, #a88d4d, white);
-  min-height: 300px;
-  padding: 2rem;
-  flex: 1;
+ margin-top: 100px;
+ background: linear-gradient(to bottom, #a88d4d, white);
+ min-height: 300px;
+ padding: 2rem;
+ flex: 1;
 }
 
 .media-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+ max-width: 1200px;
+ margin: 0 auto;
+ padding: 0 1rem;
 }
 
 .media-title {
-  text-align: center;
-  margin-bottom: 3rem;
+ text-align: center;
+ margin-bottom: 3rem;
 }
 
 .media-title h1 {
-  font-size: 2.25rem;
-  font-weight: bold;
-  color: #000000;
-  margin-bottom: 0.5rem;
+ font-size: 2.25rem;
+ font-weight: bold;
+ color: #000000;
+ margin-bottom: 0.5rem;
 }
 
 .media-title p {
-  color: #000000;
+ color: #000000;
 }
 
 .carousel {
-  margin-bottom: 4rem;
+ margin-bottom: 4rem;
 }
 
 .section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ margin-bottom: 1rem;
 }
 
 .section-header h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #000000;
+ font-size: 1.5rem;
+ font-weight: bold;
+ color: #000000;
 }
 
 .btn-add {
-  background-color: #d97706;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: background-color 0.3s;
+ background-color: #d97706;
+ color: white;
+ padding: 0.5rem 1rem;
+ border-radius: 0.5rem;
+ border: none;
+ cursor: pointer;
+ display: flex;
+ align-items: center;
+ gap: 0.5rem;
+ transition: background-color 0.3s;
 }
 
 .btn-add:hover {
-  background-color: #b45309;
+ background-color: #b45309;
 }
 
 .add-image {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
+ background-color: white;
+ padding: 1rem;
+ border-radius: 0.5rem;
+ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+ margin-bottom: 1rem;
 }
 
 .add-image input {
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #fcd34d;
-  border-radius: 0.25rem;
-  margin-bottom: 0.5rem;
+ width: 100%;
+ padding: 0.5rem 0.75rem;
+ border: 1px solid #fcd34d;
+ border-radius: 0.25rem;
+ margin-bottom: 0.5rem;
 }
 
 .form-buttons {
-  display: flex;
-  gap: 0.5rem;
+ display: flex;
+ gap: 0.5rem;
 }
 
 .btn-save {
-  background-color: #16a34a;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: background-color 0.3s;
+ background-color: #16a34a;
+ color: white;
+ padding: 0.5rem 1rem;
+ border-radius: 0.25rem;
+ border: none;
+ cursor: pointer;
+ display: flex;
+ align-items: center;
+ gap: 0.5rem;
+ transition: background-color 0.3s;
 }
 
 .btn-save:hover {
-  background-color: #15803d;
+ background-color: #15803d;
 }
 
 .btn-cancel {
-  background-color: #6b7280;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: background-color 0.3s;
+ background-color: #6b7280;
+ color: white;
+ padding: 0.5rem 1rem;
+ border-radius: 0.25rem;
+ border: none;
+ cursor: pointer;
+ display: flex;
+ align-items: center;
+ gap: 0.5rem;
+ transition: background-color 0.3s;
 }
 
 .btn-cancel:hover {
-  background-color: #4b5563;
+ background-color: #4b5563;
 }
+
+/* =============================================
+   ESTILOS DEL CARRUSEL Y CORRECCIÓN DE ALTURA
+   ============================================= */
 
 .carousel-wrapper {
-  position: relative;
-  background-color: white;
-  border-radius: 0.75rem;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+ position: relative;
+ background-color: #1a1a1a;
+ border-radius: 0.75rem;
+ box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+ overflow: hidden;
+ height: 500px;
+ max-height: 500px;
 }
 
-.carousel-content {
-  position: relative;
-  height: 24rem;
-  overflow: hidden;
-}
-
-.carousel-content img {
+.carousel-wrapper img.carousel-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
+
 .carousel-empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  background-color: #e5e7eb;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ height: 450px; 
+ background-color: #e5e7eb;
 }
 
 .carousel-empty p {
-  color: #6b7280;
+ color: #6b7280;
 }
 
+
 .carousel-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 0.5rem;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  transition: all 300ms ease-out;
-  z-index: 10;
+ position: absolute;
+ top: 50%;
+ transform: translateY(-50%);
+ background-color: rgba(0, 0, 0, 0.5);
+ color: white;
+ padding: 0.5rem;
+ border-radius: 50%;
+ border: none;
+ cursor: pointer;
+ transition: all 300ms ease-out;
+ z-index: 10;
 }
 
 .carousel-nav:hover {
-  background-color: rgba(0, 0, 0, 0.7);
-  transform: translateY(-50%) scale(1.1);
+ background-color: rgba(0, 0, 0, 0.7);
+ transform: translateY(-50%) scale(1.1);
 }
 
 .carousel-nav:active {
-  transform: translateY(-50%) scale(0.95);
+ transform: translateY(-50%) scale(0.95);
 }
 
 .carousel-nav-left {
-  left: 1rem;
+ left: 1rem;
 }
 
 .carousel-nav-right {
-  right: 1rem;
+ right: 1rem;
 }
 
 .carousel-caption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-  padding: 1.5rem;
-  transition: all 300ms ease-out;
+ position: absolute;
+ bottom: 0;
+ left: 0;
+ right: 0;
+ background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+ padding: 1.5rem;
+ transition: all 300ms ease-out;
+  z-index: 10; 
 }
 
 .caption-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+ display: flex;
+ justify-content: space-between;
+ align-items: flex-end;
 }
 
 .caption-text {
-  color: white;
-  font-size: 1.25rem;
-  font-weight: 600;
+ color: white;
+ font-size: 1.25rem;
+ font-weight: 600;
 }
 
 .caption-edit {
-  display: flex;
-  flex: 1;
-  gap: 0.5rem;
+ display: flex;
+ flex: 1;
+ gap: 0.5rem;
 }
 
 .caption-edit input {
-  flex: 1;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.25rem;
-  border: none;
+ flex: 1;
+ padding: 0.5rem 0.75rem;
+ border-radius: 0.25rem;
+ border: none;
 }
 
 .caption-buttons {
-  display: flex;
-  gap: 0.5rem;
+ display: flex;
+ gap: 0.5rem;
 }
 
 .btn-edit {
-  background-color: #2563eb;
-  color: white;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  border: none;
-  cursor: pointer;
-  transition: all 300ms ease-out;
+ background-color: #2563eb;
+ color: white;
+ padding: 0.5rem;
+ border-radius: 0.25rem;
+ border: none;
+ cursor: pointer;
+ transition: all 300ms ease-out;
 }
 
 .btn-edit:hover {
-  background-color: #1d4ed8;
-  transform: scale(1.05);
+ background-color: #1d4ed8;
+ transform: scale(1.05);
 }
 
 .btn-delete {
-  background-color: #dc2626;
-  color: white;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  border: none;
-  cursor: pointer;
-  transition: all 300ms ease-out;
+ background-color: #dc2626;
+ color: white;
+ padding: 0.5rem;
+ border-radius: 0.25rem;
+ border: none;
+ cursor: pointer;
+ transition: all 300ms ease-out;
 }
 
 .btn-delete:hover {
-  background-color: #b91c1c;
-  transform: scale(1.05);
+ background-color: #b91c1c;
+ transform: scale(1.05);
 }
 
 .carousel-indicators {
-  position: absolute;
-  bottom: 0rem; 
-  left: 35%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 0.75rem;
-  z-index: 10;
+ position: absolute;
+ bottom: 0rem; 
+ left: 50%; 
+ transform: translateX(-50%);
+ display: flex;
+ gap: 0.75rem;
+ z-index: 10;
 }
 
 .indicator {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.5);
-  border: none;
-  cursor: pointer;
-  transition: all 300ms ease-out;
+ width: 0.5rem;
+ height: 0.5rem;
+ border-radius: 50%;
+ background-color: rgba(255, 255, 255, 0.5);
+ border: none;
+ cursor: pointer;
+ transition: all 300ms ease-out;
 }
 
 .indicator:hover {
-  background-color: rgba(255, 255, 255, 0.8);
-  transform: scale(1.2);
+ background-color: rgba(255, 255, 255, 0.8);
+ transform: scale(1.2);
 }
 
 .indicator.active {
-  background-color: white;
-  width: 2rem;
-  animation: slideInFromRight 300ms ease-out;
+ background-color: white;
+ width: 2rem;
+ border-radius: 0.5rem; 
+ animation: slideInFromRight 300ms ease-out;
 }
 
-/* Galería */
+/* =============================================
+   GALERÍA
+   ============================================= */
 .gallery-section {
-  margin-top: 4rem;
+ margin-top: 4rem;
 }
 
 .gallery-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
+ display: grid;
+ grid-template-columns: 1fr;
+ gap: 1.5rem;
 }
 
 @media (min-width: 768px) {
-  .gallery-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+ .gallery-grid {
+  grid-template-columns: repeat(2, 1fr);
+ }
 }
 
 @media (min-width: 1024px) {
-  .gallery-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+ .gallery-grid {
+  grid-template-columns: repeat(3, 1fr);
+ }
 }
 
 .gallery-item {
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 300ms ease-out;
+ background-color: white;
+ border-radius: 0.5rem;
+ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+ overflow: hidden;
+ transition: transform 300ms ease-out;
 }
 
 .gallery-item:hover {
-  transform: translateY(-4px);
+ transform: translateY(-4px);
 }
 
 .gallery-image-wrapper {
-  position: relative;
-  overflow: hidden;
+ position: relative;
+ overflow: hidden;
 }
 
 .gallery-image {
-  width: 100%;
-  height: 16rem;
-  object-fit: cover;
-  transition: transform 300ms ease-out;
+ width: 100%;
+ height: 16rem;
+ object-fit: cover;
+ transition: transform 300ms ease-out;
 }
 
 .gallery-item:hover .gallery-image {
-  transform: scale(1.1);
+ transform: scale(1.1);
 }
 
 .gallery-overlay {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  transition: opacity 300ms ease-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+ position: absolute;
+ inset: 0;
+ background-color: rgba(0, 0, 0, 0.5);
+ opacity: 0;
+ transition: opacity 300ms ease-out;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ gap: 0.5rem;
 }
 
 .gallery-item:hover .gallery-overlay {
-  opacity: 1;
+ opacity: 1;
 }
 
 .btn-icon {
-  background-color: #2563eb;
-  color: white;
-  padding: 0.5rem;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  transition: all 300ms ease-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+ background-color: #2563eb;
+ color: white;
+ padding: 0.5rem;
+ border-radius: 50%;
+ border: none;
+ cursor: pointer;
+ transition: all 300ms ease-out;
+ display: flex;
+ align-items: center;
+ justify-content: center;
 }
 
 .btn-icon:hover {
-  background-color: #1d4ed8;
-  transform: scale(1.1);
+ background-color: #1d4ed8;
+ transform: scale(1.1);
 }
 
 .btn-icon:active {
-  transform: scale(0.95);
+ transform: scale(0.95);
 }
 
 .btn-icon.delete {
-  background-color: #dc2626;
+ background-color: #dc2626;
 }
 
 .btn-icon.delete:hover {
-  background-color: #b91c1c;
+ background-color: #b91c1c;
 }
 
 .gallery-caption {
-  padding: 1rem;
+ padding: 1rem;
 }
 
 .gallery-caption-edit {
-  display: flex;
-  gap: 0.5rem;
+ display: flex;
+ gap: 0.5rem;
 }
 
 .gallery-caption-edit input {
-  flex: 1;
-  padding: 0.25rem 0.5rem;
-  border: 1px solid #fcd34d;
-  border-radius: 0.25rem;
+ flex: 1;
+ padding: 0.25rem 0.5rem;
+ border: 1px solid #fcd34d;
+ border-radius: 0.25rem;
 }
 
 .btn-small {
-  background-color: #16a34a;
-  color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  border: none;
-  cursor: pointer;
-  transition: all 300ms ease-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+ background-color: #16a34a;
+ color: white;
+ padding: 0.25rem 0.5rem;
+ border-radius: 0.25rem;
+ border: none;
+ cursor: pointer;
+ transition: all 300ms ease-out;
+ display: flex;
+ align-items: center;
+ justify-content: center;
 }
 
 .btn-small:hover {
-  background-color: #15803d;
-  transform: scale(1.05);
+ background-color: #15803d;
+ transform: scale(1.05);
 }
 
 .btn-small.cancel {
-  background-color: #6b7280;
+ background-color: #6b7280;
 }
 
 .btn-small.cancel:hover {
-  background-color: #4b5563;
+background-color: #4b5563;
 }
 
 .gallery-caption-text {
-  color: #78350f;
-  font-weight: 500;
+ color: #78350f;
+ font-weight: 500;
 }
