@@ -13,9 +13,12 @@ export default function News() {
     const [error, setError] = useState(null);
     const [news, setNews] = useState([]);
 
+    const MAX_SUMMARY = 70;
+    
     const[textData, setTextData] = useState({
         title: '',
         content:'',
+        summary:'',
     });
 
     const [file, setFile] = useState(null);
@@ -24,9 +27,14 @@ export default function News() {
         setFile(e.target.files[0]); //guarda el objeto archivo
     };
 
-    const handleTextChange = (e) => {
-        setTextData({...textData, [e.target.name]: e.target.value});
-    };
+  const handleTextChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'summary') {
+      setTextData({...textData, [name]: value.slice(0, MAX_SUMMARY)});
+    } else {
+      setTextData({...textData, [name]: value});
+    }
+  };
 
         const submitNews = async (e) =>{
         e.preventDefault();
@@ -34,6 +42,7 @@ export default function News() {
         const formData = new FormData();
         formData.append('title', textData.title);
         formData.append('content', textData.content);
+        formData.append('summary', textData.summary);
         formData.append('image', file);
 
         try {
@@ -47,7 +56,7 @@ export default function News() {
             }
             toast.success('Noticia creada con éxito');
 
-            setTextData({ title: '', content:'' });
+            setTextData({ title: '', content:'', summary:'' });
             setFile(null);
             e.target.reset();
             fetchNews();
@@ -101,6 +110,8 @@ const handleDelete = async (id) => {
         <h2>Noticias</h2>
         <div className='news-form form-group'>
         <input className='form-control' type="text" name='title' placeholder="Título" value={textData.title} onChange={handleTextChange} />
+        <input className='form-control' type="text" name='summary' placeholder="Resumen" value={textData.summary} onChange={handleTextChange} maxLength={MAX_SUMMARY} />
+        <div className="summary-counter">{textData.summary.length}/{MAX_SUMMARY}</div>
         <textarea className='form-control' placeholder="Contenido" name='content' value={textData.content} onChange={handleTextChange} rows={8} />
         <input type="file" className='form-control-file' onChange={handleFileChange} />
         <button type="submit" className='newsbtn'>Crear noticia</button>
@@ -116,27 +127,50 @@ const handleDelete = async (id) => {
       )
       }
       <div className='news-list'>
-                {loading ? (
-          <p>Cargando noticias...</p>
-        ) : error ? ( 
-          <p>Error cargando noticias: {error}</p>
-        ) : ( 
-          <ul>
-            {news.map((item) => (
-              <li key={item._id}>
-                <div className="card" style={{ width: '18rem' }}>
-                  {item.image && <img src={item.image} alt={item.title} className='card-img-top' />}
-                  <div className="card-body">
-                    <h5 className='card-title'>{item.title}</h5>
-                    <a href={`/news/${item._id}`} className="newsbtn btn btn-primary">Leer Noticia</a>
-                    {(user?.userType === 'admin') &&<button onClick={() => handleDelete(item._id)}>Eliminar</button>}
-                  </div>
+    {loading ? (
+      <p>Cargando noticias...</p>
+    ) : error ? ( 
+      <p>Error cargando noticias: {error}</p>
+    ) : ( 
+      <ul>
+        {news.map((item) => (
+          <li key={item._id}>
+            
+            <div className="card news-card-horizontal">
+              
+              {item.image && (
+                <img 
+                  src={item.image} 
+                  alt={item.title} 
+                  className='news-card-img'
+                />
+              )}
+              
+              <div className="card-body">
+                <div>
+                  <h3 className='card-title'>{item.title}</h3>
+                  <p className='card-text'>{item.summary}</p>
                 </div>
-              </li>
-            ))}
-          </ul>
-        ) }
-      </div>
+                
+                <div>
+                  <a href={`/news/${item._id}`} className="newsbtn">Leer Noticia</a>
+                  
+                  {(user?.userType === 'admin') && (
+                    <button 
+                      onClick={() => handleDelete(item._id)}
+                      className="newsbtn newsbtn-delete"
+                    >
+                      Eliminar
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    ) }
+</div>
     </div>
   )
 }

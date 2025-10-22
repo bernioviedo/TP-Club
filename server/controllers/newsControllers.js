@@ -33,14 +33,18 @@ const test = (req, res) => {
 //creo noticia
 const createNews = async (req, res) => {
     try {
-        const { title, content } = req.body;
+        const { title, content, summary } = req.body;
 
         const file = req.file;
 
         // valido datos
-        if (!title || !content || !file ) {
+        if (!title || !content || !summary || !file ) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
+
+        const MAX_SUMMARY = 70;
+        const safeSummary = (typeof summary === 'string') ? summary.trim().slice(0, MAX_SUMMARY) : '';
+
 
     // obtener token desde cookies y verificar
     const token = req.cookies?.token;
@@ -79,6 +83,7 @@ const createNews = async (req, res) => {
         const news = await News.create({ 
             title,
             content,
+            summary: safeSummary,
             image: uploadResult.secure_url,
             imagePublicId: uploadResult.public_id,
             author:decoded.id,
