@@ -1,6 +1,9 @@
 import Media from '../models/media.js';
 import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer';
+import pkg from 'jsonwebtoken'; // Importar jsonwebtoken
+const { verify } = pkg; // Desestructurar verify
+import User from '../models/users.js'; // Importar el modelo User (asumiendo que está en esta ruta)
 
 // Comprobar que las env de Cloudinary están cargadas
 if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
@@ -33,15 +36,61 @@ export const upload = multer({
   }
 });
 
+/**
+ * Middleware de Autenticación y Autorización de Administrador
+ * Verifica el token de la cookie y el rol del usuario.
+ * Nota: Asume que el token se guarda en una cookie llamada 'token'.
+ */
+const adminAuth = (handler) => async (req, res) => {
+    // Obtener token desde cookies y verificar
+    const token = req.cookies?.token;
+    if (!token) {
+        return res.status(401).json({ error: 'No autorizado: Token no proporcionado' });
+    }
+
+    // Verificar token
+    verify(token, process.env.JWT_SECRET, {}, async (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ error: 'Token inválido o expirado' });
+        }
+
+        try {
+            // Obtener user para comprobar rol
+            const authorUser = await User.findById(decoded.id).select('userType');
+            if (!authorUser) {
+                return res.status(401).json({ error: 'Usuario no encontrado' });
+            }
+
+            // Chequeo que sea admin
+            if (authorUser.userType !== 'admin') {
+                return res.status(403).json({ error: 'Acceso denegado: solo administradores' });
+            }
+
+            // Si es admin, agregar el ID del autor a la solicitud (opcional)
+            req.authorId = decoded.id; 
+            
+            // Continuar con el handler principal
+            await handler(req, res);
+
+        } catch (error) {
+            console.error('Error en la verificación de administrador:', error);
+            return res.status(500).json({ error: 'Error del servidor en la autenticación' });
+        }
+    });
+};
+
 // Test
 const test = (req, res) => {
   res.json({ message: 'Media test is working' });
 };
 
-// Crear media
-const createMedia = async (req, res) => {
+// Crear media (Ahora envuelto en adminAuth)
+const createMedia = adminAuth(async (req, res) => {
   try {
-    const { titulo, descripcion, autor } = req.body;
+    // const { titulo, descripcion, autor } = req.body;
+    // El campo 'autor' podría sobrescribirse por el ID del usuario autenticado si es un admin.
+    const { titulo, descripcion } = req.body;
+    const autorId = req.authorId; // Obtenido del middleware adminAuth
     const file = req.file;
 
     // Validar datos
@@ -74,7 +123,8 @@ const createMedia = async (req, res) => {
         descripcion,
         url_imagen: uploadResult.secure_url,
         cloudinary_id: uploadResult.public_id,
-        autor: autor || 'Administrador',
+        // Usamos el ID del usuario autenticado como autor
+        autor: autorId, 
         fecha_creacion: new Date()
       });
 
@@ -90,9 +140,9 @@ const createMedia = async (req, res) => {
     console.error('❌ Server error:', error);
     res.status(500).json({ error: 'Server error' });
   }
-};
+});
 
-// Obtener todas las medias
+// Obtener todas las medias (Sin restricción de admin)
 const getAllMedia = async (req, res) => {
   try {
     const media = await Media.find().sort({ fecha_creacion: -1 });
@@ -103,7 +153,7 @@ const getAllMedia = async (req, res) => {
   }
 };
 
-// Obtener una media por ID
+// Obtener una media por ID (Sin restricción de admin)
 const getOneMedia = async (req, res) => {
   try {
     const media = await Media.findById(req.params.id);
@@ -117,16 +167,15 @@ const getOneMedia = async (req, res) => {
   }
 };
 
-// Actualizar media
-const updateMedia = async (req, res) => {
+// Actualizar media (Ahora envuelto en adminAuth)
+const updateMedia = adminAuth(async (req, res) => {
   try {
-    const { titulo, descripcion, autor } = req.body;
+    const { titulo, descripcion } = req.body;
     const file = req.file;
 
     const updateData = {
       titulo,
       descripcion,
-      autor
     };
 
     // Si hay nueva imagen, subir a Cloudinary
@@ -140,6 +189,7 @@ const updateMedia = async (req, res) => {
           console.log('🗑️ Imagen anterior eliminada de Cloudinary');
         } catch (cloudinaryError) {
           console.error('Error eliminando imagen anterior:', cloudinaryError);
+          // Si falla la eliminación en Cloudinary, se loguea pero la actualización en BD continúa.
         }
       }
 
@@ -176,10 +226,10 @@ const updateMedia = async (req, res) => {
     console.error('❌ Error al actualizar media:', error);
     res.status(500).json({ error: 'Server error' });
   }
-};
+});
 
-// Eliminar media
-const deleteMedia = async (req, res) => {
+// Eliminar media (Ahora envuelto en adminAuth)
+const deleteMedia = adminAuth(async (req, res) => {
   try {
     const deletedMedia = await Media.findByIdAndDelete(req.params.id);
     
@@ -194,6 +244,7 @@ const deleteMedia = async (req, res) => {
         console.log('Imagen eliminada de Cloudinary');
       } catch (cloudinaryError) {
         console.error('❌ Error eliminando imagen de Cloudinary:', cloudinaryError);
+        // Si falla la eliminación en Cloudinary, se loguea pero se considera la media eliminada de la BD.
       }
     }
 
@@ -202,7 +253,7 @@ const deleteMedia = async (req, res) => {
     console.error('❌ Server error:', error);
     res.status(500).json({ error: 'Server error' });
   }
-};
+});
 
 export {
   test,
