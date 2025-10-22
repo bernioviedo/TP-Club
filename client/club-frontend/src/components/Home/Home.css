@@ -38,6 +38,12 @@
   width: 100%;
   height: 20rem;
 }
+
+@media screen and (max-width:520px) {
+  .carousel{
+    display: none;
+  }
+}
 .news{
   display: flex;
   flex-direction: column;
