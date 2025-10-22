@@ -185,9 +185,6 @@
  background-color: #4b5563;
 }
 
-/* =============================================
-   ESTILOS DEL CARRUSEL Y CORRECCIÓN DE ALTURA
-   ============================================= */
 
 .carousel-wrapper {
  position: relative;
@@ -225,7 +222,7 @@
  position: absolute;
  top: 50%;
  transform: translateY(-50%);
- background-color: rgba(0, 0, 0, 0.5);
+ background-color: rgba(255, 255, 255, 0.5);
  color: white;
  padding: 0.5rem;
  border-radius: 50%;
@@ -326,7 +323,7 @@
 .carousel-indicators {
  position: absolute;
  bottom: 0rem; 
- left: 50%; 
+ left: 35%; 
  transform: translateX(-50%);
  display: flex;
  gap: 0.75rem;
