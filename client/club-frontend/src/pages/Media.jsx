@@ -1,103 +1,150 @@
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Plus, Trash2, Edit2, Save, X } from 'lucide-react'
-import '../App.css'
-import foto from '../assets/camiseta en maniqui.png';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { ChevronLeft, ChevronRight, Plus, Trash2, Edit2, Save, X } from 'lucide-react';
 import './Media.css';
 
 const Media = () => {
- 
-  const [carouselImages, setCarouselImages] = useState([
-    { id: 1, url: foto, caption: 'Camiseta de nuestro club' },
-    { id: 2, url: 'https://drive.google.com/file/d/12Gs_QHPr-UUe8WNwgoWC4s5-HZPiVyJa/view?usp=drive_link', caption: 'Entrenamiento del primer equipo' },
-    { id: 3, url: '', caption: 'Celebración del campeonato' }
-  ]);
+  const [carouselImages, setCarouselImages] = useState([]);
+  const [galleryImages, setGalleryImages] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  
-  const [galleryImages, setGalleryImages] = useState([
-    { id: 1, url: '', caption: 'Gol del capitán' },
-    { id: 2, url: '', caption: 'Hinchada en el estadio' },
-    { id: 3, url: '', caption: 'Formación titular' },
-    { id: 4, url: '', caption: 'Festejo en vestuario' },
-    { id: 5, url: '', caption: 'Concentración previa' },
-    { id: 6, url: '', caption: 'Práctica de tiros libres' }
-  ]);
-
+  const [slideDirection, setSlideDirection] = useState('right');
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const [editingId, setEditingId] = useState(null);
   const [editCaption, setEditCaption] = useState('');
   const [isAddingCarousel, setIsAddingCarousel] = useState(false);
   const [isAddingGallery, setIsAddingGallery] = useState(false);
-  const [newImageUrl, setNewImageUrl] = useState('');
+  const [newImage, setNewImage] = useState(null);
   const [newCaption, setNewCaption] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
 
-  // Funciones del carrusel
+  // Cargar imágenes desde el backend
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/media')
+      .then(res => {
+        setCarouselImages(res.data);
+        setGalleryImages(res.data);
+      })
+      .catch(err => {
+        console.error('Error al cargar imágenes:', err);
+        if (err.response) {
+          console.error('Error del servidor:', err.response.data);
+        } else if (err.request) {
+          console.error('Sin respuesta del servidor');
+        }
+      });
+  }, []);
+
+  // Subir nueva imagen a Cloudinary
+  const handleAddImage = async (isCarousel = false) => {
+    if (!newImage || !newCaption) {
+      alert('Por favor completa todos los campos');
+      return;
+    }
+
+    setIsUploading(true);
+
+    const formData = new FormData();
+    formData.append('imagen', newImage);
+    formData.append('titulo', newCaption);
+    formData.append('descripcion', newCaption);
+    formData.append('autor', 'Administrador');
+
+    try {
+      const res = await axios.post('http://localhost:8000/api/media', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+
+      if (isCarousel) {
+        setCarouselImages(prev => [...prev, res.data]);
+        setIsAddingCarousel(false);
+      } else {
+        setGalleryImages(prev => [...prev, res.data]);
+        setIsAddingGallery(false);
+      }
+
+      setNewImage(null);
+      setNewCaption('');
+      alert('Imagen subida exitosamente a Cloudinary');
+    } catch (err) {
+      console.error('Error al subir imagen:', err);
+      alert('Error al subir la imagen');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  // Iniciar edición
+  const startEdit = (id, currentCaption) => {
+    setEditingId(id);
+    setEditCaption(currentCaption || '');
+  };
+
+  // Guardar edición
+  const saveEdit = async (id) => {
+    try {
+      const res = await axios.put(`http://localhost:8000/api/media/${id}`, { 
+        titulo: editCaption,
+        descripcion: editCaption 
+      });
+      setCarouselImages(prev => prev.map(img => (img._id === id ? res.data : img)));
+      setGalleryImages(prev => prev.map(img => (img._id === id ? res.data : img)));
+      setEditingId(null);
+      setEditCaption('');
+    } catch (err) {
+      console.error('Error al editar:', err);
+      alert('Error al guardar los cambios');
+    }
+  };
+
+  // Eliminar de Cloudinary y MongoDB
+  const handleDelete = async (id) => {
+    if (!window.confirm('¿Estás seguro de eliminar esta imagen? Se eliminará de Cloudinary y la base de datos.')) return;
+
+    try {
+      await axios.delete(`http://localhost:8000/api/media/${id}`);
+      setCarouselImages(prev => prev.filter(img => img._id !== id));
+      setGalleryImages(prev => prev.filter(img => img._id !== id));
+      
+      // Ajustar índice del carrusel si quedaste fuera de rango
+      if (currentSlide >= carouselImages.length - 1) {
+        setCurrentSlide(0);
+      }
+      
+      alert('Imagen eliminada correctamente de Cloudinary');
+    } catch (err) {
+      console.error('Error al eliminar:', err);
+      alert('Error al eliminar la imagen');
+    }
+  };
+
+  // Navegación del carrusel
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
+    if (isAnimating || carouselImages.length === 0) return;
+    setIsAnimating(true);
+    setSlideDirection('right');
+    setCurrentSlide(prev => (prev + 1) % carouselImages.length);
+    setTimeout(() => setIsAnimating(false), 500);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+    if (isAnimating || carouselImages.length === 0) return;
+    setIsAnimating(true);
+    setSlideDirection('left');
+    setCurrentSlide(prev => (prev - 1 + carouselImages.length) % carouselImages.length);
+    setTimeout(() => setIsAnimating(false), 500);
   };
 
-  
-  const handleAddCarouselImage = () => {
-    if (newImageUrl && newCaption) {
-      const newImage = {
-        id: Date.now(),
-        url: newImageUrl,
-        caption: newCaption
-      };
-      setCarouselImages([...carouselImages, newImage]);
-      setNewImageUrl('');
-      setNewCaption('');
-      setIsAddingCarousel(false);
-    }
+  const goToSlide = (index) => {
+    if (isAnimating || index === currentSlide) return;
+    setIsAnimating(true);
+    setSlideDirection(index > currentSlide ? 'right' : 'left');
+    setCurrentSlide(index);
+    setTimeout(() => setIsAnimating(false), 500);
   };
 
-  const handleAddGalleryImage = () => {
-    if (newImageUrl && newCaption) {
-      const newImage = {
-        id: Date.now(),
-        url: newImageUrl,
-        caption: newCaption
-      };
-      setGalleryImages([...galleryImages, newImage]);
-      setNewImageUrl('');
-      setNewCaption('');
-      setIsAddingGallery(false);
-    }
-  };
-
-  const handleDeleteCarousel = (id) => {
-    setCarouselImages(carouselImages.filter(img => img.id !== id));
-    if (currentSlide >= carouselImages.length - 1) {
-      setCurrentSlide(0);
-    }
-  };
-
-  const handleDeleteGallery = (id) => {
-    setGalleryImages(galleryImages.filter(img => img.id !== id));
-  };
-
-  const startEdit = (id, caption) => {
-    setEditingId(id);
-    setEditCaption(caption);
-  };
-
-  const saveEdit = (id, isCarousel = false) => {
-    if (isCarousel) {
-      setCarouselImages(carouselImages.map(img => 
-        img.id === id ? { ...img, caption: editCaption } : img
-      ));
-    } else {
-      setGalleryImages(galleryImages.map(img => 
-        img.id === id ? { ...img, caption: editCaption } : img
-      ));
-    }
-    setEditingId(null);
-    setEditCaption('');
-  };
+  const getImageClassName = () =>
+    slideDirection === 'right' ? 'carousel-slide-enter-right' : 'carousel-slide-enter-left';
 
   return (
     <div className="media-page">
@@ -109,207 +156,214 @@ const Media = () => {
           <p>Los mejores momentos de nuestro equipo</p>
         </div>
 
-        
-        <div className="carousel-section">
+        {/* Carrusel */}
+        <div className="carousel">
           <div className="section-header">
             <h2>Destacados</h2>
-            <button
-              onClick={() => setIsAddingCarousel(!isAddingCarousel)}
-              className="btn-add"
-            >
-              <Plus size={20} />
-              Agregar a carrusel
+            <button onClick={() => setIsAddingCarousel(!isAddingCarousel)} className="btn-add">
+              <Plus size={20} /> Agregar a carrusel
             </button>
           </div>
 
-         
           {isAddingCarousel && (
-            <div className="add-image-form">
-              <input
-                type="text"
-                placeholder="URL de la imagen"
-                value={newImageUrl}
-                onChange={(e) => setNewImageUrl(e.target.value)}
+            <div className="add-image">
+              <input 
+                type="file" 
+                onChange={(e) => setNewImage(e.target.files[0])} 
+                accept="image/*"
+                disabled={isUploading}
               />
               <input
                 type="text"
                 placeholder="Descripción"
                 value={newCaption}
                 onChange={(e) => setNewCaption(e.target.value)}
+                disabled={isUploading}
               />
               <div className="form-buttons">
-                <button onClick={handleAddCarouselImage} className="btn-save">
-                  <Save size={18} />
-                  Guardar
+                <button 
+                  onClick={() => handleAddImage(true)} 
+                  className="btn-save"
+                  disabled={isUploading}
+                >
+                  <Save size={18} /> {isUploading ? 'Subiendo...' : 'Guardar'}
                 </button>
-                <button onClick={() => setIsAddingCarousel(false)} className="btn-cancel">
-                  <X size={18} />
-                  Cancelar
+                <button 
+                  onClick={() => setIsAddingCarousel(false)} 
+                  className="btn-cancel"
+                  disabled={isUploading}
+                >
+                  <X size={18} /> Cancelar
                 </button>
               </div>
             </div>
           )}
 
-         
           <div className="carousel-wrapper">
-            <div className="carousel-content">
-              {carouselImages.length > 0 ? (
-                <>
-                  <img
-                    src={carouselImages[currentSlide].url}
-                    alt={carouselImages[currentSlide].caption}
-                  />
-                  
-                 
-                  <button onClick={prevSlide} className="carousel-nav carousel-nav-left">
-                    <ChevronLeft size={24} />
-                  </button>
-                  <button onClick={nextSlide} className="carousel-nav carousel-nav-right">
-                    <ChevronRight size={24} />
-                  </button>
+            {carouselImages.length > 0 ? (
+              <>
+                <img
+                  src={carouselImages[currentSlide].url_imagen}
+                  alt={carouselImages[currentSlide].descripcion}
+                  className={isAnimating ? getImageClassName() : ''}
+                />
 
-                
-                  <div className="carousel-caption">
-                    <div className="caption-content">
-                      {editingId === carouselImages[currentSlide].id ? (
-                        <div className="caption-edit">
-                          <input
-                            type="text"
-                            value={editCaption}
-                            onChange={(e) => setEditCaption(e.target.value)}
-                          />
-                          <button
-                            onClick={() => saveEdit(carouselImages[currentSlide].id, true)}
-                            className="btn-save"
-                          >
-                            <Save size={18} />
-                          </button>
-                          <button
-                            onClick={() => setEditingId(null)}
-                            className="btn-cancel"
-                          >
-                            <X size={18} />
-                          </button>
-                        </div>
-                      ) : (
-                        <>
-                          <p className="caption-text">
-                            {carouselImages[currentSlide].caption}
-                          </p>
-                          <div className="caption-buttons">
-                            <button
-                              onClick={() => startEdit(carouselImages[currentSlide].id, carouselImages[currentSlide].caption)}
-                              className="btn-edit"
-                            >
-                              <Edit2 size={18} />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteCarousel(carouselImages[currentSlide].id)}
-                              className="btn-delete"
-                            >
-                              <Trash2 size={18} />
-                            </button>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </div>
+                <button
+                  onClick={prevSlide}
+                  className="carousel-nav carousel-nav-left"
+                  disabled={isAnimating}
+                >
+                  <ChevronLeft size={24} />
+                </button>
 
-                  
-                  <div className="carousel-indicators">
-                    {carouselImages.map((_, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setCurrentSlide(idx)}
-                        className={`indicator ${idx === currentSlide ? 'active' : ''}`}
+                <button
+                  onClick={nextSlide}
+                  className="carousel-nav carousel-nav-right"
+                  disabled={isAnimating}
+                >
+                  <ChevronRight size={24} />
+                </button>
+
+                <div className="carousel-caption">
+                  {editingId === carouselImages[currentSlide]._id ? (
+                    <div className="caption-edit">
+                      <input
+                        type="text"
+                        value={editCaption}
+                        onChange={(e) => setEditCaption(e.target.value)}
                       />
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <div className="carousel-empty">
-                  <p>No hay imágenes en el carrusel</p>
+                      <button
+                        onClick={() => saveEdit(carouselImages[currentSlide]._id)}
+                        className="btn-save"
+                      >
+                        <Save size={18} />
+                      </button>
+                      <button onClick={() => setEditingId(null)} className="btn-cancel">
+                        <X size={18} />
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <p className="caption-text">{carouselImages[currentSlide].descripcion}</p>
+                      <div className="caption-buttons">
+                        <button
+                          onClick={() =>
+                            startEdit(
+                              carouselImages[currentSlide]._id,
+                              carouselImages[currentSlide].descripcion
+                            )
+                          }
+                          className="btn-edit"
+                        >
+                          <Edit2 size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(carouselImages[currentSlide]._id)}
+                          className="btn-delete"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
-              )}
-            </div>
+
+                <div className="carousel-indicators">
+                  {carouselImages.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => goToSlide(idx)}
+                      className={`indicator ${idx === currentSlide ? 'active' : ''}`}
+                      disabled={isAnimating}
+                    />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="carousel-empty">
+                <p>No hay imágenes en el carrusel</p>
+              </div>
+            )}
           </div>
         </div>
 
-        
+        {/* Galería */}
         <div className="gallery-section">
           <div className="section-header">
             <h2>Galería</h2>
-            <button
-              onClick={() => setIsAddingGallery(!isAddingGallery)}
-              className="btn-add"
-            >
-              <Plus size={20} />
-              Agregar imagen
+            <button onClick={() => setIsAddingGallery(!isAddingGallery)} className="btn-add">
+              <Plus size={20} /> Agregar imagen
             </button>
           </div>
 
-        
           {isAddingGallery && (
-            <div className="add-image-form">
-              <input
-                type="text"
-                placeholder="URL de la imagen"
-                value={newImageUrl}
-                onChange={(e) => setNewImageUrl(e.target.value)}
+            <div className="add-image">
+              <input 
+                type="file" 
+                onChange={(e) => setNewImage(e.target.files[0])} 
+                accept="image/*"
+                disabled={isUploading}
               />
               <input
                 type="text"
                 placeholder="Descripción"
                 value={newCaption}
                 onChange={(e) => setNewCaption(e.target.value)}
+                disabled={isUploading}
               />
               <div className="form-buttons">
-                <button onClick={handleAddGalleryImage} className="btn-save">
-                  <Save size={18} />
-                  Guardar
+                <button 
+                  onClick={() => handleAddImage(false)} 
+                  className="btn-save"
+                  disabled={isUploading}
+                >
+                  <Save size={18} /> {isUploading ? 'Subiendo...' : 'Guardar'}
                 </button>
-                <button onClick={() => setIsAddingGallery(false)} className="btn-cancel">
-                  <X size={18} />
-                  Cancelar
+                <button 
+                  onClick={() => setIsAddingGallery(false)} 
+                  className="btn-cancel"
+                  disabled={isUploading}
+                >
+                  <X size={18} /> Cancelar
                 </button>
               </div>
             </div>
           )}
 
-          
           <div className="gallery-grid">
             {galleryImages.map((image) => (
-              <div key={image.id} className="gallery-item">
+              <div key={image._id} className="gallery-item">
                 <div className="gallery-image-wrapper">
                   <img
-                    src={image.url}
-                    alt={image.caption}
+                    src={image.url_imagen}
+                    alt={image.descripcion}
                     className="gallery-image"
                   />
                   <div className="gallery-overlay">
                     <button
-                      onClick={() => startEdit(image.id, image.caption)}
+                      onClick={() => startEdit(image._id, image.descripcion)}
                       className="btn-icon"
                     >
                       <Edit2 size={20} />
                     </button>
                     <button
-                      onClick={() => handleDeleteGallery(image.id)}
+                      onClick={() => handleDelete(image._id)}
                       className="btn-icon delete"
                     >
                       <Trash2 size={20} />
                     </button>
                   </div>
                 </div>
+
                 <div className="gallery-caption">
-                  {editingId === image.id ? (
+                  {editingId === image._id ? (
                     <div className="gallery-caption-edit">
                       <input
                         type="text"
                         value={editCaption}
                         onChange={(e) => setEditCaption(e.target.value)}
                       />
-                      <button onClick={() => saveEdit(image.id)} className="btn-small">
+                      <button onClick={() => saveEdit(image._id)} className="btn-small">
                         <Save size={16} />
                       </button>
                       <button onClick={() => setEditingId(null)} className="btn-small cancel">
@@ -317,7 +371,7 @@ const Media = () => {
                       </button>
                     </div>
                   ) : (
-                    <p className="gallery-caption-text">{image.caption}</p>
+                    <p className="gallery-caption-text">{image.descripcion}</p>
                   )}
                 </div>
               </div>
