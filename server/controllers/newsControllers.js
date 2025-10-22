@@ -42,8 +42,10 @@ const createNews = async (req, res) => {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
-        const MAX_SUMMARY = 70;
+        const MAX_SUMMARY = 80;
+        const MAX_TITLE = 50;
         const safeSummary = (typeof summary === 'string') ? summary.trim().slice(0, MAX_SUMMARY) : '';
+        const safeTitle = (typeof title === 'string') ? title.trim().slice(0, MAX_TITLE) : '';
 
 
     // obtener token desde cookies y verificar
@@ -81,7 +83,7 @@ const createNews = async (req, res) => {
                 const uploadResult = await uploadToCloudinary();
         // creo noticia en la bd
         const news = await News.create({ 
-            title,
+            title: safeTitle,
             content,
             summary: safeSummary,
             image: uploadResult.secure_url,
