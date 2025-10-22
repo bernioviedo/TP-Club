@@ -64,7 +64,7 @@
 .news-card-horizontal {
   display: flex;       
   flex-direction: row; 
-  max-width: 500px; 
+  max-width: 600px; 
   width: 100%;
   min-height: 150px;
   align-items: center;
@@ -87,6 +87,7 @@
   justify-content: space-between;
   padding: 0.5rem;
   flex-grow: 1;
+  margin-left: 1rem;
 }
 
 

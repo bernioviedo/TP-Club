@@ -13,7 +13,8 @@ export default function News() {
     const [error, setError] = useState(null);
     const [news, setNews] = useState([]);
 
-    const MAX_SUMMARY = 70;
+    const MAX_SUMMARY = 80;
+    const MAX_TITLE = 50;
     
     const[textData, setTextData] = useState({
         title: '',
@@ -31,7 +32,10 @@ export default function News() {
     const { name, value } = e.target;
     if (name === 'summary') {
       setTextData({...textData, [name]: value.slice(0, MAX_SUMMARY)});
-    } else {
+    } else if (name === 'title') {
+      setTextData({...textData, [name]: value.slice(0, MAX_TITLE)});
+    }
+    else {
       setTextData({...textData, [name]: value});
     }
   };
@@ -110,6 +114,7 @@ const handleDelete = async (id) => {
         <h2>Noticias</h2>
         <div className='news-form form-group'>
         <input className='form-control' type="text" name='title' placeholder="Título" value={textData.title} onChange={handleTextChange} />
+        <div className="summary-counter">{textData.title.length}/{MAX_TITLE}</div>
         <input className='form-control' type="text" name='summary' placeholder="Resumen" value={textData.summary} onChange={handleTextChange} maxLength={MAX_SUMMARY} />
         <div className="summary-counter">{textData.summary.length}/{MAX_SUMMARY}</div>
         <textarea className='form-control' placeholder="Contenido" name='content' value={textData.content} onChange={handleTextChange} rows={8} />
@@ -148,7 +153,7 @@ const handleDelete = async (id) => {
               
               <div className="card-body">
                 <div>
-                  <h3 className='card-title'>{item.title}</h3>
+                  <h4 className='card-title'>{item.title}</h4>
                   <p className='card-text'>{item.summary}</p>
                 </div>
                 
