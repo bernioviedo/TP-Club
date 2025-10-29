@@ -146,10 +146,29 @@ const deleteNew = async (req, res) => {
     }
 };
 
+//hago edit de news
+const editNews = async (req, res) => {
+    try {
+        const { title, content, summary } = req.body; 
+        const updatedNews = await News.findByIdAndUpdate(
+            req.params.id,
+            { title, content, summary },
+            { new: true }
+        );
+        res.json(updatedNews);
+    }
+        catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+
 export {
     test,
     createNews,
     fetchNews,
     fetchOneNew,
-    deleteNew
+    deleteNew,
+    editNews,
 };

@@ -12,15 +12,53 @@ export default function News() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [news, setNews] = useState([]);
-
     const MAX_SUMMARY = 80;
     const MAX_TITLE = 50;
-    
-    const[textData, setTextData] = useState({
-        title: '',
-        content:'',
-        summary:'',
-    });
+    //edit dialog 
+    const [editNews, setEditNews] = useState(null);
+    const [editForm, setEditForm] = useState({ title: "", content: "", summary: "" });
+
+    //edit funcionalidad
+    const openEditDialog = (newsItem) => {
+      setEditNews(newsItem);
+      setEditForm({ title: newsItem.title, content: newsItem.content, summary: newsItem.summary });
+    };
+
+    const closeEditDialog = () => {
+      setEditNews(null);
+    };
+
+  const handleEditFormChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'summary') {
+      setEditForm(prev => ({ ...prev, [name]: value.slice(0, MAX_SUMMARY) }));
+    } else if (name === 'title') {
+      setEditForm(prev => ({ ...prev, [name]: value.slice(0, MAX_TITLE) }));
+    } else {
+      setEditForm(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleEditSave = async () => {
+      if (!editNews) return;
+      try {
+        const response = await axios.put(`/news/${editNews._id}`, editForm, { withCredentials: true });
+        setNews((prevNews) =>
+          prevNews.map((n) => (n._id === editNews._id ? response.data : n))
+        );
+        closeEditDialog();
+      } catch (err) {
+        alert(
+          `Error editando la noticia: ${err.response?.data?.error || err.message}`
+        );
+      }
+    };
+      
+      const[textData, setTextData] = useState({
+          title: '',
+          content:'',
+          summary:'',
+      });
 
     const [file, setFile] = useState(null);
 
@@ -39,7 +77,8 @@ export default function News() {
       setTextData({...textData, [name]: value});
     }
   };
-
+ 
+  // subir noticias
         const submitNews = async (e) =>{
         e.preventDefault();
 
@@ -160,15 +199,44 @@ const handleDelete = async (id) => {
                 <div>
                   <a href={`/news/${item._id}`} className="newsbtn">Leer Noticia</a>
                   
-                  {(user?.userType === 'admin') && (
-                    <button 
-                      onClick={() => handleDelete(item._id)}
-                      className="newsbtn newsbtn-delete"
-                    >
-                      Eliminar
-                    </button>
+                  {(user?.userType === 'admin') && ( <>
+                    <button onClick={() => handleDelete(item._id)} className="newsbtn newsbtn-delete">Eliminar</button>
+                    <button onClick={() => openEditDialog(item)} className="newsbtn newsbtn-edit">Editar</button>
+                    </>
                   )}
                 </div>
+            {editNews && ( 
+            <>
+            <div className="dialog-backdrop" onClick={closeEditDialog} />
+            <div className="dialog">
+              <h2>Editar Noticia</h2>
+              <label>Título:</label>
+              <input
+                type="text"
+                name="title"
+                value={editForm.title}
+                onChange={handleEditFormChange}
+              />
+              <label>Resumen:</label>
+              <input
+                type="text"
+                name="summary"
+                value={editForm.summary}
+                onChange={handleEditFormChange}
+              />
+              <label>Contenido:</label>
+              <textarea
+                name="content"
+                value={editForm.content}
+                onChange={handleEditFormChange}
+              />
+              <div className="dialog-actions">
+                <button onClick={handleEditSave}>Guardar</button>
+                <button onClick={closeEditDialog}>Cancelar</button>
+              </div>
+            </div>
+            </>
+          )}
               </div>
             </div>
           </li>

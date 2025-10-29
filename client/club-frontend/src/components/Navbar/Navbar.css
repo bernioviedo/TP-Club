@@ -108,7 +108,7 @@
 .navbar__auth-menu button ::before {
     content: '';
     position: absolute;
-    bottom: 15px;
+    bottom: 25px;
     left: 0;
     width: 0;
     height: 3px;
