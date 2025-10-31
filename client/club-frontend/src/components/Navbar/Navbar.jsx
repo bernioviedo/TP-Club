@@ -50,7 +50,7 @@ export default function Navbar({navStyle, ulStyle, children}) {
           <>
           {(user.userType === 'user' || user.userType === 'admin') &&<li><Link to="/profile">Profile</Link></li>}
           {user.userType === 'superadmin' && (<li><Link to="/superadmin">Gestión de Administración</Link></li>)}
-          <li><button onClick={handleLogout}>Logout</button></li>
+          <li><Link to={"/"} onClick={handleLogout}>Logout</Link></li>
           </>
         )} 
       </ul>
