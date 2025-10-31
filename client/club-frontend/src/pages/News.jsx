@@ -12,6 +12,7 @@ export default function News() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [news, setNews] = useState([]);
+    const [sortOrder, setSortOrder] = useState('desc');
     const MAX_SUMMARY = 80;
     const MAX_TITLE = 50;
     //edit dialog 
@@ -115,7 +116,7 @@ export default function News() {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get('/news', { withCredentials: true });
+      const { data } = await axios.get(`/news?sort=${sortOrder}`, { withCredentials: true });
       const newsArray = Array.isArray(data) ? data : (data?.news ?? []);
       setNews(newsArray);
     } catch (err) {
@@ -129,7 +130,7 @@ export default function News() {
 
   useEffect(() => {
     fetchNews();
-  }, []);
+  }, [sortOrder]);
 
     //delete noticia funcionalidad
 const handleDelete = async (id) => {
@@ -170,6 +171,20 @@ const handleDelete = async (id) => {
 
       )
       }
+      <div className="sort-bar">
+        <div className='input-group' style={{ maxWidth: '350px' }}>
+        <label className="input-group-text" htmlFor="sort-select">Ordenar por: </label>
+        <select
+          className="form-select" 
+          id="sort-select" 
+          value={sortOrder} 
+          onChange={(e) => setSortOrder(e.target.value)}
+        >
+          <option value="desc">Más nuevas primero</option>
+          <option value="asc">Más viejas primero</option>
+        </select>
+        </div>
+      </div>
       <div className='news-list'>
     {loading ? (
       <p>Cargando noticias...</p>
