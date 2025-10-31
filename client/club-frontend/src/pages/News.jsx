@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, useCallback } from 'react'
 import { ContextUser } from '../../context/contextUser';
 import axios from 'axios';
 import {toast} from 'react-hot-toast';
@@ -112,7 +112,7 @@ export default function News() {
 
   //fetch news
 
-    const fetchNews = async () => {
+    const fetchNews = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -126,11 +126,11 @@ export default function News() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [sortOrder]);
 
   useEffect(() => {
     fetchNews();
-  }, [sortOrder]);
+  }, [fetchNews]);
 
     //delete noticia funcionalidad
 const handleDelete = async (id) => {
