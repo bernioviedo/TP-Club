@@ -3,6 +3,7 @@ import cors from 'cors'
 import { test, registerUser, loginUser, getProfile, getLogout, fetchUsers, deleteUser, editUser, } from '../controllers/clubControllers.js'
 import { upload, createNews, fetchNews, fetchOneNew, deleteNew, editNews } from '../controllers/newsControllers.js'
 import {createMedia, getAllMedia, getOneMedia, updateMedia, deleteMedia} from '../controllers/mediaControllers.js';
+import { createComment, fetchComments, deleteComment } from '../controllers/commentsControllers.js';
 
 
 // middleware
@@ -36,6 +37,11 @@ r.get('/media', getAllMedia);
 r.get('/media/:id', getOneMedia);
 r.put('/media/:id', upload.single('imagen'), updateMedia);
 r.delete('/media/:id', deleteMedia);
+
+// comments
+r.post('/comments', createComment);
+r.get('/comments', fetchComments);
+r.delete('/comments/:id', deleteComment);
 
 
 export default r

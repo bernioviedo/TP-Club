@@ -5,6 +5,7 @@ import axios from 'axios';
 import {toast} from 'react-hot-toast';
 import '../pages/NewsView.css';
 import '../App.css';
+import Comments from '../components/Comments/Comments';
 
 export default function NewsView() {
 
@@ -44,6 +45,7 @@ export default function NewsView() {
         {newsItem.image && <img className='news-image-view' src={newsItem.image} alt={newsItem.title} />}
         <p className='news-content-view'>{newsItem.content}</p>
       </div>
+      <Comments newsId={id} />
     </div>
     )
 }
