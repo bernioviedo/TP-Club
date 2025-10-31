@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { ChevronLeft, ChevronRight, Plus, Trash2, Edit2, Save, X } from 'lucide-react';
-import { ContextUser } from '../../context/contextUser'; // 👈 Importar el contexto
+import { ContextUser } from '../../context/contextUser'; // Importar el contexto
 import './Media.css';
 
 // Nota: Hemos eliminado el hook useAdminStatus y usamos useContext(ContextUser)
 
 const Media = () => {
-  // 👈 Obtener el objeto de usuario del contexto
+  // Obtener el objeto de usuario del contexto
   const { user } = useContext(ContextUser);
   
   // Determinar si el usuario es administrador
@@ -42,7 +42,7 @@ const Media = () => {
 
   // Subir nueva imagen a Cloudinary
   const handleAddImage = async (isCarousel = false) => {
-    if (!isAdmin) return; // 👈 Comprobación de seguridad
+    if (!isAdmin) return; //  Comprobación de seguridad
     if (!newImage || !newCaption) {
       alert('Por favor completa todos los campos');
       return;
@@ -59,7 +59,7 @@ const Media = () => {
     try {
       const res = await axios.post('http://localhost:8000/media', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
-        withCredentials: true // 👈 Envía la cookie de autenticación
+        withCredentials: true // Envía la cookie de autenticación
       });
 
       if (isCarousel) {
@@ -83,20 +83,20 @@ const Media = () => {
 
   // Iniciar edición
   const startEdit = (id, currentCaption) => {
-    if (!isAdmin) return; // 👈 Comprobación de seguridad
+    if (!isAdmin) return; // Comprobación de seguridad
     setEditingId(id);
     setEditCaption(currentCaption || '');
   };
 
   // Guardar edición
   const saveEdit = async (id) => {
-    if (!isAdmin) return; // 👈 Comprobación de seguridad
+    if (!isAdmin) return; // Comprobación de seguridad
     try {
       const res = await axios.put(`http://localhost:8000/media/${id}`, { 
         titulo: editCaption,
         descripcion: editCaption 
       }, {
-        withCredentials: true // 👈 Envía la cookie de autenticación
+        withCredentials: true // Envía la cookie de autenticación
       });
       
       setCarouselImages(prev => prev.map(img => (img._id === id ? res.data : img)));
@@ -111,12 +111,12 @@ const Media = () => {
 
   // Eliminar de Cloudinary y MongoDB
   const handleDelete = async (id) => {
-    if (!isAdmin) return; // 👈 Comprobación de seguridad
+    if (!isAdmin) return; // Comprobación de seguridad
     if (!window.confirm('¿Estás seguro de eliminar esta imagen? Se eliminará de Cloudinary y la base de datos.')) return;
 
     try {
       await axios.delete(`http://localhost:8000/media/${id}`, {
-        withCredentials: true // 👈 Envía la cookie de autenticación
+        withCredentials: true // Envía la cookie de autenticación
       });
       
       setCarouselImages(prev => prev.filter(img => img._id !== id));
@@ -180,14 +180,14 @@ const Media = () => {
         <div className="carousel">
           <div className="section-header">
             <h2>Destacados</h2>
-            {isAdmin && ( // 👈 Solo si es admin
+            {isAdmin && ( // Solo si es admin
               <button onClick={() => setIsAddingCarousel(!isAddingCarousel)} className="btn-add">
                 <Plus size={20} /> Agregar a carrusel
               </button>
             )}
           </div>
 
-          {isAdmin && isAddingCarousel && ( // 👈 Solo si es admin
+          {isAdmin && isAddingCarousel && ( // Solo si es admin
             <div className="add-image">
               <input 
                 type="file" 
@@ -247,7 +247,7 @@ const Media = () => {
                 </button>
 
                 <div className="carousel-caption">
-                  {isAdmin && editingId === carouselImages[currentSlide]._id ? ( // 👈 Edición solo admin
+                  {isAdmin && editingId === carouselImages[currentSlide]._id ? ( // Edición solo admin
                     <div className="caption-edit">
                       <input
                         type="text"
@@ -267,7 +267,7 @@ const Media = () => {
                   ) : (
                     <>
                       <p className="caption-text">{carouselImages[currentSlide].descripcion}</p>
-                      {isAdmin && ( // 👈 Botones de edición y eliminación solo admin
+                      {isAdmin && ( // Botones de edición y eliminación solo admin
                         <div className="caption-buttons">
                           <button
                             onClick={() =>
@@ -315,14 +315,14 @@ const Media = () => {
         <div className="gallery-section">
           <div className="section-header">
             <h2>Galería</h2>
-            {isAdmin && ( // 👈 Solo si es admin
+            {isAdmin && ( // Solo si es admin
               <button onClick={() => setIsAddingGallery(!isAddingGallery)} className="btn-add">
                 <Plus size={20} /> Agregar imagen
               </button>
             )}
           </div>
 
-          {isAdmin && isAddingGallery && ( // 👈 Solo si es admin
+          {isAdmin && isAddingGallery && ( // Solo si es admin
             <div className="add-image">
               <input 
                 type="file" 
@@ -365,7 +365,7 @@ const Media = () => {
                     alt={image.descripcion}
                     className="gallery-image"
                   />
-                  {isAdmin && ( // 👈 Botones de edición y eliminación solo admin
+                  {isAdmin && ( // Botones de edición y eliminación solo admin
                     <div className="gallery-overlay">
                       <button
                         onClick={() => startEdit(image._id, image.descripcion)}
@@ -384,7 +384,7 @@ const Media = () => {
                 </div>
 
                 <div className="gallery-caption">
-                  {isAdmin && editingId === image._id ? ( // 👈 Edición en la galería solo admin
+                  {isAdmin && editingId === image._id ? ( // Edición en la galería solo admin
                     <div className="gallery-caption-edit">
                       <input
                         type="text"
