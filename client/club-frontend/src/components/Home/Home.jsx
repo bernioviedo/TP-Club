@@ -5,7 +5,7 @@ import Card from '../Card/Card.jsx'
 
 export default function Home() {
   return (
-    <div className='main-content'>
+    <div className='home-content'>
       <div className='main-content-position'>   
         <CarouselHome className="carousel"></CarouselHome>
         <div className='news'>

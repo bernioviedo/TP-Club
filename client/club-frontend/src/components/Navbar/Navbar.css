@@ -120,6 +120,12 @@
     width: 100%;
 }
 
+.logout-btn{
+    background: none;
+    border: none;
+    color: white;
+}
+
 @media screen and (max-width:1024px) {
     .navbar__menu a,
     .navbar__auth-menu .button,
@@ -157,6 +163,9 @@
     }
     .menu-btn{
         padding-right: 2rem;
+    }
+    .logout-btn{
+        color: #c9af59;
     }
 }
 

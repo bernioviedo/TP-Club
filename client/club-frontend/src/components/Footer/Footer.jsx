@@ -29,7 +29,7 @@ export default function Footer() {
     <section className="footer-menu-section">
       <nav className='footer-menu'>
         <ul className="footer-menu-sections">
-          <li><Link to='/' className='m-opt'>FAQs</Link></li>
+          <li><Link to='/faqs' className='m-opt'>FAQs</Link></li>
           <li><Link to='/' className='m-opt'>Soporte</Link></li>
           <li><Link to='/' className='m-opt'>Contacto</Link></li>
           <li><Link to='/' className='m-opt'>Nosotros</Link></li>

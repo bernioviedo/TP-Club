@@ -1,4 +1,4 @@
-.main-content {
+.home-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -6,9 +6,8 @@
   min-height: 100vh;
   text-align: center;
   padding: 20px;
-  background: linear-gradient(to bottom, #a88d4d, white);
-      height: 200px;
-      width: 100%;
+  
+  width: 100%;
   margin-top: 0;
   padding-top: 0;
 }

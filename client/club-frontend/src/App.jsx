@@ -15,7 +15,7 @@ import AdminRoute from './components/AdminRoute/AdminRoute';
 import News from './pages/News';
 import UsersRoute from './components/UsersRoute/UsersRoute';
 import NewsView from './pages/NewsView';
-
+import Faqs from './pages/Faqs.jsx'
 
 
 
@@ -28,6 +28,7 @@ function App() {
     <UserContextProvider>
       <Toaster position='bottom-right' toastOptions={{duration:3000}} />
       <Header position='top' />
+      <main className='main-content'>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/register' element={
@@ -49,7 +50,9 @@ function App() {
         } />
         <Route path='/news' element={<News />} />
         <Route path='/news/:id' element={<NewsView />} />
-    </Routes>
+        <Route path='/faqs' element={<Faqs />}></Route>
+      </Routes>
+      </main>
       <Footer />
     </UserContextProvider>
   )
