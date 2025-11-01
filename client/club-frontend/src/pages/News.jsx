@@ -181,7 +181,7 @@ const handleDelete = async (id) => {
           onChange={(e) => setSortOrder(e.target.value)}
         >
           <option value="desc">Más nuevas primero</option>
-          <option value="asc">Más viejas primero</option>
+          <option value="asc">Más antiguas primero</option>
         </select>
         </div>
       </div>

@@ -43,9 +43,13 @@ const createComment = async (req, res) => {
 //hago fetch de comentarios
 const fetchComments = async (req, res) => {
     try {
-    const { newsId } = req.query;
+    const { newsId, sort } = req.query;
     const filter = newsId ? { news: newsId } : {};
-    const comments = await Comments.find(filter).populate('author', 'name').sort({ createdAt: -1 });
+
+    const sortOrder = sort || 'desc';
+    const sortObject = { createdAt: sortOrder === 'asc' ? 1 : -1 };
+
+    const comments = await Comments.find(filter).populate('author', 'name').sort(sortObject);
     res.status(200).json(comments);
     } catch (error) {
         console.log(error);

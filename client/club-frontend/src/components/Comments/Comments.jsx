@@ -14,6 +14,7 @@ export default function Comments({newsId}) {
     const [error, setError] = useState(null);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
+    const [sortOrder, setSortOrder] = useState('desc');
     const MAX_COMMENT_LENGTH = 500;
     
     const isCommentOwner = (comment) => {
@@ -28,7 +29,7 @@ export default function Comments({newsId}) {
     setLoading(true);
     setError(null);
     try {
-        const q = newsId ? `?newsId=${newsId}` : '';
+        const q = `?newsId=${newsId}&sort=${sortOrder}`;
         const { data } = await axios.get(`/comments${q}`, { withCredentials: true });
         setComments(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -38,7 +39,7 @@ export default function Comments({newsId}) {
     } finally {
       setLoading(false);
     }
-  }, [newsId]);
+  }, [newsId, sortOrder]);
 
   useEffect(() => {
     if (newsId) fetchComments();
@@ -81,18 +82,34 @@ export default function Comments({newsId}) {
       };
 
     return (
-      <div className="comments-container">
-        <h2>Comentarios</h2>
+<div className="comments-container">
+    <h2>Comentarios</h2>
+    <div className="sort-bar">
+        <div className='input-group' style={{ maxWidth: '350px' }}>
+            <label className="input-group-text" htmlFor="sort-comments">Ordenar por: </label>
+            <select
+            className="form-select" 
+            id="sort-comments" 
+            value={sortOrder} 
+            onChange={(e) => setSortOrder(e.target.value)}
+            >
+                <option value="desc">Más nuevos primero</option>
+                <option value="asc">Más antiguos primero</option>
+            </select>
+    </div>
+  </div>
 { user ? (
   // si esta iniciado sesión
   <form onSubmit={submitComment}>
     <textarea
-      value={newComment}
-      onChange={(e) => setNewComment(e.target.value)}
-      maxLength={MAX_COMMENT_LENGTH}
-      placeholder="Escribe tu comentario..."
+        className="form-control"
+        value={newComment}
+        onChange={(e) => setNewComment(e.target.value)}
+        maxLength={MAX_COMMENT_LENGTH}
+        placeholder="Escribe tu comentario..."
+        rows="4"
     />
-    <button type="submit" disabled={loading || !newComment.trim()}>
+    <button className='commentsbtn' type="submit" disabled={loading || !newComment.trim()}>
       {loading ? 'Cargando...' : 'Comentar'}
     </button>
   </form>
@@ -109,7 +126,7 @@ export default function Comments({newsId}) {
                 <strong>{comment.authorName}</strong> <em>({new Date(comment.createdAt).toLocaleString()})</em>
                 <p>{comment.content}</p>
                 {(isCommentOwner(comment) || user?.userType === 'admin') && (
-                  <button onClick={() => handleDelete(comment._id)}>Eliminar</button>
+                  <button className='deletebtn' onClick={() => handleDelete(comment._id)}>Eliminar</button>
                 )}
             </li>
           ))}
