@@ -16,6 +16,7 @@ import News from './pages/News';
 import UsersRoute from './components/UsersRoute/UsersRoute';
 import NewsView from './pages/NewsView';
 import Faqs from './pages/Faqs.jsx'
+import Contact from './pages/Contact.jsx'
 
 
 
@@ -51,6 +52,7 @@ function App() {
         <Route path='/news' element={<News />} />
         <Route path='/news/:id' element={<NewsView />} />
         <Route path='/faqs' element={<Faqs />}></Route>
+        <Route path='/contact' element={<Contact />}></Route>
       </Routes>
       </main>
       <Footer />
