@@ -50,7 +50,7 @@ export default function Register() {
     };
 
   return (
-    <div className='main-content user-forms'>
+    <div className='user-forms'>
         <form onSubmit={registerUser} className='background-register'>
             <h2>Registrarse</h2>
             <div className='mb-3'>
