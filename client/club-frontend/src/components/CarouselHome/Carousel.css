@@ -5,7 +5,7 @@
 
 .carousel-inner{
     
-    height: 40rem;
+    height: 55rem;
 }
 .carousel-item{
     
@@ -32,4 +32,16 @@
     position:static;
     flex-wrap: wrap;
     width: 100%;
+}
+
+@media screen and (max-width:768px) {
+    .carousel{
+        height: 30rem;
+    }
+    .carousel-item{
+        aspect-ratio: 4 / 3;
+        background-size: cover;
+        background-position: center;
+        height: 30rem;
+    }
 }

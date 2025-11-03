@@ -1,0 +1,68 @@
+.faqs-title{
+    margin-top: 2rem;
+}
+
+.q-art{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.benefits-list{
+    list-style: disc;
+}
+
+.link-faqs {
+    color: black;
+}
+
+.link-faqs:hover{
+    color: blue;
+}
+
+@media screen and (min-width: 768px) {
+    .q-art{
+        flex-direction: row;
+    }
+}
+
+.responsive-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.responsive-table th,
+.responsive-table td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+
+@media (max-width: 600px) {
+  .responsive-table thead {
+    display: none;
+  }
+
+  .responsive-table tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+
+  .responsive-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  .responsive-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    flex-basis: 40%;
+  }
+}
