@@ -4,8 +4,6 @@ import { ChevronLeft, ChevronRight, Plus, Trash2, Edit2, Save, X } from 'lucide-
 import { ContextUser } from '../../context/contextUser'; // Importar el contexto
 import './Media.css';
 
-// Nota: Hemos eliminado el hook useAdminStatus y usamos useContext(ContextUser)
-
 const Media = () => {
   // Obtener el objeto de usuario del contexto
   const { user } = useContext(ContextUser);
