@@ -35,6 +35,9 @@
 }
 
 @media screen and (max-width:768px) {
+    .carousel{
+        height: 30rem;
+    }
     .carousel-item{
         aspect-ratio: 4 / 3;
         background-size: cover;
