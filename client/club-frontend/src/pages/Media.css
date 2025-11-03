@@ -1,6 +1,4 @@
-/* =============================================
-   ANIMACIONES DEL CARRUSEL
-   ============================================= */
+
 
 @keyframes slideInFromRight {
  from {
@@ -62,15 +60,11 @@
  animation: slideOutToLeft 500ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* =============================================
-   ESTILOS GENERALES Y MEDIA
-   ============================================= */
-
 .media-page {
- margin-top: 100px;
+ margin-top: 60px;
  background: linear-gradient(to bottom, #a88d4d, white);
  min-height: 300px;
- padding: 2rem;
+ padding: 1rem;
  flex: 1;
 }
 
