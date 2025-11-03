@@ -39,7 +39,7 @@ const loginUser = async (e) =>{
 }
 
   return (
-<div className='main-content user-forms'>
+<div className='user-forms'>
     <form onSubmit={loginUser} className='background-login'>
     <h2>Inicie sesión</h2>
       <div class="mb-3">
