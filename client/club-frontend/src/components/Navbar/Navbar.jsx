@@ -8,7 +8,6 @@ import { ContextUser } from '../../../context/contextUser'
 export default function Navbar({navStyle, ulStyle, children}) {
   const { user, setUser } = useContext(ContextUser);
 
-  console.log('Navbar user:', user)
   // manejo logout
   const handleLogout = async () => {
     try {
