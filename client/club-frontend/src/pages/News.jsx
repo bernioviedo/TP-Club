@@ -244,6 +244,7 @@ const handleDelete = async (id) => {
                 name="content"
                 value={editForm.content}
                 onChange={handleEditFormChange}
+                rows="10"
               />
               <div className="dialog-actions">
                 <button onClick={handleEditSave}>Guardar</button>
