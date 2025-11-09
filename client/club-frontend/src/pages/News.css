@@ -174,3 +174,9 @@
   border: none;
   cursor: pointer;
 }
+
+@media screen and (max-width:768px) {
+  .news-card-horizontal{
+    flex-direction: column;
+  }
+}
