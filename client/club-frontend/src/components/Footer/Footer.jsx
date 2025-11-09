@@ -31,7 +31,7 @@ export default function Footer() {
         <ul className="footer-menu-sections">
           <li><Link to='/faqs' className='m-opt'>FAQs</Link></li>
           <li><Link to='/contact' className='m-opt'>Contacto</Link></li>
-          <li><Link to='/' className='m-opt'>Nosotros</Link></li>
+          <li><Link to='/us' className='m-opt'>Nosotros</Link></li>
         </ul>
       </nav>
     </section>

@@ -1,0 +1,75 @@
+.oswald-article {
+    font-family: "Oswald", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
+
+@keyframes show {
+    from {
+        opacity: 0;
+        scale: 25%;
+    }
+    to {
+        opacity: 1;
+        scale: 100%;
+    }
+}
+
+.usArticle{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    justify-content: space-between;
+    height: 500px;
+    background: linear-gradient(to top, #584506, white );
+    border-radius: 80%;
+    margin-top: 3rem;
+    view-timeline-name: --article;
+    view-timeline-axis: block;
+    animation-timeline: --article;
+    animation-name: show;
+    animation-range: entry 25% cover 30%;
+    animation-fill-mode: both;
+}
+
+.article-title{
+    height: max-content;
+    max-width: 100%;
+    text-align: end;
+}
+
+.article-image{
+    height: auto;
+    max-width: 50%;
+    object-fit: contain;
+    grid-column: 2 / 3;
+    overflow-x: hidden;
+    justify-self: end;
+    margin-left: auto;
+}
+
+@media screen and (max-width:768px) {
+    .usArticle{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+    height: 300px;
+    border-radius: 0;
+    background:  transparent;
+    } 
+    .article-image{
+        max-width: 100%;
+        justify-self: center;
+        margin-left: 0;
+    }
+    .article-title{
+        text-align: center;
+    }
+}
+

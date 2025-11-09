@@ -17,7 +17,7 @@ import UsersRoute from './components/UsersRoute/UsersRoute';
 import NewsView from './pages/NewsView';
 import Faqs from './pages/Faqs.jsx'
 import Contact from './pages/Contact.jsx'
-
+import Nosotros from './pages/Nosotros.jsx'
 
 
 axios.defaults.baseURL = 'http://localhost:8000';
@@ -53,6 +53,7 @@ function App() {
         <Route path='/news/:id' element={<NewsView />} />
         <Route path='/faqs' element={<Faqs />}></Route>
         <Route path='/contact' element={<Contact />}></Route>
+        <Route path='/us' element={<Nosotros />}></Route>
       </Routes>
       </main>
       <Footer />
