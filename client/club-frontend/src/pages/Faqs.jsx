@@ -5,7 +5,7 @@ export default function Faqs() {
     return(
         <>
         <h2 className="faqs-title">LA GACELA FC - Preguntas frequentes</h2>
-        <section className='register'>
+        <section className='sctn'>
             <h3>Registro y acceso</h3>
             <article className="q-art">
                 <h4 className="q-title">¿Es necesario pagar para registrarse?</h4>
@@ -20,13 +20,13 @@ export default function Faqs() {
                 <p className="q-res">Sí, entrando <Link className='link-faqs' to='/'>aquí</Link>lo podés hacer sin problema.</p>
             </article>
         </section>
-        <section className='members'>
+        <section className='sctn'>
             <h3>Membresía y socios</h3>
             <article className="q-art">
                 <h4 className="q-title">¿Cómo me hago socio del club?</h4>
                 <p className="q-res">En la barra de navegación donde dice socios o <Link className='link-faqs' to='/'>aquí</Link>.</p>
             </article>
-            <article className="q-art">
+            <article className="q-art art-list">
                 <h4 className="q-title">¿Cuáles son los beneficios de ser socio?</h4>
                 <p className="q-res">Haciendote socio tenes los siguientes beneficios:</p>
                 <ul className='benefits-list'>
