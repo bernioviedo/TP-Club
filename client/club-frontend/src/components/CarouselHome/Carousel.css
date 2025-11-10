@@ -23,7 +23,7 @@
 }
 
 .ci3{
-    background-image: url('../../assets/masfulbito.jpg');
+    background-image: url('https://res.cloudinary.com/ddzleoagq/image/upload/v1762804932/la-gacela-fc/xlnnqvtpo2yerpr6ki59.png');
 }
 .carousel-text{
     display: flex;
@@ -32,6 +32,8 @@
     position:static;
     flex-wrap: wrap;
     width: 100%;
+    color: white;
+    font-size: 1.5em;
 }
 
 @media screen and (max-width:768px) {
