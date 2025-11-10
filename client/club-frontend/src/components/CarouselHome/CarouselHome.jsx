@@ -6,21 +6,21 @@ function CarouselHome() {
       <div className="carousel-inner ">
         <div className="carousel-item ci1 active">
           <div className="carousel-caption  carousel-text">
-            <h5>First slide label</h5>
-            <p>Some representative placeholder content for the first slide.</p>
+            <h5>LA GACELA FC</h5>
+            <p>Un club hecho para vos</p>
           </div>
         </div>
         <div className="carousel-item ci2">
           <div className="carousel-caption carousel-text">
-            <h5>Second slide label</h5>
-            <p>Some representative placeholder content for the first slide.</p>
+            <h5>UN LUGAR IDEAL PARA VOS</h5>
+            <p>Donde podes practicar el deporte que mas te gusta</p>
           </div>
         
         </div>
         <div className="carousel-item ci3">
           <div className="carousel-caption carousel-text">
-            <h5>Thirst slide label</h5>
-            <p>Some representative placeholder content for the first slide.</p>
+            <h5>ALCANZA LA GLORIA</h5>
+            <p>Hacete socio, y alcanza la gloria con nosotros</p>
           </div>
         
         </div>
