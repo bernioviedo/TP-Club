@@ -181,7 +181,7 @@ const Media = () => {
         
         <div className="media-title">
           <h1>Media La Gacela FC</h1>
-          <p>Los mejores momentos de nuestro equipo</p>
+          <p className='media-p'>Los mejores momentos de nuestro equipo</p>
         </div>
 
         {/* Carrusel */}

@@ -1,17 +1,30 @@
+.sctn{
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 .faqs-title{
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .q-art{
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    flex-direction: column;
+    flex-direction: row;
     gap: 1rem;
+    width: 100%;
 }
 
 .benefits-list{
     list-style: disc;
+}
+
+.art-list{
+  flex-direction: column;
+  font-size: 1.5em;
 }
 
 .link-faqs {
@@ -22,9 +35,23 @@
     color: blue;
 }
 
-@media screen and (min-width: 768px) {
+.q.title{
+  font-size: 2em;
+}
+
+.q-res{
+  font-size: 1.5em;
+  margin-left: 0;
+}
+
+@media screen and (max-width: 768px) {
     .q-art{
-        flex-direction: row;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
+    .q-res{
+      font-size: 1.2em;
     }
 }
 
@@ -45,10 +72,10 @@
     display: none;
   }
 
+
   .responsive-table tr {
     display: block;
     margin-bottom: 1rem;
-    border: 1px solid #ddd;
     padding: 10px;
   }
 
@@ -56,8 +83,6 @@
     display: flex;
     justify-content: space-between;
     padding: 8px 10px;
-    border: none;
-    border-bottom: 1px solid #eee;
   }
 
   .responsive-table td::before {
