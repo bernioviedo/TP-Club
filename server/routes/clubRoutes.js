@@ -2,7 +2,7 @@ import express, {Router} from 'express'
 import cors from 'cors'
 import { test, registerUser, loginUser, getProfile, getLogout, fetchUsers, deleteUser, editUser, } from '../controllers/clubControllers.js'
 import { upload, createNews, fetchNews, fetchOneNew, deleteNew, editNews } from '../controllers/newsControllers.js'
-import {createMedia, getAllMedia, getOneMedia, updateMedia, deleteMedia} from '../controllers/mediaControllers.js';
+import {upload as mediaUpload,createMedia, getCarouselMedia, getGalleryMedia, getOneMedia, updateMedia, deleteMedia} from '../controllers/mediaControllers.js';
 import { createComment, fetchComments, deleteComment } from '../controllers/commentsControllers.js';
 
 
@@ -32,10 +32,11 @@ r.delete('/news/:id', deleteNew);
 r.get('/test', test);
 r.put('/news/:id', editNews);
 // MEDIA
-r.post('/media', upload.single('imagen'), createMedia);
-r.get('/media', getAllMedia);
+r.post('/media', mediaUpload.single('imagen'), createMedia);
+r.get('/media/carousel', getCarouselMedia);
+r.get('/media/gallery', getGalleryMedia);
 r.get('/media/:id', getOneMedia);
-r.put('/media/:id', upload.single('imagen'), updateMedia);
+r.put('/media/:id', mediaUpload.single('imagen'), updateMedia);
 r.delete('/media/:id', deleteMedia);
 
 // comments

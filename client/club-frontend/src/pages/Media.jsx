@@ -25,17 +25,26 @@ const Media = () => {
   const [newCaption, setNewCaption] = useState('');
   const [isUploading, setIsUploading] = useState(false);
 
-  // Cargar imágenes desde el backend
+// Cargar imágenes desde el backend
   useEffect(() => {
     // La ruta de fetch es pública
-    axios.get('http://localhost:8000/media')
-      .then(res => {
-        setCarouselImages(res.data);
-        setGalleryImages(res.data);
-      })
-      .catch(err => {
+    const fetchMedia = async () => {
+      try {
+        // Hacemos ambas peticiones en paralelo para más eficiencia
+        const [carouselRes, galleryRes] = await Promise.all([
+          axios.get('http://localhost:8000/media/carousel'), // Pide solo carrusel
+          axios.get('http://localhost:8000/media/gallery')  // Pide solo galería
+        ]);
+        
+        setCarouselImages(carouselRes.data);
+        setGalleryImages(galleryRes.data);
+
+      } catch (err) {
         console.error('Error al cargar imágenes:', err);
-      });
+      }
+    };
+
+    fetchMedia();
   }, []);
 
   // Subir nueva imagen a Cloudinary
@@ -46,13 +55,14 @@ const Media = () => {
       return;
     }
 
-    setIsUploading(true);
+  setIsUploading(true);
 
     const formData = new FormData();
     formData.append('imagen', newImage);
     formData.append('titulo', newCaption);
     formData.append('descripcion', newCaption);
     formData.append('autor', user._id); // Usamos el ID del usuario del contexto
+    formData.append('tipo', isCarousel ? 'carousel' : 'gallery');
     
     try {
       const res = await axios.post('http://localhost:8000/media', formData, {

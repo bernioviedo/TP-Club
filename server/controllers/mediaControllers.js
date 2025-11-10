@@ -84,66 +84,78 @@ const test = (req, res) => {
 // Crear media 
 const createMedia = adminAuth(async (req, res) => {
   try {
-    const { titulo, descripcion } = req.body;
+    // 1. AÑADE "tipo" aquí
+    const { titulo, descripcion, tipo } = req.body;
     const autorId = req.authorId; 
     const file = req.file;
 
-    // Validar datos
-    if (!titulo || !descripcion || !file) {
-      return res.status(400).json({ error: 'Título, descripción e imagen son obligatorios' });
-    }
+    // 2. AÑADE "tipo" a la validación
+    if (!titulo || !descripcion || !file || !tipo) {
+    return res.status(400).json({ error: 'Título, descripción, imagen y tipo (carousel/gallery) son obligatorios' });
+  }
 
-    try {
-      // Función para subir a Cloudinary
-      const uploadToCloudinary = () => new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          { folder: "la-gacela-fc" }, 
-          (error, result) => {
-            if (result) {
-              resolve(result);
-            } else {
-              reject(error);
-            }
-          }
-        );
-        stream.end(file.buffer);
-      });
+ try {
+      // Tu función de subir a Cloudinary (esta sigue igual)
+    const uploadToCloudinary = () => new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder: "la-gacela-fc" }, 
+      (error, result) => {
+        if (result) resolve(result);
+        else reject(error);
+      }
+    );
+    stream.end(file.buffer);
+  });
 
-      const uploadResult = await uploadToCloudinary();
-      console.log('Imagen subida a Cloudinary:', uploadResult.secure_url);
+  const uploadResult = await uploadToCloudinary();
+  console.log('Imagen subida a Cloudinary:', uploadResult.secure_url);
 
-      // Crear media en la BD
-      const media = await Media.create({ 
-        titulo,
-        descripcion,
-        url_imagen: uploadResult.secure_url,
-        cloudinary_id: uploadResult.public_id,
-        // Usamos el ID del usuario autenticado como autor
-        autor: autorId, 
-        fecha_creacion: new Date()
-      });
+      // 3. AÑADE "tipo" al crear en la BD
+  const media = await Media.create({ 
+    titulo,
+    descripcion,
+    url_imagen: uploadResult.secure_url,
+    cloudinary_id: uploadResult.public_id,
+    autor: autorId, 
+    fecha_creacion: new Date(),
+    tipo: tipo 
+  });
 
-      console.log('Media guardada en MongoDB');
-      return res.status(201).json(media);
+ console.log('Media guardada en MongoDB');
+ return res.status(201).json(media);
 
-    } catch (error) {
+   } catch (error) {
       console.error('Error subiendo a Cloudinary o creando media:', error);
       return res.status(500).json({ error: 'Error al subir la imagen o crear la media' });
     }
 
-  } catch (error) {
-    console.error(' Server error:', error);
-    res.status(500).json({ error: 'Server error' });
-  }
-});
+   } catch (error) {
+      console.error(' Server error:', error);
+      res.status(500).json({ error: 'Server error' });
+    }
+  });
 
-// Obtener todas las medias (Sin restricción de admin)
-const getAllMedia = async (req, res) => {
-  try {
-    const media = await Media.find().sort({ fecha_creacion: -1 });
-    res.json(media);
-  } catch (error) {
-    console.error('Error al obtener media:', error);
+
+  // Obtener solo imágenes del carrusel (Público)
+  const getCarouselMedia = async (req, res) => {
+   try {
+    // Busca solo donde tipo == 'carousel'
+     const media = await Media.find({ tipo: 'carousel' }).sort({ fecha_creacion: -1 });
+     res.json(media);
+   } catch (error) {
+     console.error('Error al obtener media del carrusel:', error);
+     res.status(500).json({ error: 'Server error' });
+   }
+  };
+
+  // Obtener solo imágenes de la galería (Público)
+    const getGalleryMedia = async (req, res) => {
+    try {
+      // Busca solo donde tipo == 'gallery'
+      const media = await Media.find({ tipo: 'gallery' }).sort({ fecha_creacion: -1 });
+      res.json(media);
+    } catch (error) {
+    console.error('Error al obtener media de la galería:', error);
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -237,24 +249,25 @@ const deleteMedia = adminAuth(async (req, res) => {
       try {
         await cloudinary.uploader.destroy(deletedMedia.cloudinary_id);
         console.log('Imagen eliminada de Cloudinary');
-      } catch (cloudinaryError) {
-        console.error('Error eliminando imagen de Cloudinary:', cloudinaryError);
-        // Si falla la eliminación en Cloudinary, se loguea pero se considera la media eliminada de la BD.
+        } catch (cloudinaryError) {
+          console.error('Error eliminando imagen de Cloudinary:', cloudinaryError);
+          // Si falla la eliminación en Cloudinary, se loguea pero se considera la media eliminada de la BD.
+        }
       }
-    }
 
-    res.json({ message: 'Media eliminada correctamente' });
-  } catch (error) {
-    console.error('Server error:', error);
-    res.status(500).json({ error: 'Server error' });
-  }
-});
+      res.json({ message: 'Media eliminada correctamente' });
+      } catch (error) {
+        console.error('Server error:', error);
+        res.status(500).json({ error: 'Server error' });
+      }
+    });
 
-export {
-  test,
-  createMedia,
-  getAllMedia,
-  getOneMedia,
-  updateMedia,
-  deleteMedia,
-};
+    export {
+    test,
+    createMedia,
+    getCarouselMedia, // <-- Añade esta
+    getGalleryMedia,  // <-- Añade esta
+    getOneMedia,
+    updateMedia,
+    deleteMedia,
+    };
