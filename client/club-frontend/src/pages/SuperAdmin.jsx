@@ -119,7 +119,9 @@ const handleDelete = async (id) => {
                   <td>{user.userType}</td>
                   <td>
                     <button onClick={() => openEditDialog(user)}>Editar</button>
-                    <button onClick={() => handleDelete(user._id)}>Eliminar</button>
+                    {user.userType !== 'superadmin' && (
+                      <button onClick={() => handleDelete(user._id)}>Eliminar</button>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -138,6 +140,8 @@ const handleDelete = async (id) => {
                 value={editForm.name}
                 onChange={handleEditFormChange}
               />
+              {editUser.userType !== 'superadmin' && (
+              <>              
               <label>Tipo de usuario:</label>
               <select
                 name="userType"
@@ -146,7 +150,10 @@ const handleDelete = async (id) => {
               >
                 <option value="admin">Administrador</option>
                 <option value="user">Usuario</option>
-              </select>
+              </select> 
+              </>
+              )}
+
               <div className="dialog-actions">
                 <button onClick={handleEditSave}>Guardar</button>
                 <button onClick={closeEditDialog}>Cancelar</button>
