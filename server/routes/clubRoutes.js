@@ -4,6 +4,7 @@ import { test, registerUser, loginUser, getProfile, getLogout, fetchUsers, delet
 import { upload, createNews, fetchNews, fetchOneNew, deleteNew, editNews } from '../controllers/newsControllers.js'
 import {upload as mediaUpload,createMedia, getCarouselMedia, getGalleryMedia, getOneMedia, updateMedia, deleteMedia} from '../controllers/mediaControllers.js';
 import { createComment, fetchComments, deleteComment } from '../controllers/commentsControllers.js';
+import { getCuotas, generarCuotasMensuales, registrarPago } from '../controllers/cuotaController.js';
 
 
 // middleware
@@ -43,6 +44,11 @@ r.delete('/media/:id', deleteMedia);
 r.post('/comments', createComment);
 r.get('/comments', fetchComments);
 r.delete('/comments/:id', deleteComment);
+
+//cuotas
+r.get('/cuotas', getCuotas);
+r.post('/cuotas/generar', generarCuotasMensuales);
+r.put('/cuotas/pagar/:id', registrarPago);
 
 
 export default r

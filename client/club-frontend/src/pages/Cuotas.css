@@ -1,0 +1,356 @@
+.cuotas-page {
+  margin-top: 100px;
+  background: linear-gradient(to bottom, #a88d4d, white);
+  min-height: calc(100vh - 100px);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.cuotas-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+.cuotas-container h1 {
+  text-align: center;
+  font-size: 2.25rem;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 3rem;
+}
+
+/* CONTENEDORES (ESTILO TARJETA / CARD)*/
+.admin-box, 
+.cuotas-list-box {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.5rem;
+}
+
+.admin-box h2, 
+.cuotas-list-box h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 1.5rem;
+}
+
+/*FORMULARIO DE GENERACIÓN (ADMIN) */
+
+.gen-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.gen-form input {
+  flex: 1;
+  min-width: 180px;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #fcd34d;
+  border-radius: 0.35rem;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.gen-form input:focus {
+  border-color: #d97706;
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2);
+}
+
+/*TABLA DE CUOTAS*/
+
+.cuotas-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1rem;
+}
+
+.cuotas-table th {
+  background-color: #f3f4f6;
+  color: #1f2937;
+  font-weight: 600;
+  text-align: left;
+  padding: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.cuotas-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  color: #374151;
+  vertical-align: middle;
+}
+
+/* Variaciones de filas según el estado de la cuota */
+.cuotas-table tr.row-pagado td {
+  background-color: rgba(240, 253, 244, 0.5); /* Sutil verde si está pagado */
+}
+
+.cuotas-table tr.row-pendiente td {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+/*BADGES (ETIQUETAS DE ESTADO)*/
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.badge.pendiente {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.badge.pagado {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.badge.vencido {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+/*BOTONES REUTILIZADOS DE TU ESTÉTICA */
+
+.btn-add {
+  background-color: #d97706;
+  color: white;
+  padding: 0.6rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-add:hover {
+  background-color: #b45309;
+}
+
+.btn-add:active {
+  transform: scale(0.98);
+}
+
+.btn-save {
+  background-color: #16a34a;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-save:hover {
+  background-color: #15803d;
+}
+
+.btn-small {
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.btn-small:active {
+  transform: scale(0.95);
+}
+
+/* Estado de carga */
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 1.25rem;
+  color: #4b5563;
+}
+
+/* =========================================================================
+   Contenedor y Botones
+   ========================================================================= */
+
+.cuotas-container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.btn-pagar-todas {
+  background-color: #28a745;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.btn-pagar-todas:hover {
+  background-color: #218838;
+}
+
+.btn-pagar-individual {
+  background-color: #d4af37;
+  color: black;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-pagar-individual:hover {
+  background-color: #bfa030;
+}
+
+/* =========================================================================
+   Estructura de la Modal
+   ========================================================================= */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: #1e1e1e;
+  color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  border: 1px solid #d4af37;
+}
+
+.modal-subtitle {
+  color: #aaa;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* =========================================================================
+   Formulario de Tarjeta
+   ========================================================================= */
+
+.tarjeta-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.tarjeta-form label {
+  font-size: 13px;
+  margin-bottom: 5px;
+  color: #d4af37;
+  text-align: left;
+}
+
+.tarjeta-form input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #444;
+  background: #2a2a2a;
+  color: white;
+  font-size: 15px;
+}
+
+.tarjeta-form .form-row {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tarjeta-form .form-row .form-group {
+  flex: 1;
+  min-width: 0;
+}
+
+/* =========================================================================
+   Acciones de la Modal (Botones)
+   ========================================================================= */
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.btn-cancelar {
+  background: #555;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-cancelar:hover {
+  background: #777;
+}
+
+.btn-confirmar-pago {
+  background: #d4af37;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-confirmar-pago:hover {
+  background: #f3cd44;
+}
+
+/* =========================================================================
+   Badges y Textos de Estado
+   ========================================================================= */
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.badge.pendiente {
+  background-color: #ffc107;
+  color: black;
+}
+
+.badge.pagado {
+  background-color: #28a745;
+  color: white;
+}
+
+.txt-pagado {
+  color: #666;
+  font-size: 13px;
+}

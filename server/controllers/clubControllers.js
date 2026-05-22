@@ -2,7 +2,7 @@ import User from '../models/users.js';
 import { hashPassword, comparePassword } from '../helpers/auth.js';
 import pkg from 'jsonwebtoken';
 
-const { sign, verify } = pkg
+const { sign, verify } = pkg;
 
 const test = (req, res) => {
     res.json({ message: 'Test is working' });
@@ -62,7 +62,7 @@ const loginUser = async (req, res) => {
         //compruebo si la contraseña es correcta
         const match = await comparePassword(password, user.password);
         if (match){
-            sign({ email:user.email, id:user._id, name: user.name }, process.env.JWT_SECRET, {}, (err, token) => {
+            sign({ email:user.email, id:user._id, name: user.name, userType: user.userType }, process.env.JWT_SECRET, {}, (err, token) => {
                 if (err) throw err;
                 const userData = {
                     _id: user._id,
