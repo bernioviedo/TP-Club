@@ -3,8 +3,6 @@ import './Navbar.css'
 import { useContext } from 'react'
 import { ContextUser } from '../../../context/contextUser'
 
-
-
 export default function Navbar({navStyle, ulStyle, children}) {
   const { user, setUser } = useContext(ContextUser);
 
@@ -26,30 +24,45 @@ export default function Navbar({navStyle, ulStyle, children}) {
     }
   }
 
-  
-
   return (
     <nav className={navStyle}>
       <ul className={ulStyle}>
-        {(!user || user.userType === 'user' || user.userType === 'admin') && (
-        <>
-        <li><Link to={'/'}>{'Futbol'}</Link></li>
-        <li><Link to={'/'}>{'Socios'}</Link></li>
-        <li><Link to={'/news'}>{'Noticias'}</Link></li>
-        <li><Link to={'/media'}>{'Media'}</Link></li>
-        </>
-        )}
-        {     !user && (
+        {/* ⚽ Enlaces públicos y para todos los roles (Incluido el Socio ahora) */}
+        {(!user || user.userType === 'user' || user.userType === 'admin' || user.userType === 'socio') && (
           <>
-          <li><Link to="/register">Register</Link></li>
-          <li><Link to="/login">Login</Link></li>
+            <li><Link to={'/'}>{'Futbol'}</Link></li>
+            <li><Link to={'/'}>{'Socios'}</Link></li>
+            <li><Link to={'/news'}>{'Noticias'}</Link></li>
+            <li><Link to={'/media'}>{'Media'}</Link></li>
+          </>
+        )}
+
+        {user && (user.userType === 'socio' || user.userType === 'admin') && (
+          <li>
+            <Link to="/cuotas" className="navbar__link-cuotas">
+              {user.userType === 'admin' ? 'Gestión Cuotas' : 'Pagar Cuota'}
+            </Link>
+          </li>
+        )}
+
+        {/* 🔑 Enlaces para invitados (No logueados) */}
+        {!user && (
+          <>
+            <li><Link to="/register">Register</Link></li>
+            <li><Link to="/login">Login</Link></li>
           </>
         )} 
-        { user &&( 
+
+        {/*Enlaces de sesión activa */}
+        {user && (
           <>
-          {(user.userType === 'user' || user.userType === 'admin') &&<li><Link to="/profile">Profile</Link></li>}
-          {user.userType === 'superadmin' && (<li><Link to="/superadmin">Gestión de Administración</Link></li>)}
-          <li><Link to={"/"} onClick={handleLogout}>Logout</Link></li>
+            {(user.userType === 'user' || user.userType === 'admin' || user.userType === 'socio') && (
+              <li><Link to="/profile">Profile</Link></li>
+            )}
+            {user.userType === 'superadmin' && (
+              <li><Link to="/superadmin">Gestión de Administración</Link></li>
+            )}
+            <li><Link to={"/"} onClick={handleLogout}>Logout</Link></li>
           </>
         )} 
       </ul>

@@ -212,3 +212,15 @@
     pointer-events: none;
 }
 
+.navbar__link-cuotas {
+  background-color: transparent;
+  border: none;
+  padding: 0 ;
+  color: #fff ;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.navbar__link-cuotas:hover {
+  background-color: transparent ;
+}
