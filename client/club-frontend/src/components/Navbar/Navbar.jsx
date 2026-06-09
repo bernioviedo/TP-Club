@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
 import './Navbar.css'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { ContextUser } from '../../../context/contextUser'
 
 export default function Navbar({navStyle, ulStyle, children}) {
   const { user, setUser } = useContext(ContextUser);
+
+  const [isDeportesOpen, setIsDeportesOpen] = useState(false);
 
   // manejo logout
   const handleLogout = async () => {
@@ -27,10 +29,27 @@ export default function Navbar({navStyle, ulStyle, children}) {
   return (
     <nav className={navStyle}>
       <ul className={ulStyle}>
-        {/* ⚽ Enlaces públicos y para todos los roles (Incluido el Socio ahora) */}
+        {/* Enlaces públicos y para todos los roles */}
         {(!user || user.userType === 'user' || user.userType === 'admin' || user.userType === 'socio') && (
           <>
-            <li><Link to={'/'}>{'Futbol'}</Link></li>
+            {/* menú dropdown de deportes */}
+            <li 
+              className="navbar__dropdown"
+              onMouseEnter={() => setIsDeportesOpen(true)}
+              onMouseLeave={() => setIsDeportesOpen(false)}
+            > 
+            <Link to={'/'}>
+              <span className="navbar__dropdown-toggle">Deportes</span>
+              
+              {isDeportesOpen && (
+                <ul className="navbar__dropdown-menu">
+                  <li><Link to={'/deportes/futbol'}>Fútbol</Link></li>
+                  <li><Link to={'/deportes/voley'}>Vóley</Link></li>
+                  <li><Link to={'/deportes/natacion'}>Natación</Link></li>
+                </ul>
+              )}
+            </Link></li>
+
             <li><Link to={'/'}>{'Socios'}</Link></li>
             <li><Link to={'/news'}>{'Noticias'}</Link></li>
             <li><Link to={'/media'}>{'Media'}</Link></li>
@@ -45,7 +64,7 @@ export default function Navbar({navStyle, ulStyle, children}) {
           </li>
         )}
 
-        {/* 🔑 Enlaces para invitados (No logueados) */}
+        {/* Enlaces para invitados (No logueados) */}
         {!user && (
           <>
             <li><Link to="/register">Register</Link></li>
