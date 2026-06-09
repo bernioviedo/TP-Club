@@ -5,6 +5,7 @@ import { upload, createNews, fetchNews, fetchOneNew, deleteNew, editNews } from 
 import {upload as mediaUpload,createMedia, getCarouselMedia, getGalleryMedia, getOneMedia, updateMedia, deleteMedia} from '../controllers/mediaControllers.js';
 import { createComment, fetchComments, deleteComment } from '../controllers/commentsControllers.js';
 import { getCuotas, generarCuotasMensuales, registrarPago } from '../controllers/cuotaController.js';
+import { getProductos, crearProducto, editarProducto,deleteProducto, procesarCompra } from '../controllers/productoController.js';
 
 
 // middleware
@@ -50,5 +51,11 @@ r.get('/cuotas', getCuotas);
 r.post('/cuotas/generar', generarCuotasMensuales);
 r.put('/cuotas/pagar/:id', registrarPago);
 
+// productos
+r.get('/productos', getProductos);
+r.post('/productos', mediaUpload.single('imagen'), crearProducto);
+r.put('/productos/:id', mediaUpload.single('imagen'), editarProducto);
+r.delete('/productos/:id', deleteProducto);
+r.post('/productos/comprar', procesarCompra);
 
 export default r

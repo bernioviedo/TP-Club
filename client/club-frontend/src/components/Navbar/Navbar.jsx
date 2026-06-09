@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom'
 import './Navbar.css'
 import { useContext } from 'react'
 import { ContextUser } from '../../../context/contextUser'
+import { useCart } from "../../../context/CartContext";
 
 export default function Navbar({navStyle, ulStyle, children}) {
   const { user, setUser } = useContext(ContextUser);
+const { totalItems } = useCart();
 
   // manejo logout
   const handleLogout = async () => {
@@ -37,6 +39,14 @@ export default function Navbar({navStyle, ulStyle, children}) {
           </>
         )}
 
+        {/* 🛒 3. Enlace a la Tienda Oficial visible para todos, con el contador dinámico si hay ítems */}
+        <li>
+          <Link to={'/tienda'} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            Tienda {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
+          </Link>
+        </li>
+
+        {/* 💳 Gestión o Pago de Cuotas Inteligente */}
         {user && (user.userType === 'socio' || user.userType === 'admin') && (
           <li>
             <Link to="/cuotas" className="navbar__link-cuotas">
@@ -53,7 +63,7 @@ export default function Navbar({navStyle, ulStyle, children}) {
           </>
         )} 
 
-        {/*Enlaces de sesión activa */}
+        {/* Enlaces de sesión activa */}
         {user && (
           <>
             {(user.userType === 'user' || user.userType === 'admin' || user.userType === 'socio') && (
