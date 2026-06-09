@@ -48,9 +48,9 @@ export default function Tienda() {
     try {
       const { data } = await axios.get('http://localhost:8000/productos');
       setProductos(data);
-    } catch (err) {
-      toast.error('No se pudo cargar el catálogo de mercadería');
-    }
+  } catch {
+  toast.error('No se pudo cargar el catálogo de mercadería');
+}
   };
 
   useEffect(() => {
