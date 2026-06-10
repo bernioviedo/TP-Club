@@ -48,6 +48,9 @@ const { totalItems } = useCart();
                   <li><Link to={'/deportes/futbol'}>Fútbol</Link></li>
                   <li><Link to={'/deportes/voley'}>Vóley</Link></li>
                   <li><Link to={'/deportes/natacion'}>Natación</Link></li>
+                  <li><Link to={'/deportes/tenis'}>Tenis</Link></li>
+                  <li><Link to={'/deportes/basquet'}>Básquet</Link></li>
+                  <li><Link to={'/deportes/handball'}>Handball</Link></li>
                 </ul>
               )}
             </Link></li>

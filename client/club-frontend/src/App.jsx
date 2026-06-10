@@ -21,6 +21,12 @@ import Contact from './pages/Contact.jsx'
 import Nosotros from './pages/Nosotros.jsx'
 import Cuotas from './pages/Cuotas.jsx'
 import Tienda from './pages/Tienda.jsx'
+import Futbol from './pages/deportes/Futbol.jsx'
+import Voley from './pages/deportes/Voley.jsx'
+import Basquet from './pages/deportes/Basquet.jsx'
+import Handball from './pages/deportes/Handball.jsx'
+import Natacion from './pages/deportes/Natacion.jsx'
+import Tenis from './pages/deportes/Tenis.jsx'
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
@@ -59,6 +65,12 @@ function App() {
           <Route path='/us' element={<Nosotros />}></Route>
           <Route path='/cuotas' element={<Cuotas />} />
           <Route path='/tienda' element={<Tienda />} />
+          <Route path='/deportes/futbol' element={<Futbol />} />
+          <Route path='/deportes/voley' element={<Voley />} />
+          <Route path='/deportes/basquet' element={<Basquet />} />
+          <Route path='/deportes/handball' element={<Handball />} />
+          <Route path='/deportes/natacion' element={<Natacion />} />
+          <Route path='/deportes/tenis' element={<Tenis />} />
         </Routes>
         </main>
         <Footer />
