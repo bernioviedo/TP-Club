@@ -6,7 +6,8 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
-import { UserContextProvider } from '../context/ContextUserProvider'
+import { UserContextProvider } from "../context/ContextUserProvider";
+import { CartProvider } from "../context/CartContext";
 import Profile from './pages/Profile';
 import Footer from './components/Footer/Footer'
 import Media from './pages/Media' 
@@ -18,7 +19,8 @@ import NewsView from './pages/NewsView';
 import Faqs from './pages/Faqs.jsx'
 import Contact from './pages/Contact.jsx'
 import Nosotros from './pages/Nosotros.jsx'
-
+import Cuotas from './pages/Cuotas.jsx'
+import Tienda from './pages/Tienda.jsx'
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
@@ -27,36 +29,40 @@ axios.defaults.withCredentials = true;
 function App() {
   return (
     <UserContextProvider>
-      <Toaster position='bottom-right' toastOptions={{duration:3000}} />
-      <Header position='top' />
-      <main className='main-content'>
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/register' element={
-          <UsersRoute>
-          <Register />
-          </UsersRoute>
-        } />
-        <Route path='/login' element={
-          <UsersRoute>
-          <Login />
-          </UsersRoute>
+      <CartProvider>
+        <Toaster position='bottom-right' toastOptions={{duration:3000}} />
+        <Header position='top' />
+        <main className='main-content'>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/register' element={
+            <UsersRoute>
+            <Register />
+            </UsersRoute>
           } />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/media' element={<Media />} />
-        <Route path='/superadmin' element={
-          <AdminRoute>
-            <SuperAdmin />
-          </AdminRoute>
-        } />
-        <Route path='/news' element={<News />} />
-        <Route path='/news/:id' element={<NewsView />} />
-        <Route path='/faqs' element={<Faqs />}></Route>
-        <Route path='/contact' element={<Contact />}></Route>
-        <Route path='/us' element={<Nosotros />}></Route>
-      </Routes>
-      </main>
-      <Footer />
+          <Route path='/login' element={
+            <UsersRoute>
+            <Login />
+            </UsersRoute>
+            } />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/media' element={<Media />} />
+          <Route path='/superadmin' element={
+            <AdminRoute>
+              <SuperAdmin />
+            </AdminRoute>
+          } />
+          <Route path='/news' element={<News />} />
+          <Route path='/news/:id' element={<NewsView />} />
+          <Route path='/faqs' element={<Faqs />}></Route>
+          <Route path='/contact' element={<Contact />}></Route>
+          <Route path='/us' element={<Nosotros />}></Route>
+          <Route path='/cuotas' element={<Cuotas />} />
+          <Route path='/tienda' element={<Tienda />} />
+        </Routes>
+        </main>
+        <Footer />
+      </CartProvider>
     </UserContextProvider>
   )
 }
