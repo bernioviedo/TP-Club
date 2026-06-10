@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { ChevronLeft, ChevronRight, Plus, Trash2, Edit2, Save, X } from 'lucide-react';
-import { ContextUser } from '../../context/contextUser'; // Importar el contexto
+import { ContextUser } from '../../context/contextUser';
 import './Media.css';
 
 const Media = () => {
