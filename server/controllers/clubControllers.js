@@ -1,6 +1,8 @@
 import User from '../models/users.js';
 import { hashPassword, comparePassword } from '../helpers/auth.js';
 import pkg from 'jsonwebtoken';
+import { resend } from '../helpers/mailer.js';
+import crypto from 'crypto';
 
 const { sign, verify } = pkg;
 
@@ -35,19 +37,63 @@ const registerUser =  async (req, res) => {
         //hasheo la contraseña
         const hashedPassword = await hashPassword(password);
 
+
+        //genero el token de verificación
+        const verificationToken = crypto.randomBytes(32).toString('hex');
+        const verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000 ) // 24 horas
+
         //creo el usuario en la BD
         const user = await User.create({
             name,
             email,
             password: hashedPassword,
             userType: 'user', 
+            isVerified: false,
+            verificationToken,
+            verificationTokenExpires,
         });
+
+        const confirmationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`
+        await resend.emails.send({
+            from: 'Club Atletico <http://localhost:8000>',
+            to: email,
+            subject: 'Confirma tu email',
+            html: `
+                <p>Hola ${name},</p>
+                <p>Por favor, haz clic en el siguiente enlace para confirmar tu email:</p>
+                <a href="${confirmationUrl}" target="_blank">Confirmar email</a>
+                <p>Este enlace expira en 24 horas.</p>
+            `   
+        })
 
         return res.json(user);
     } catch (error) {
         console.log(error);
     }    
 };
+
+//endpoint de verificación de email
+const verifyEmail = async (req, res) => {
+    try {
+        const { token } = req.query;
+        const user = await User.findOne({
+            verificationToken: token,
+            verificationTokenExpires: { $gt: new Date() },
+        })
+        if (!user) { 
+            return res.status(400).json({ error: 'Token de verificación inválido o expirado' });
+        }
+        // confirmar cuenta y limpiar token
+        user.isVerified = true;
+        user.verificationToken = undefined;
+        user.verificationTokenExpires = undefined;
+        await user.save();
+        res.json({ message: 'Cuenta confirmada exitosamente. Ya podes iniciar sesion' })
+    } catch(error) {
+        console.log(error);
+        res.status(500).json({ error: 'Error al verificar la cuenta' });
+    }
+}
 
 //endpoint de login
 const loginUser = async (req, res) => {
@@ -56,8 +102,8 @@ const loginUser = async (req, res) => {
 
         //compruebo si el usuario existe
         const user = await User.findOne({ email });
-         if (!user) {
-         return res.json({ error: 'Usuario o contraseña incorrectos' });
+        if (!user) {
+        return res.json({ error: 'Usuario o contraseña incorrectos' });
         }
         //compruebo si la contraseña es correcta
         const match = await comparePassword(password, user.password);
@@ -76,10 +122,14 @@ const loginUser = async (req, res) => {
         if (!match) {
             return res.json({ error: 'Usuario o contraseña incorrectos' });
         }
+        //chequeo si el email esta verificado
+        if (!user.isVerified) {
+            return res.json({ error: 'Por favor, confirma tu email antes de iniciar sesión' });
+        }
     } catch (error) {
         console.log(error);
     }
-     };
+};
 
      //mantengo la sesión iniciada
 const getProfile = async (req, res) => {
@@ -160,4 +210,5 @@ export {
     fetchUsers,
     deleteUser,
     editUser,
+    verifyEmail,
 };
