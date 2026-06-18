@@ -55,11 +55,11 @@ const registerUser =  async (req, res) => {
 
         const confirmationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`
         await resend.emails.send({
-            from: 'Club Atletico <http://localhost:8000>',
-            to: email,
+            from: 'Club Atletico <noreply@lagacela.com>',
+            to: user.email,
             subject: 'Confirma tu email',
             html: `
-                <p>Hola ${name},</p>
+                <p>Hola ${user.name},</p>
                 <p>Por favor, haz clic en el siguiente enlace para confirmar tu email:</p>
                 <a href="${confirmationUrl}" target="_blank">Confirmar email</a>
                 <p>Este enlace expira en 24 horas.</p>

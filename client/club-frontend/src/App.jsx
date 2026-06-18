@@ -21,6 +21,7 @@ import Contact from './pages/Contact.jsx'
 import Nosotros from './pages/Nosotros.jsx'
 import Cuotas from './pages/Cuotas.jsx'
 import Tienda from './pages/Tienda.jsx'
+import VerifyEmail from './pages/VerifyEmail.jsx';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
@@ -45,6 +46,7 @@ function App() {
             <Login />
             </UsersRoute>
             } />
+          <Route path='/verify-email' element={<VerifyEmail />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/media' element={<Media />} />
           <Route path='/superadmin' element={
