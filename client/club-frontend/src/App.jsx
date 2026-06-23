@@ -27,6 +27,8 @@ import Basquet from './pages/deportes/Basquet.jsx'
 import Handball from './pages/deportes/Handball.jsx'
 import Natacion from './pages/deportes/Natacion.jsx'
 import Tenis from './pages/deportes/Tenis.jsx'
+import PlantelPrimera from './pages/deportes/PlantelPrimera.jsx'
+
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
@@ -71,6 +73,7 @@ function App() {
           <Route path='/deportes/handball' element={<Handball />} />
           <Route path='/deportes/natacion' element={<Natacion />} />
           <Route path='/deportes/tenis' element={<Tenis />} />
+          <Route path="/deportes/futbol/plantel" element={<PlantelPrimera />} />
         </Routes>
         </main>
         <Footer />
