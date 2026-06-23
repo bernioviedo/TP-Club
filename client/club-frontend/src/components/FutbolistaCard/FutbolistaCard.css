@@ -4,13 +4,27 @@
   height: 380px;
   position: relative;
   border-radius: 15px;
+  border: 5px solid #000000; 
+  box-sizing: border-box;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(180deg, #2a2d1e 0%, #15160e 70%);
   transition: transform 0.1s ease-out; /* sigue el mouse */
   transform-style: preserve-3d;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   cursor: pointer;
   overflow: hidden;
   background-color: #1d1f14; 
   margin: 20px;
+}
+
+.holo-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid #c9af59;
+  border-radius: 9px;
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 10;
 }
 
 .holo-card-content {
@@ -23,33 +37,49 @@
 
 .holo-card-img {
   width: 100%;
-  height: 75%;
+  height: 80%;
   object-fit: cover;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+  -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.6));
 }
 
 .holo-card-info {
-  padding: 15px;
-  color: #ffffff;
-  text-align: center;
-  background-color: #1d1f14;
-  height: 25%;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 35%;
+  box-sizing: border-box;
+  background: linear-gradient(to top, #11120b 60%, transparent 100%);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
+  padding-bottom: 25px;
+  text-align: center;
+  z-index: 5;
 }
 
 .holo-card-info h3 {
   margin: 0;
   color: #c9af59; 
   font-size: 1.4rem;
+  margin: 0;
+  color: #c9af59; 
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 800;
+  line-height: 1.1;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
 .holo-card-info p {
   margin: 5px 0 0 0;
-  font-size: 0.9rem;
-  opacity: 0.8;
+  color: #ffffff;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.9;
 }
 
 /* efectos holograficos */
@@ -57,7 +87,12 @@
 /* glare */
 .holo-glare {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 75%);
+  mask-image: linear-gradient(to bottom, black 55%, transparent 75%);
   z-index: 2;
   /* gradiente sigue variables --x e --y */
   background: radial-gradient(
@@ -73,7 +108,12 @@
 /* el arcoiris y la textura */
 .holo-foil {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 75%);
+  mask-image: linear-gradient(to bottom, black 55%, transparent 75%);
   z-index: 3;
   
   /* apilo capas */
@@ -119,7 +159,10 @@
 
 /* efectos al pasar el mouse */
 .holo-card:hover .holo-glare,
-.holo-card:hover .holo-foil {
+.holo-card:hover .holo-foil,
+.holo-card.active .holo-glare,
+.holo-card.active .holo-foil {
   opacity: 1;
   transition: opacity 0.3s; 
 }
+

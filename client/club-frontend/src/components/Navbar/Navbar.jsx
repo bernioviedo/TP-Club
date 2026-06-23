@@ -40,7 +40,6 @@ const { totalItems } = useCart();
               onMouseEnter={() => setIsDeportesOpen(true)}
               onMouseLeave={() => setIsDeportesOpen(false)}
             > 
-            <Link to={'/'}>
               <span className="navbar__dropdown-toggle">Deportes</span>
               
               {isDeportesOpen && (
@@ -53,7 +52,7 @@ const { totalItems } = useCart();
                   <li><Link to={'/deportes/handball'}>Handball</Link></li>
                 </ul>
               )}
-            </Link></li>
+              </li>
 
             <li><Link to={'/'}>{'Socios'}</Link></li>
             <li><Link to={'/news'}>{'Noticias'}</Link></li>
@@ -61,14 +60,14 @@ const { totalItems } = useCart();
           </>
         )}
 
-        {/* 🛒 3. Enlace a la Tienda Oficial visible para todos, con el contador dinámico si hay ítems */}
+        {/*3. Enlace a la Tienda Oficial visible para todos, con el contador dinámico si hay ítems */}
         <li>
           <Link to={'/tienda'} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             Tienda {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
           </Link>
         </li>
 
-        {/* 💳 Gestión o Pago de Cuotas Inteligente */}
+        {/* Gestión o Pago de Cuotas Inteligente */}
         {user && (user.userType === 'socio' || user.userType === 'admin') && (
           <li>
             <Link to="/cuotas" className="navbar__link-cuotas">
