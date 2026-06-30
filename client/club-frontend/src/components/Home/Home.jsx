@@ -93,85 +93,81 @@ const handleDelete = async (id) => {
   };
 
   return (
-    <div className='home-content'>
-      <div className='main-content-position'>   
-        <CarouselHome className="carousel"></CarouselHome>
-        <h2>Ultimas noticias de La Gacela</h2>
-        <div className='news-list'>
-    {loading ? (
-      <p>Cargando noticias...</p>
-    ) : error ? ( 
-      <p>Error cargando noticias: {error}</p>
-    ) : ( 
-      <ul>
-        {news.map((item) => (
-          <li key={item._id}>
-            
-            <div className="card news-card-horizontal">
+<div className='home-content'>
+    <CarouselHome className="carousel" />
+    
+    <div className='main-content-position'>   
+      <h2 className="home-title">Últimas noticias de La Gacela</h2>
+      
+      {loading ? (
+        <div className="loading-spinner">Cargando...</div>
+      ) : error ? ( 
+        <p className="error-message">Error cargando noticias: {error}</p>
+      ) : ( 
+        <div className="news-cards-section">
+          {news.map((item, index) => (
+            <div key={item._id} className={`card news-card card${index + 1}`}>
               
               {item.image && (
-                <img 
-                  src={item.image} 
-                  alt={item.title} 
-                  className='news-card-img'
-                />
+                <div className="news-card-img-container">
+                  <img src={item.image} alt={item.title} className='news-card-img'/>
+                </div>
               )}
               
               <div className="card-body">
-                <div>
+                <div className="card-info">
                   <h4 className='card-title'>{item.title}</h4>
                   <p className='card-text'>{item.summary}</p>
                 </div>
                 
-                <div>
+                <div className="card-actions">
                   <a href={`/news/${item._id}`} className="newsbtn">Leer Noticia</a>
                   
-                  {(user?.userType === 'admin') && ( <>
-                    <button onClick={() => handleDelete(item._id)} className="newsbtn newsbtn-delete">Eliminar</button>
-                    <button onClick={() => openEditDialog(item)} className="newsbtn newsbtn-edit">Editar</button>
-                    </>
+                  {(user?.userType === 'admin') && ( 
+                    <div className="admin-actions">
+                      <button onClick={() => handleDelete(item._id)} className="newsbtn newsbtn-delete">Borrar</button>
+                      <button onClick={() => openEditDialog(item)} className="newsbtn newsbtn-edit">Editar</button>
+                    </div>
                   )}
                 </div>
-            {editNews && ( 
-            <>
-            <div className="dialog-backdrop" onClick={closeEditDialog} />
-            <div className="dialog">
-              <h2>Editar Noticia</h2>
-              <label>Título:</label>
-              <input
-                type="text"
-                name="title"
-                value={editForm.title}
-                onChange={handleEditFormChange}
-              />
-              <label>Resumen:</label>
-              <input
-                type="text"
-                name="summary"
-                value={editForm.summary}
-                onChange={handleEditFormChange}
-              />
-              <label>Contenido:</label>
-              <textarea
-                name="content"
-                value={editForm.content}
-                onChange={handleEditFormChange}
-              />
-              <div className="dialog-actions">
-                <button onClick={handleEditSave}>Guardar</button>
-                <button onClick={closeEditDialog}>Cancelar</button>
               </div>
             </div>
-            </>
-          )}
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
-    ) }
-</div>
-      </div>
+          ))}
+        </div>
+      )}
     </div>
-  ) 
-}
+      {editNews && ( 
+        <>
+          <div className="dialog-backdrop" onClick={closeEditDialog} />
+          
+          <div className="dialog">
+            <h2>Editar Noticia</h2>
+            <label>Título:</label>
+            <input
+              type="text"
+              name="title"
+              value={editForm.title}
+              onChange={handleEditFormChange}
+            />
+            <label>Resumen:</label>
+            <input
+              type="text"
+              name="summary"
+              value={editForm.summary}
+              onChange={handleEditFormChange}
+            />
+            <label>Contenido:</label>
+            <textarea
+              name="content"
+              value={editForm.content}
+              onChange={handleEditFormChange}
+            />
+            <div className="dialog-actions">
+              <button onClick={handleEditSave}>Guardar</button>
+              <button onClick={closeEditDialog}>Cancelar</button>
+            </div>
+          </div>
+        </>
+      )}
+
+  </div>)}
