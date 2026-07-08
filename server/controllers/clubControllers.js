@@ -95,6 +95,45 @@ const verifyEmail = async (req, res) => {
     }
 }
 
+const resendVerificationEmail = async (req, res) => {
+    console.log('resendVerification llamado', new Date())
+    console.log('api key de resend', process.env.RESEND_API_KEY)
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado'});
+        }
+        if (user.isVerified) {
+            return res.json({ message: 'El email ya esta verificado' });
+        }
+        const verificationToken = crypto.randomBytes(32).toString('hex');
+        const verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000 );
+
+        user.verificationToken = verificationToken;
+        user.verificationTokenExpires = verificationTokenExpires;
+        await user.save();
+        const confirmationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`
+        const result =    await resend.emails.send({
+            from: 'Club <onboarding@resend.dev>',
+            to: 'santisabbioni@gmail.com',
+            subject: 'Confirmá tu cuenta',
+            html: `
+                <h2>Confirmá tu cuenta</h2>
+                <p>Hacé clic en el botón para confirmar tu cuenta. El link expira en 24 horas.</p>
+                <a href="${confirmationUrl}" style="background:#4CAF50;color:white;padding:12px 24px;text-decoration:none;border-radius:4px;">
+                    Confirmar cuenta
+                </a>
+            `,
+        });
+        console.log('resend result:', result);
+        res.json({ message: 'Mail de confirmación reenviado' });
+    } catch (error){
+        console.log(error);
+        res.status(500).json({ error: 'Error al reenviar el mail de confirmación' });
+    }
+}
+
 //endpoint de login
 const loginUser = async (req, res) => {
     try {
@@ -115,6 +154,7 @@ const loginUser = async (req, res) => {
                     name: user.name,
                     email: user.email,
                     userType: user.userType,
+                    isVerified: user.isVerified,
                 };
                 res.cookie('token', token).json(userData);
             });
@@ -122,10 +162,7 @@ const loginUser = async (req, res) => {
         if (!match) {
             return res.json({ error: 'Usuario o contraseña incorrectos' });
         }
-        //chequeo si el email esta verificado
-        if (!user.isVerified) {
-            return res.json({ error: 'Por favor, confirma tu email antes de iniciar sesión' });
-        }
+        
     } catch (error) {
         console.log(error);
     }
@@ -133,6 +170,7 @@ const loginUser = async (req, res) => {
 
      //mantengo la sesión iniciada
 const getProfile = async (req, res) => {
+    
   try {
     const { token } = req.cookies;
     if (!token) return res.json(null);
@@ -145,6 +183,7 @@ const getProfile = async (req, res) => {
       if (!user) return res.json(null);
 
       res.json(user);
+
     });
   } catch (error) {
     console.log(error);
@@ -211,4 +250,5 @@ export {
     deleteUser,
     editUser,
     verifyEmail,
+    resendVerificationEmail,
 };

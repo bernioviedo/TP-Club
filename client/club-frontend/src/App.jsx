@@ -22,6 +22,7 @@ import Nosotros from './pages/Nosotros.jsx'
 import Cuotas from './pages/Cuotas.jsx'
 import Tienda from './pages/Tienda.jsx'
 import VerifyEmail from './pages/VerifyEmail.jsx';
+import  VerificationBanner  from './components/Banner/VerificationBanner.jsx';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
@@ -34,6 +35,7 @@ function App() {
         <Toaster position='bottom-right' toastOptions={{duration:3000}} />
         <Header position='top' />
         <main className='main-content'>
+        <VerificationBanner />
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/register' element={
