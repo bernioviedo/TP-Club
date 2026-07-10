@@ -1,9 +1,8 @@
 import User from '../models/users.js';
 import { hashPassword, comparePassword } from '../helpers/auth.js';
 import pkg from 'jsonwebtoken';
-import { resend } from '../helpers/mailer.js';
 import crypto from 'crypto';
-
+import {transporter} from '../helpers/mailer.js';
 const { sign, verify } = pkg;
 
 const test = (req, res) => {
@@ -54,8 +53,8 @@ const registerUser =  async (req, res) => {
         });
 
         const confirmationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`
-        await resend.emails.send({
-            from: 'Club Atletico <noreply@lagacela.com>',
+        await transporter.sendMail({
+            from: `Club <${process.env.RESEND_FROM_EMAIL}>`,
             to: user.email,
             subject: 'Confirma tu email',
             html: `
@@ -114,9 +113,9 @@ const resendVerificationEmail = async (req, res) => {
         user.verificationTokenExpires = verificationTokenExpires;
         await user.save();
         const confirmationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`
-        const result =    await resend.emails.send({
-            from: 'Club <onboarding@resend.dev>',
-            to: 'santisabbioni@gmail.com',
+        const result =    await transporter.sendMail({
+            from: `Club <${process.env.RESEND_FROM_EMAIL}>`,
+            to: user.email,
             subject: 'Confirmá tu cuenta',
             html: `
                 <h2>Confirmá tu cuenta</h2>
