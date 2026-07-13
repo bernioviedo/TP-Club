@@ -1,0 +1,51 @@
+.banner{
+    width: 100%;
+    background: #c9af59;
+    padding: 1rem;
+    text-align: center; 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    max-height: 100px;
+    transition: max-height 0.4s ease, padding 0.4s ease, opacity 0.4s ease;
+    opacity: 1;
+}
+
+.banner-content{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.confirmation-button{
+    background-color: #503d00;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.close-button{
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.closed {
+    max-height: 0;
+    padding: 0;
+    opacity: 0;
+}
+
+.open {
+    max-height: 100px;
+    opacity: 1;
+}

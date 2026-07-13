@@ -29,8 +29,8 @@ export default function Register() {
             try {
               const { data: loginRes } = await axios.post('/login', { email, password });
               if (loginRes.error) {
-                toast.success('Registro exitoso, por favor inicie sesión');
-                navigate('/login');
+                toast.success('Registro exitoso, por favor verifique su email');
+                navigate('/verify-email');
                 return;
               }
               const userObj = loginRes.user ?? loginRes;

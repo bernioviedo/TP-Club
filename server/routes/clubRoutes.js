@@ -1,6 +1,6 @@
 import express, {Router} from 'express'
 import cors from 'cors'
-import { test, registerUser, loginUser, getProfile, getLogout, fetchUsers, deleteUser, editUser, } from '../controllers/clubControllers.js'
+import { test, registerUser, loginUser, getProfile, getLogout, fetchUsers, deleteUser, editUser, verifyEmail, resendVerificationEmail } from '../controllers/clubControllers.js'
 import { upload, createNews, fetchNews, fetchOneNew, deleteNew, editNews } from '../controllers/newsControllers.js'
 import {upload as mediaUpload,createMedia, getCarouselMedia, getGalleryMedia, getOneMedia, updateMedia, deleteMedia} from '../controllers/mediaControllers.js';
 import { createComment, fetchComments, deleteComment } from '../controllers/commentsControllers.js';
@@ -10,11 +10,6 @@ import { getProductos, crearProducto, editarProducto,deleteProducto, procesarCom
 
 // middleware
 const r = Router()
-r.use(
-    cors({
-        credentials: true,
-        origin: 'http://localhost:5173',
-    }));
 
 r.get('/', test);
 //users
@@ -22,6 +17,8 @@ r.post('/register', registerUser);
 r.post('/login', loginUser);
 r.get('/profile', getProfile);
 r.get('/logout', getLogout);
+r.get('/verify-email', verifyEmail);
+r.post('/resend-verification', resendVerificationEmail);
 //superadmin
 r.get('/superadmin/users', fetchUsers);
 r.delete('/superadmin/users/:id', deleteUser);

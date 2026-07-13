@@ -5,7 +5,11 @@ const userSchema = new Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    userType: { type: String, enum: ['superadmin','admin', 'user'], default: 'user' },});
+    userType: { type: String, enum: ['superadmin','admin', 'user'], default: 'user' },
+    isVerified: {type: Boolean, default: false},
+    verificationToken: {type: String},
+    verificationTokenExpires: {type: Date},
+});
 
 const UserModel = model('User', userSchema);
 

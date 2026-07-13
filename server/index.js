@@ -3,6 +3,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import clubRoutes from './routes/clubRoutes.js'
+import cors from 'cors'
 
 const app = express();
 
@@ -16,6 +17,11 @@ mongoose.connect(process.env.MONGO_URL)
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
+app.use(
+    cors({
+        credentials: true,
+        origin: 'http://localhost:5173',
+    }));
 
 //rutas
 app.use('/', clubRoutes);

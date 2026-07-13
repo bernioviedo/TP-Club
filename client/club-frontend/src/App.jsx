@@ -21,6 +21,8 @@ import Contact from './pages/Contact.jsx'
 import Nosotros from './pages/Nosotros.jsx'
 import Cuotas from './pages/Cuotas.jsx'
 import Tienda from './pages/Tienda.jsx'
+import VerifyEmail from './pages/VerifyEmail.jsx';
+import  VerificationBanner  from './components/Banner/VerificationBanner.jsx';
 import Futbol from './pages/deportes/Futbol.jsx'
 import Voley from './pages/deportes/Voley.jsx'
 import Basquet from './pages/deportes/Basquet.jsx'
@@ -41,6 +43,7 @@ function App() {
         <Toaster position='bottom-right' toastOptions={{duration:3000}} />
         <Header position='top' />
         <main className='main-content'>
+        <VerificationBanner />
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/register' element={
@@ -53,6 +56,7 @@ function App() {
             <Login />
             </UsersRoute>
             } />
+          <Route path='/verify-email' element={<VerifyEmail />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/media' element={<Media />} />
           <Route path='/superadmin' element={
