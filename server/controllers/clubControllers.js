@@ -51,18 +51,19 @@ const registerUser =  async (req, res) => {
             verificationToken,
             verificationTokenExpires,
         });
-
+                //mail que llega cuando te registras
         const confirmationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`
         await transporter.sendMail({
             from: `Club <${process.env.RESEND_FROM_EMAIL}>`,
             to: user.email,
-            subject: 'Confirma tu email',
+            subject: 'Confirmá tu cuenta',
             html: `
-                <p>Hola ${user.name},</p>
-                <p>Por favor, haz clic en el siguiente enlace para confirmar tu email:</p>
-                <a href="${confirmationUrl}" target="_blank">Confirmar email</a>
-                <p>Este enlace expira en 24 horas.</p>
-            `   
+                <h2>Confirmá tu cuenta</h2>
+                <p>Hacé clic en el botón para confirmar tu cuenta. El link expira en 24 horas.</p>
+                <a href="${confirmationUrl}" style="background:#4CAF50;color:white;padding:12px 24px;text-decoration:none;border-radius:4px;">
+                    Confirmar cuenta
+                </a>
+            `  
         })
 
         return res.json(user);
@@ -95,8 +96,6 @@ const verifyEmail = async (req, res) => {
 }
 
 const resendVerificationEmail = async (req, res) => {
-    console.log('resendVerification llamado', new Date())
-    console.log('api key de resend', process.env.RESEND_API_KEY)
     try {
         const { email } = req.body;
         const user = await User.findOne({ email });
@@ -125,7 +124,6 @@ const resendVerificationEmail = async (req, res) => {
                 </a>
             `,
         });
-        console.log('resend result:', result);
         res.json({ message: 'Mail de confirmación reenviado' });
     } catch (error){
         console.log(error);
