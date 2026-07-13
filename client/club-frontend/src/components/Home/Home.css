@@ -1,87 +1,74 @@
 .home-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
-  text-align: center;
-  padding: 20px;
-  
-  width: 100%;
-  margin-top: 0;
-  padding-top: 0;
+  background-color: #f4f4f4;
+  padding-bottom: 40px;
 }
 
-.main-content h1 {
-  margin-bottom: 16px;
-  font-size: 2.5rem;
+.home-title {
+  text-align: left;
+  font-size: 2rem;
+  color: #1d1f14;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #c9af59;
+  display: inline-block;
 }
 
-/* .main-content p {
-  font-size: 1.2rem;
-  max-width: 600px;
-} */
-
-.main-content-position{
-  margin-top: 90px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: center;
-  gap: 2rem;
-}
-
-
-.carousel{
-  width: 100%;
-  height: 20rem;
-  flex-shrink: 1;
-  min-height: 0;
-}
-
-@media screen and (max-width:520px) {
-  .carousel{
-    display: none;
-  }
-}
-
-.news{
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: flex-start;
-}
-
-.title{
-  width: 100%;
-}
-
-.news-cards-section{
+.news-cards-section {
   display: grid;
-  grid-template-areas: 
-  'card1 card1 card1'
-  'card2 card3 card4';
-  gap: 1rem;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: minmax(100px, auto);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
-  max-width: 60rem;
 }
 
-.card1{
-  grid-area: card1;
+.news-card {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.card2{
-  grid-area: card2;
+.news-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
-.card3{
-  grid-area: card3;
+.news-card-img-container {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
 }
 
-.car4{
-  grid-area: card4;
+.news-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.card-title {
+  margin: 0 0 10px 0;
+  font-size: 1.25rem;
+  color: #222;
+}
+
+.card-text {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
 }
