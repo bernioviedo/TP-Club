@@ -317,4 +317,6 @@ export {
     editUser,
     verifyEmail,
     resendVerificationEmail,
+    forgotPassword,
+    resetPassword,
 };
