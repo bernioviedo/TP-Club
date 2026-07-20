@@ -52,6 +52,7 @@ const loginUser = async (e) =>{
       </div>
             <button type='submit' className="btn logbtn">Siguiente</button>
     </form>
+    <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
 </div>
 
   )
