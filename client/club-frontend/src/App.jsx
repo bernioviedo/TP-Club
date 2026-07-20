@@ -30,6 +30,7 @@ import Handball from './pages/deportes/Handball.jsx'
 import Natacion from './pages/deportes/Natacion.jsx'
 import Tenis from './pages/deportes/Tenis.jsx'
 import PlantelPrimera from './pages/deportes/PlantelPrimera.jsx'
+import ForgotPassword from './pages/ForgotPassword.jsx'
 
 
 axios.defaults.baseURL = 'http://localhost:8000';
@@ -59,6 +60,7 @@ function App() {
           <Route path='/verify-email' element={<VerifyEmail />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/media' element={<Media />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/superadmin' element={
             <AdminRoute>
               <SuperAdmin />
