@@ -41,7 +41,7 @@ const loginUser = async (e) =>{
   return (
 <div className='user-forms'>
     <form onSubmit={loginUser} className='background-login'>
-    <h2>Inicie sesión</h2>
+      <h2>Inicie sesión</h2>
       <div class="mb-3">
             <label className='form-label' htmlFor="email">Email</label>
             <input className='form-control' type="email" id='email' placeholder='Ingrese email' value={data.email} onChange={(e) => setData({...data, email: e.target.value})}/>
@@ -52,7 +52,7 @@ const loginUser = async (e) =>{
       </div>
             <button type='submit' className="btn logbtn">Siguiente</button>
     </form>
-    <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
+    <a href="/forgot-password" className="reset-link">¿Olvidaste tu contraseña?</a>
 </div>
 
   )
