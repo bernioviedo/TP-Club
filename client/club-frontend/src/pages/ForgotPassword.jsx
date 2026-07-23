@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import './ForgotPassword.css';
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('');
@@ -28,18 +29,20 @@ export default function ForgotPassword() {
     );
 
     return (
-        <div>
-            <h2>Olvidé mi contraseña</h2>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="email">Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Ingresá tu email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <button type="submit">Enviar instrucciones</button>
+        <div className="forgot-password-container container-background">
+            <form onSubmit={handleSubmit} className="forgot-password-form">
+                <h2 className="form-title">Olvidé mi contraseña</h2>
+                <label htmlFor="email" className="description">Ingresa tu email aquí abajo y te enviaremos un mensaje con un link para que puedas reestablecer tu contraseña.</label>
+                <div className="body">
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <button className="submit-button" type="submit">Enviar</button>
+                </div>
             </form>
         </div>
     );
