@@ -165,6 +165,75 @@ const loginUser = async (req, res) => {
     }
 };
 
+
+//endpoint para solicitar restablecimiento de contraseña
+const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            // por seguridad no revelamos si el email existe o no
+            return res.json({ message: 'Si el email existe, recibirás un mail con instrucciones.' });
+        }
+
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        user.resetPasswordToken = resetToken;
+        user.resetPasswordExpires = new Date(Date.now() + 1 * 60 * 60 * 1000); // 1 hora
+        await user.save();
+
+        const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+
+        await transporter.sendMail({
+            from: `Club <${process.env.GMAIL_USER}>`,
+            to: email,
+            subject: 'Restablecer contraseña',
+            html: `
+                <h2>Restablecer contraseña</h2>
+                <p>Recibiste este mail porque solicitaste restablecer tu contraseña. El link expira en 1 hora.</p>
+                <a href="${resetUrl}" style="background:#4CAF50;color:white;padding:12px 24px;text-decoration:none;border-radius:4px;">
+                    Restablecer contraseña
+                </a>
+                <p>Si no solicitaste esto, ignorá este mail.</p>
+            `,
+        });
+
+        res.json({ message: 'Si el email existe, recibirás un mail con instrucciones.' });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Error al procesar la solicitud' });
+    }
+};
+
+//endpoint para restablecer la contraseña
+
+const resetPassword = async (req, res) => {
+    try {
+        const { token, password } = req.body;
+
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: new Date() },
+        });
+
+        if (!user) {
+            return res.status(400).json({ error: 'Token inválido o expirado' });
+        }
+
+        user.password = await hashPassword(password); // tu función de hash existente
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        await user.save();
+
+        res.json({ message: 'Contraseña actualizada exitosamente' });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Error al restablecer la contraseña' });
+    }
+};
+
      //mantengo la sesión iniciada
 const getProfile = async (req, res) => {
     
@@ -248,4 +317,6 @@ export {
     editUser,
     verifyEmail,
     resendVerificationEmail,
+    forgotPassword,
+    resetPassword,
 };

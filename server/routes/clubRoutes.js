@@ -1,6 +1,6 @@
 import express, {Router} from 'express'
 import cors from 'cors'
-import { test, registerUser, loginUser, getProfile, getLogout, fetchUsers, deleteUser, editUser, verifyEmail, resendVerificationEmail } from '../controllers/clubControllers.js'
+import { test, registerUser, loginUser, getProfile, getLogout, fetchUsers, deleteUser, editUser, verifyEmail, resendVerificationEmail, forgotPassword, resetPassword } from '../controllers/clubControllers.js'
 import { upload, createNews, fetchNews, fetchOneNew, deleteNew, editNews } from '../controllers/newsControllers.js'
 import {upload as mediaUpload,createMedia, getCarouselMedia, getGalleryMedia, getOneMedia, updateMedia, deleteMedia} from '../controllers/mediaControllers.js';
 import { createComment, fetchComments, deleteComment } from '../controllers/commentsControllers.js';
@@ -19,6 +19,8 @@ r.get('/profile', getProfile);
 r.get('/logout', getLogout);
 r.get('/verify-email', verifyEmail);
 r.post('/resend-verification', resendVerificationEmail);
+r.post('/forgot-password', forgotPassword);
+r.patch('/reset-password', resetPassword);
 //superadmin
 r.get('/superadmin/users', fetchUsers);
 r.delete('/superadmin/users/:id', deleteUser);
