@@ -9,6 +9,7 @@
   color: white;
   align-items: start;
   font-size: 15px;
+  position: relative;
   bottom: 0px;
   width: 100%;
   left: 0px;
@@ -117,3 +118,16 @@ ul{
   }
 }
 
+@media screen and (max-width: 320px){
+  .footer-direction{
+    display: none;
+  }
+  .social-icons-section{
+    display: none;
+  }
+  .footer-menu-section{
+    grid-column: 1 / -1; 
+    grid-row: 1; 
+    text-align: center;
+  }
+}
