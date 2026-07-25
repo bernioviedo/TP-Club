@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import './ResetPassword.css';
 
 export default function ResetPassword() {
     const [searchParams] = useSearchParams();
@@ -38,10 +39,10 @@ export default function ResetPassword() {
     };
 
     return (
-        <div>
-            <h2>Restablecer contraseña</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
+        <div className="reset-password-container">
+            <form className="reset-form" onSubmit={handleSubmit}>
+                <h2 className='reset-title'>Restablecer contraseña</h2>
+                <div className='new-password'>
                     <label htmlFor="password">Nueva contraseña</label>
                     <input
                         type="password"
@@ -51,7 +52,7 @@ export default function ResetPassword() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-                <div>
+                <div className='confirm-password'>
                     <label htmlFor="confirm">Confirmá la contraseña</label>
                     <input
                         type="password"
@@ -61,7 +62,7 @@ export default function ResetPassword() {
                         onChange={(e) => setConfirm(e.target.value)}
                     />
                 </div>
-                <button type="submit">Restablecer contraseña</button>
+                <button className='reset-button' type="submit">Restablecer contraseña</button>
             </form>
         </div>
     );
